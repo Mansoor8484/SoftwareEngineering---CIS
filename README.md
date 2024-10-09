@@ -19,55 +19,7 @@
 - [usage.md](docs/usage.md): How to use the application.
 
 ## Directory Structure
-/Wallet Wizard 
-│ ├── /docs
-│ ├── architecture.md
-│ ├── installation.md
-│ └── usage.md
-│ ├── /src
-│ │ ├── /backend
-│ │ │ ├── /app
-│ │ │ │ ├── init.py
-│ │ │ │ ├── config.py
-│ │ │ │ ├── models.py
-│ │ │ │ ├── routes.py
-│ │ │ │ ├── controllers.py
-│ │ │ │ ├── forms.py
-│ │ │ │ ├── utils.py
-│ │ │ │ ├── /migrations
-│ │ │ │ ├── /tests
-│ │ │ │ │ ├── init.py 
-│ │ │ │ │ ├── test_routes.py
-│ │ │ │ │ ├── test_models.py
-│ │ │ │ │ └── conftest.py
-│ │ │ │ ├── chatbot.py
-│ │ │ │ └── run.py
-│ │ │ └── requirements.txt
-│ │ ├── /frontend
-│ │ │ ├── /components
-│ │ │ ├── /styles
-│ │ │ ├── /scripts
-│ │ │ ├── /templates
-│ │ │ │ ├── index.html
-│ │ │ │ ├── registration.html
-│ │ │ │ ├── login.html
-│ │ │ │ ├── forgot_password.html
-│ │ │ │ ├── reset_password.html
-│ │ │ │ ├── transactions.html
-│ │ │ │ ├── budgeting.html
-│ │ │ │ ├── contact.html
-│ │ │ │ ├── profile.html
-│ │ │ │ ├── edit_profile.html
-│ │ │ │ └── chatbot.html (TBD)
-│ │ │ └── index.html
-│ │ └── /scripts
-│ │ ├── setup.sh
-│ │ ├── deploy.sh
-│ │ └── test.sh
-│ ├── .gitignore
-│ ├── README.md
-│ └── Dockerfile
-└──
+
 ## Contributing
 
 ## License
