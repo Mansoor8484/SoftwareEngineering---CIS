@@ -6,29 +6,29 @@ Welcome to WalletWizard, a web-based financial tool made to effectively manage y
 ## Getting started 
 
 1. Sign Up / Login
-- Go to WalletWizard Website
--  Click "Sign up for one" on the Account Login page or "Log In" if you already have an account.
+	- Go to WalletWizard Website
+	- Click "Sign up for one" on the Account Login page or "Log In" if you already have an account.
 2. Dashboard
-- Once logged in, you will be directed to the user dashboard, where you can see account information
+	- Once logged in, you will be directed to the user dashboard, where you can see account information
 
 ## User Dashboard
 
 - This page displays amount totals for up to 3 seperate bank accounts.
 - There is a calendar where the user can add reminders for future dates and see important information regarding their bank account.
 - There is also a pie chart which displays monetary information on it.
--  On the side is a small button that says "ChatBat", which is an AI chatbot that helps users with any questions they have about WalletWizard. This bot will be displayed on every further page.
+- On the side is a small button that says "ChatBat", which is an AI chatbot that helps users with any questions they have about WalletWizard. This bot will be displayed on every further page.
 
 ## Transactions
 
 1. Click on "Transactions" tab in the navigation bar
-- Click "Transactions" to the right of the "Dashboard" button
+	- Click "Transactions" to the right of the "Dashboard" button
 2. Choose which account you are adding the transaction to.
 3. Click the add transactions button to input:
-- The date.
-- Total amount.
-- Pay to.
-- Status of the transaction.
-- Select the account they are adding the transaction to. Next to these buttons is a list of all previous transactions for the selected account with all pertinent information included.
+	- The date.
+	- Total amount.
+	- Pay to.
+	- Status of the transaction.
+	- Select the account they are adding the transaction to. Next to these buttons is a list of all previous transactions for the selected account with all pertinent information included.
 3. Click submit transaction to add to the list on the left.
 
 ## Creating a Budget
