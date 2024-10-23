@@ -10,7 +10,7 @@ Welcome to WalletWizard, a web-based financial tool made to effectively manage y
 	- Click "Sign up for one" on the Account Login page or "Log In" if you already have an account.
  	- Click forgot password if you don't remember your password for your account.
  	- You will be redirected to a page to add a new password.
-	-If you are registering a new account, you will add your Username, Email, Phone Number, Account Number, Routing Number, Name, and Password.
+	-If you are registering a new account, you will add your username, email, phone number, account number, routing  number, name, and password.
 2. Dashboard
 	- Once logged in, you will be directed to the user dashboard, where you can see account information.
 
@@ -32,7 +32,7 @@ Welcome to WalletWizard, a web-based financial tool made to effectively manage y
 	- Total Amount.
 	- Pay To.
 	- Status.
-	- Select the account they are adding the transaction to. Next to these buttons is a list of all previous transactions for the selected account with all pertinent information included.
+	- Select the account you are adding the transaction to. Next to these buttons is a list of all previous transactions for the selected account with all pertinent information included.
 4  On the left side there is a button to add a "Transaction description".
 5. Click submit transaction to add to the list on the left.
 6. Click filters, which allows you to display the elements that you want on the page, including Date, Total Amount, Pay To, and Status. Up to 9 of each will display per page, going from top being most recent to bottom being oldest.
@@ -59,13 +59,13 @@ Welcome to WalletWizard, a web-based financial tool made to effectively manage y
 
 ## Support
 
-1. Navigate to the "Contact" tab on the navigation bar
+1. Navigate to the "Contact" tab on the navigation bar.
 2. Input your message to get in touch with our team, so we can best answer your questions and hear out the best ways to improve WalletWizard. There are 3 radio buttons to specify what type of message you are sending out. Either a request, complaint, or regular message. Choose which one you want to send to get a personalized response.
 
 
 ## User Account Management
 
-- Profile settings: Change your personal information in the "Profile" section. What is displayed: name, username, email, phone number, and password
+- Profile settings: Change your personal information in the "Profile" section. What is displayed: name, username, email, phone number, and password.
 - On the edit profile page you can edit your name, username, email, phone number, and change your password.
 
 
