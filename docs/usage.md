@@ -62,8 +62,8 @@ Financial Plan B (Low Savings = More Spending Money) and Financial Plan C (Moder
 
 ## User Account Management
 
-- Profile settings: Change your personal information in the "Profile" section.
-- Password changes: Change your password on the "Edit Profile" page
+- Profile settings: Change your personal information in the "Profile" section. What is displayed: name, username, email, phone number, and password
+- On the edit profile page you can edit your name, username, email, phone number, and change your password.
 
 
 
