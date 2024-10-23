@@ -41,8 +41,11 @@ Welcome to WalletWizard, a web-based financial tool made to effectively manage y
 
 1. Click on "Budgets" tab in the navigation bar.
 
-2.  Choose from 3 options, Financial Plan A (high savings = low spending money)
-Financial Plan B (Low Savings = More Spending Money) and Financial Plan C (Moderate Savings = Moderate Spending Money). To enact a plan for your account, click select on the bottom of each plan.  On the top of the page a graph is shown with the axis of savings x expenses, along with income and planned expenses. These change with each budget that is applied, to show the current budget chosen.
+2.  Choose from 3 options,
+   	- Financial Plan A (high savings = low spending money)
+	- Financial Plan B (Low Savings = More Spending Money)
+  	= Financial Plan C (Moderate Savings = Moderate Spending Money).
+   To enact a plan for your account, click select on the bottom of each plan.  On the top of the page a graph is shown with the axis of savings x expenses, along with income and planned expenses. These change with each budget that is applied, to show the current budget chosen.
 
 ## Creating a Budget Page 2
  
