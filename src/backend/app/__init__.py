@@ -1,8 +1,6 @@
 from flask import Flask
 from .config import Config
 '''
-plot-li, matplotlib, scikit-learn (ml tasks), math, requests, beautifulsoup, scrapy, pygal, json, tabulate, sql alchemy, pandas, numpy, seaborn, time-delta-now, Gemini AI & Olama (chatbot), plaid, bcrypt(passwrd hash), argon2(psswd hash),passlib(pass hash), smtpl(sending email)
-
 ______________________________________________________________________________________________________________________________________________________________________________
 API Reference
 Comprehensive reference for integrating with Plaid API endpoints

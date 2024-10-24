@@ -1,0 +1,20 @@
+plotly
+matplotlib
+scikit-learn
+requests
+beautifulsoup4
+scrapy
+pygal
+tabulate
+SQLAlchemy
+pandas
+numpy
+seaborn
+python-dateutil  # for timedelta functionality
+gemini-ai  # replace with actual package if needed
+olama  # replace with actual package if needed
+plaid-python  # Plaid API client
+bcrypt
+argon2-cffi
+passlib
+smtplib
