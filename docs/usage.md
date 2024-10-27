@@ -1,6 +1,6 @@
 # Welcome to WalletWizard
 
-**Introduction**  
+### **Introduction**  
 Welcome to **WalletWizard**, an innovative web-based financial management tool designed to help you take control of your finances with ease and efficiency. Our platform features an intuitive interface that empowers you to customize your financial strategy to suit your unique budgetary needs. With distinct pages tailored for various functions, including transaction tracking and budgeting, WalletWizard equips you with the resources necessary to save money and plan for your financial future. This comprehensive step-by-step guide will walk you through utilizing WalletWizard to monitor your finances, forecast future expenses, and develop effective spending plans.
 
 ---
