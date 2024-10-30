@@ -1,39 +1,39 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, DateTime
-from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import bcrypt
 
-base = declarative_base()
+# Initialize the SQLAlchemy instance
+db = SQLAlchemy()
 
-class User(base):
-
-    __tablename__ = 'Users'
+class User(db.Model):
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, nullable=False)
     password_hash = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    created_At = Column(DateTime, server_default=func.now())
+    created_at = Column(DateTime, server_default=func.now())
 
     transactions = relationship("Transaction", back_populates="user")
-    interactions = relationship("Interaction", back_populates="user")
+    interactions = relationship("ChatbotInteraction", back_populates="user")
     bank_accounts = relationship("BankAccount", back_populates="user")
 
     def set_password(self, password):
-        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
 
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, email={self.email})>"
 
-class BankAccount(base):
-
+class BankAccount(db.Model):
     __tablename__ = 'bank_accounts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable = False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     account_name = Column(String, nullable=False)
     account_number = Column(String, nullable=False)
     balance = Column(Float, default=0.00)
@@ -43,7 +43,7 @@ class BankAccount(base):
     def __repr__(self):
         return f"<BankAccount(id={self.id}, account_name={self.account_name}, balance={self.balance})>"
 
-class Transactions(base):
+class Transaction(db.Model):
     __tablename__ = 'transactions'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -59,7 +59,7 @@ class Transactions(base):
                 f"amount={self.amount}, transaction_date={self.transaction_date}, "
                 f"transaction_type={self.transaction_type})>")
 
-class ChatbotInteraction(base):
+class ChatbotInteraction(db.Model):
     __tablename__ = 'chatbot_interactions'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -74,8 +74,3 @@ class ChatbotInteraction(base):
         return (f"<ChatbotInteraction(id={self.id}, user_id={self.user_id}, "
                 f"message={self.message}, response={self.response}, "
                 f"interaction_date={self.interaction_date})>")
-
-# engine = create_engine('sqlite:///your_database.db')
-# base.metadata.create_all(engine)
-# Session = sessionmaker(bind=engine)
-# session = Session()
