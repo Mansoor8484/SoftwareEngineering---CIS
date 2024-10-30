@@ -8,3 +8,7 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# $env:FLASK_APP = "src.backend.app.run"
+# $env:FLASK_APP = "src.backend.app.run"
+# python -m flask run
