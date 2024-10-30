@@ -1,5 +1,5 @@
-from init import create_app
-from models import db
+from .init import create_app
+from .models import db
 
 app = create_app()
 
