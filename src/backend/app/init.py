@@ -1,5 +1,6 @@
 from flask import Flask
 from .config import Config
+from .models import User, BankAccount, Transaction, ChatbotInteraction
 '''
 ______________________________________________________________________________________________________________________________________________________________________________
 API Reference
