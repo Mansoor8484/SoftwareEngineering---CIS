@@ -3,7 +3,7 @@ from flask import Blueprint, render_template
 # Create a blueprint for the main routes
 main = Blueprint('main', __name__)
 
-@main.route('/')
+@main.route('/index')
 def index():
     return 'Index Page'
 
