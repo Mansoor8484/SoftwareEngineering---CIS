@@ -83,6 +83,10 @@ class Config:
     PLAID_WEBHOOK_URL = os.environ.get('PLAID_WEBHOOK_URL') or 'http://localhost:5000/plaid/webhook'
     """Webhook URL for receiving updates from Plaid about linked accounts."""
 
+    # Assistant and Ollama API Keys
+    ASSISTANT_API_KEY = os.environ.get('ASSISTANT_API_KEY')
+    OLLAMA_API_KEY = os.environ.get('OLLAMA_API_KEY')
+
     # Bank Data Configuration
     BANK_DATA_RETENTION_PERIOD = 365  # Days to retain bank transaction data
     """Period for retaining bank transaction data; helps comply with regulations."""

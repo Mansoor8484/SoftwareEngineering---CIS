@@ -9,6 +9,6 @@ with app.app_context():
 if __name__ == "__main__":
     app.run(debug=True)
 
-# $env:FLASK_APP = "src.backend.app.run"
-# $env:FLASK_APP = "src.backend.app.run"
-# python -m flask run
+# $env:FLASK_APP="backend.app.run"; $env:PYTHONPATH="src"; flask db init
+# flask db migrate -m "Initial migration"
+# flask db upgrade
