@@ -8,6 +8,11 @@ main = Blueprint('main', __name__)
 def dashboard():
     return 'Dashboard - Template Coming SOOOOOOOON'
 
+# Later, when templates are ready
+# @main.route('/dashboard')
+# def dashboard():
+#     return render_template('dashboard.html', data=my_data)
+
 @main.route('/transactions')
 def transactions():
     return 'Transactions - Template Coming SOOOOOOON'
@@ -31,10 +36,3 @@ def login():
 @main.route('/contact/message', methods=['POST'])
 def message():
     return message()  # Call the controller function
-
-
-
-# Later, when templates are ready
-# @main.route('/dashboard')
-# def dashboard():
-#     return render_template('dashboard.html', data=my_data)
