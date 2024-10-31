@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from .controllers import register
+from .controllers import register, user_login
 
 # Create a blueprint for the main routes
 main = Blueprint('main', __name__)
@@ -23,6 +23,14 @@ def contact():
 @main.route('/register', methods=['POST'])
 def register():
     return register()  # Call the controller function
+
+@main.route('/login', methods=['POST'])
+def login():
+    return user_login()  # Call the controller function
+
+@main.route('/contact/message', methods=['POST'])
+def message():
+    return message()  # Call the controller function
 
 
 
