@@ -2,6 +2,8 @@ from flask import Flask
 from .config import Config
 from .models import db, User, BankAccount, Transaction, ChatbotInteraction
 from flask_migrate import Migrate
+from controllers import controllers
+from routes import bp
 '''
 ______________________________________________________________________________________________________________________________________________________________________________
 API Reference
