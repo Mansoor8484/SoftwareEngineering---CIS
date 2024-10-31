@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template
 from models import db, User, Transaction, ChatbotInteraction
 
-#initilizing blueporint
+#initilizing blueprint
 controllers = Blueprint('main',__name__)
 
 #route to the register user page
