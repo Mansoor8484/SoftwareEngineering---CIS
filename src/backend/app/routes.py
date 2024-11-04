@@ -1,38 +1,70 @@
-from flask import Blueprint, render_template
-from .controllers import register, user_login
+from flask import Blueprint, jsonify
+from controllers import (register as user_register, user_login, user_custom_budget, user_plan_one, user_plan_two, \
+                         user_plan_three, send_message, user_profile, edit_user_profile, user_logout)
 
 # Create a blueprint for the main routes
 main = Blueprint('main', __name__)
 
-@main.route('/')
+@main.route('/api/dashboard', methods=['GET'])
 def dashboard():
-    return 'Dashboard - Template Coming SOOOOOOOON'
+    return jsonify({'message': 'Dashboard - Template Coming SOOOOOOOON'})
 
-# Later, when templates are ready
-# @main.route('/dashboard')
-# def dashboard():
-#     return render_template('dashboard.html', data=my_data)
+@main.route('/api/login', methods=['GET'])
+def login_page():
+    return jsonify({'message': 'Login - Template Coming SOOOOOOON'})
 
-@main.route('/transactions')
+@main.route('/api/auth/register', methods=['POST'])
+def register_route():
+    return user_register()
+
+@main.route('/api/auth/login', methods=['POST'])
+def login_route():
+    return user_login()
+
+@main.route('/api/registration', methods=['GET'])
+def registration_page():
+    return jsonify({'message': 'Registration - Template Coming SOOOOOOON'})
+
+@main.route('/api/transactions', methods=['GET'])
 def transactions():
-    return 'Transactions - Template Coming SOOOOOOON'
+    return jsonify({'message': 'Transactions - Template Coming SOOOOOOON'})
 
-@main.route('/budgeting')
+@main.route('/api/budgeting', methods=['GET'])
 def budgeting():
-    return 'Budgeting - Template Coming SOOOOOOON'
+    return jsonify({'message': 'Budgeting - Template Coming SOOOOOOON'})
 
-@main.route('/contact')
+@main.route('/api/budgeting/custom_budget', methods=['PUT'])
+def custom_budget():
+    return user_custom_budget()
+
+@main.route('/api/budgeting/financial_plan/<int:plan_id>', methods=['GET'])
+def financial_plan(plan_id):
+    plans = {
+        1: user_plan_one,
+        2: user_plan_two,
+        3: user_plan_three
+    }
+    plan_function = plans.get(plan_id)
+    if plan_function:
+        return plan_function()
+    return jsonify({'error': 'Plan not found'}), 404
+
+@main.route('/api/contact', methods=['GET'])
 def contact():
-    return 'Contact - Template Coming SOOOOOOON'
+    return jsonify({'message': 'Contact - Template Coming SOOOOOOON'})
 
-@main.route('/register', methods=['POST'])
-def register():
-    return register()  # Call the controller function
+@main.route('/api/contact/message', methods=['POST'])
+def message_route():
+    return send_message()
 
-@main.route('/login', methods=['POST'])
-def login():
-    return user_login()  # Call the controller function
+@main.route('/api/profile/<int:user_id>', methods=['GET'])
+def user_profile_route(user_id):
+    return user_profile(user_id)
 
-@main.route('/contact/message', methods=['POST'])
-def message():
-    return message()  # Call the controller function
+@main.route('/api/profile/<int:user_id>/edit', methods=['PUT'])
+def edit_profile(user_id):
+    return edit_user_profile(user_id)
+
+@main.route('/api/auth/logout', methods=['POST'])
+def logout(user_id):
+    return user_logout(user_id)
