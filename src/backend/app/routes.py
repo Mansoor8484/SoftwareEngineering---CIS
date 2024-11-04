@@ -1,8 +1,10 @@
-from flask import Blueprint, jsonify
-from controllers import (register as user_register, user_login, user_custom_budget, user_plan_one, user_plan_two, \
-                         user_plan_three, send_message, user_profile, edit_user_profile, user_logout, \
-                         user_account_transactions, user_add_transaction, user_get_all_transactions, \
-                         user_transaction_detail, user_delete_manual_transaction)
+from flask import Blueprint, jsonify, request
+from .chatbot import Chatbot
+from controllers import (register as user_register, user_login, user_get_accounts, user_custom_budget, \
+                         user_plan_one, user_plan_two, user_plan_three, send_message, user_profile, \
+                         edit_user_profile, user_logout, user_account_transactions, user_filter_transactions, \
+                         user_add_transaction, user_get_all_transactions, user_transaction_detail, \
+                         user_delete_manual_transaction)
 
 # Create a blueprint for the main routes
 main = Blueprint('main', __name__)
@@ -25,6 +27,11 @@ def logout(user_id):
 def dashboard():
     return jsonify({'message': 'Dashboard - Template Coming SOOOOOOOON'})
 
+@main.route('/api/accounts', methods=['GET'])
+def get_user_accounts():
+    """Get a list of accounts for the authenticated user."""
+    return user_get_accounts()  # Implement this function in your controller
+
 # Profile Management
 @main.route('/api/profile/<int:user_id>', methods=['GET'])
 def user_profile_route(user_id):
@@ -39,6 +46,17 @@ def edit_profile(user_id):
 def transactions():
     """Get a list of all transactions."""
     return user_get_all_transactions()
+
+@main.route('/api/transactions/filter', methods=['GET'])
+def filter_transactions():
+    """Filter transactions based on query parameters."""
+    # Extract query parameters
+    date = request.args.get('date')
+    pay_to = request.args.get('pay_to')
+    amount = request.args.get('amount', type=float)
+    status = request.args.get('status')
+
+    return user_filter_transactions(date, pay_to, amount, status)
 
 @main.route('/api/transactions/<int:account_id>', methods=['GET'])
 def account_transactions(account_id):
@@ -89,3 +107,20 @@ def contact():
 @main.route('/api/contact/message', methods=['POST'])
 def message_route():
     return send_message()
+
+# Chatbot
+chatbot_instance = Chatbot()
+
+
+@main.route('/api/chat', methods=['POST'])
+def chat_with_bot():
+    """Interact with the chatbot using user input."""
+    data = request.get_json()
+
+    if 'message' not in data:
+        return jsonify({'error': 'Message is required'}), 400
+
+    user_message = data['message']
+    response = chatbot_instance.get_response(user_message)
+
+    return jsonify({'response': response})
