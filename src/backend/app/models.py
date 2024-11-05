@@ -74,3 +74,12 @@ class ChatbotInteraction(db.Model):
         return (f"<ChatbotInteraction(id={self.id}, user_id={self.user_id}, "
                 f"message={self.message}, response={self.response}, "
                 f"interaction_date={self.interaction_date})>")
+
+class Reminder(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)  # Assuming you associate reminders with users
+    date = db.Column(db.DateTime, nullable=False)  # Store the date and time of the reminder
+    text = db.Column(db.String(255), nullable=False)  # The text for the reminder
+
+    def __repr__(self):
+        return f'<Reminder {self.id} - {self.date} - {self.text}>'

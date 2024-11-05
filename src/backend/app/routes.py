@@ -1,13 +1,20 @@
 from flask import Blueprint, jsonify, request
 from .chatbot import Chatbot
-from controllers import (register as user_register, user_login, user_get_accounts, user_custom_budget, \
-                         user_plan_one, user_plan_two, user_plan_three, send_message, user_profile, \
-                         edit_user_profile, user_logout, user_account_transactions, user_filter_transactions, \
-                         user_add_transaction, user_get_all_transactions, user_transaction_detail, \
-                         user_delete_manual_transaction)
+from controllers import (
+    user_register, user_login, user_get_accounts, user_custom_budget,
+    user_plan_one, user_plan_two, user_plan_three, send_message,
+    user_profile, edit_user_profile, user_logout, user_account_transactions,
+    user_filter_transactions, user_add_transaction, user_get_all_transactions,
+    user_transaction_detail, user_delete_manual_transaction,
+    create_reminder, get_reminders_for_month_and_year, transaction_graph,
+    link_account, send_password_reset_email, reset_password
+)
 
-# Create a blueprint for the main routes
 main = Blueprint('main', __name__)
+
+# Utility function for error handling
+def error_response(message, status_code=400):
+    return jsonify({'error': message}), status_code
 
 # Authentication Routes
 @main.route('/api/auth/register', methods=['POST'])
@@ -19,18 +26,89 @@ def login_route():
     return user_login()
 
 @main.route('/api/auth/logout', methods=['POST'])
-def logout(user_id):
+def logout():
+    """Log the user out."""
+    user_id = request.json.get('user_id')
+    if not user_id:
+        return error_response("User ID is required", 400)
     return user_logout(user_id)
+
+# Forgot Password
+@main.route('/api/auth/forgot-password', methods=['POST'])
+def forgot_password():
+    """Request a password reset for the user."""
+    email = request.json.get('email')
+    if not email:
+        return error_response('Email is required', 400)
+
+    if send_password_reset_email(email):
+        return jsonify({'message': 'Password reset email sent successfully'}), 200
+    else:
+        return error_response('Email address not found', 404)
+
+# Reset Password
+@main.route('/api/auth/reset-password', methods=['POST'])
+def reset_password_route():
+    """Reset the password using the reset token."""
+    data = request.json
+    token = data.get('token')
+    new_password = data.get('new_password')
+
+    if not token or not new_password:
+        return error_response('Token and new password are required', 400)
+
+    if reset_password(token, new_password):
+        return jsonify({'message': 'Password reset successfully'}), 200
+    else:
+        return error_response('Invalid or expired token', 400)
 
 # Dashboard
 @main.route('/api/dashboard', methods=['GET'])
 def dashboard():
     return jsonify({'message': 'Dashboard - Template Coming SOOOOOOOON'})
 
-@main.route('/api/accounts', methods=['GET'])
-def get_user_accounts():
-    """Get a list of accounts for the authenticated user."""
-    return user_get_accounts()  # Implement this function in your controller
+# Account Management
+@main.route('/api/dashboard/accounts', methods=['GET'])
+def list_linked_accounts():
+    """Return a list of accounts linked to the authenticated user."""
+    accounts = user_get_accounts()  # Assumes user is authenticated
+    return jsonify({'accounts': accounts})
+
+@main.route('/api/dashboard/accounts/link', methods=['POST'])
+def link_new_account():
+    """Link a new account to the authenticated user."""
+    data = request.json
+    account_name = data.get('account_name')
+    account_id = data.get('account_id')
+
+    if not account_name or not account_id:
+        return error_response('Account name and ID are required', 400)
+
+    if link_account(account_name, account_id):
+        return jsonify({'message': 'Account linked successfully'}), 201
+    else:
+        return error_response('Failed to link account', 500)
+
+# Calendar Routes
+@main.route('/api/dashboard/calendar/reminder', methods=['POST'])
+def create_reminder_route():
+    data = request.json
+    return create_reminder(data)
+
+@main.route('/api/dashboard/calendar/reminders', methods=['GET'])
+def get_reminders_by_date():
+    """Fetch reminders for a specific month and year."""
+    year = request.args.get('year', type=int)
+    month = request.args.get('month', type=int)
+    return get_reminders_for_month_and_year(year, month)
+
+# Transactions Graph
+@main.route('/api/dashboard/transactions/graph', methods=['GET'])
+def transaction_graph_route():
+    """Get transaction graph by type."""
+    transaction_type = request.args.get('type', type=str)
+    graph_type = request.args.get('graph_type', type=str, default='bar')
+    return transaction_graph(transaction_type, graph_type)
 
 # Profile Management
 @main.route('/api/profile/<int:user_id>', methods=['GET'])
@@ -41,63 +119,48 @@ def user_profile_route(user_id):
 def edit_profile(user_id):
     return edit_user_profile(user_id)
 
-# Transactions Management
+# Transactions
 @main.route('/api/transactions', methods=['GET'])
 def transactions():
-    """Get a list of all transactions."""
     return user_get_all_transactions()
 
-@main.route('/api/transactions/filter', methods=['GET'])
-def filter_transactions():
-    """Filter transactions based on query parameters."""
-    # Extract query parameters
-    date = request.args.get('date')
-    pay_to = request.args.get('pay_to')
-    amount = request.args.get('amount', type=float)
-    status = request.args.get('status')
+@main.route('/api/transactions', methods=['POST'])
+def add_transaction():
+    """Add a new transaction to the user's account."""
+    data = request.json
+    amount = data.get('amount')
+    transaction_type = data.get('transaction_type')
+    transaction_date = data.get('transaction_date')  # e.g. "2024-11-01T15:30:00"
+    account_id = data.get('account_id')
 
-    return user_filter_transactions(date, pay_to, amount, status)
+    if not amount or not transaction_type or not transaction_date or not account_id:
+        return error_response('Missing required transaction data', 400)
 
-@main.route('/api/transactions/<int:account_id>', methods=['GET'])
-def account_transactions(account_id):
-    """Get all transactions for a specific account."""
-    return user_account_transactions(account_id)
+    success = user_add_transaction(account_id, amount, transaction_type, transaction_date)
 
-@main.route('/api/transactions/<int:account_id>/add', methods=['POST'])
-def manual_transaction(account_id):
-    """Add a new manual transaction to a specific account."""
-    return user_add_transaction(account_id)
-
-@main.route('/api/transactions/<int:account_id>/<int:transaction_id>', methods=['GET'])
-def transaction_detail(account_id, transaction_id):
-    """Get details for a specific transaction of a specific account."""
-    return user_transaction_detail(account_id, transaction_id)
-
-@main.route('/api/transactions/<int:account_id>/delete/<int:transaction_id>', methods=['DELETE'])
-def delete_transaction(account_id, transaction_id):
-    """Delete a specific transaction from an account, only if it was manually inputted."""
-    return user_delete_manual_transaction(account_id, transaction_id)
+    if success:
+        return jsonify({'message': 'Transaction added successfully'}), 201
+    else:
+        return error_response('Failed to add transaction', 500)
 
 # Budgeting
-@main.route('/api/budgeting', methods=['GET'])
-def budgeting():
-    return jsonify({'message': 'Budgeting - Template Coming SOOOOOOON'})
-
 @main.route('/api/budgeting/custom_budget', methods=['PUT'])
 def custom_budget():
     return user_custom_budget()
 
+# Financial Plans
 @main.route('/api/budgeting/financial_plan/<int:plan_id>', methods=['GET'])
 def financial_plan(plan_id):
-    plans = {
+    """Return a specific financial plan."""
+    plan_functions = {
         1: user_plan_one,
         2: user_plan_two,
         3: user_plan_three
     }
-    plan_function = plans.get(plan_id)
+    plan_function = plan_functions.get(plan_id)
     if plan_function:
         return plan_function()
-    return jsonify({'error': 'Plan not found'}), 404
+    return error_response('Plan not found', 404)
 
 # Contact
 @main.route('/api/contact', methods=['GET'])
@@ -106,21 +169,29 @@ def contact():
 
 @main.route('/api/contact/message', methods=['POST'])
 def message_route():
-    return send_message()
+    """Send a message with a specific type (Request, Message, Complaint)."""
+    data = request.get_json()
+    message_type = data.get('type')
+    message_content = data.get('message')
+
+    if not message_type or not message_content:
+        return error_response('Both type and message are required', 400)
+
+    valid_types = ['Request', 'Message', 'Complaint']
+    if message_type not in valid_types:
+        return error_response(f'Invalid message type. Valid types are: {", ".join(valid_types)}', 400)
+
+    success = send_message(message_type, message_content)
+
+    if success:
+        return jsonify({'message': 'Your message has been sent successfully'}), 200
+    else:
+        return error_response('Failed to send message', 500)
 
 # Chatbot
 chatbot_instance = Chatbot()
 
-
 @main.route('/api/chat', methods=['POST'])
 def chat_with_bot():
-    """Interact with the chatbot using user input."""
     data = request.get_json()
-
-    if 'message' not in data:
-        return jsonify({'error': 'Message is required'}), 400
-
-    user_message = data['message']
-    response = chatbot_instance.get_response(user_message)
-
-    return jsonify({'response': response})
+    return chatbot_instance.get_response(data)

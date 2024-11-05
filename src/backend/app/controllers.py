@@ -1,12 +1,12 @@
 from flask import Blueprint, request, jsonify, render_template
-from models import db, User, Transaction, ChatbotInteraction
+from models import db, User, Transaction, ChatbotInteraction, Reminder
 
 #initilizing blueprint
 controllers = Blueprint('main',__name__)
 
 #route to the register user page
 @controllers.route('/registration_page', methods=['POST'])
-def register():
+def user_register():
     data = request.get_json()
     username = data.get('username')
     email = data.get('email')
