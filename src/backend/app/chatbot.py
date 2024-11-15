@@ -1,5 +1,5 @@
 import requests
-from config import Config
+from .config import Config
 
 class Chatbot:
     def __init__(self):

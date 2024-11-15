@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+from datetime import datetime
 import bcrypt
 
 # Initialize the SQLAlchemy instance
@@ -19,6 +20,8 @@ class User(db.Model):
     transactions = relationship("Transaction", back_populates="user")
     interactions = relationship("ChatbotInteraction", back_populates="user")
     bank_accounts = relationship("BankAccount", back_populates="user")
+    messages = relationship("Message", back_populates="user")
+    budgets = relationship("Budget", back_populates="user")  # Added this line to match the Budget model's back_populates
 
     def set_password(self, password):
         self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -76,10 +79,41 @@ class ChatbotInteraction(db.Model):
                 f"interaction_date={self.interaction_date})>")
 
 class Reminder(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)  # Assuming you associate reminders with users
-    date = db.Column(db.DateTime, nullable=False)  # Store the date and time of the reminder
-    text = db.Column(db.String(255), nullable=False)  # The text for the reminder
+    __tablename__ = 'reminders'  # Added this line to define a table name
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)  # Added ForeignKey reference to users table
+    date = Column(DateTime, nullable=False)  # Store the date and time of the reminder
+    text = Column(String(255), nullable=False)  # The text for the reminder
+
+    user = relationship("User", back_populates="reminders")  # Added relationship with User
 
     def __repr__(self):
         return f'<Reminder {self.id} - {self.date} - {self.text}>'
+
+class Budget(db.Model):
+    __tablename__ = 'budgets'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    category = Column(String(50), nullable=False)
+    amount = Column(Float, nullable=False)
+
+    user = relationship('User', back_populates='budgets')  # Updated to match the User relationship
+
+    def __repr__(self):
+        return f'<Budget {self.category} for User {self.user_id}>'
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    message_type = Column(String(50), nullable=False)  # Type of message: Request, Complaint, etc.
+    content = Column(Text, nullable=False)  # The actual message content
+    timestamp = Column(DateTime, default=datetime.utcnow)  # Timestamp for when the message was sent
+
+    user = relationship('User', back_populates='messages')  # Relationship to the User model
+
+    def __repr__(self):
+        return f'<Message {self.id} from User {self.user_id}>'

@@ -1,12 +1,12 @@
 from flask import Blueprint, jsonify, request
 from .chatbot import Chatbot
-from controllers import (
+from .controllers import (
     user_register, user_login, user_get_accounts, user_custom_budget,
     user_plan_one, user_plan_two, user_plan_three, send_message,
-    user_profile, edit_user_profile, user_logout, user_account_transactions,
+    user_profile, edit_user_profile, user_logout, user_account_transactions_history,
     user_filter_transactions, user_add_transaction, user_get_all_transactions,
-    user_transaction_detail, user_delete_manual_transaction,
-    create_reminder, get_reminders_for_month_and_year, transaction_graph,
+    user_transaction_details, user_delete_manual_transaction,
+    create_reminder, get_reminders_for_month_and_year, transactions_graph,
     link_account, send_password_reset_email, reset_password
 )
 
@@ -108,7 +108,7 @@ def transaction_graph_route():
     """Get transaction graph by type."""
     transaction_type = request.args.get('type', type=str)
     graph_type = request.args.get('graph_type', type=str, default='bar')
-    return transaction_graph(transaction_type, graph_type)
+    return transactions_graph(transaction_type, graph_type)
 
 # Profile Management
 @main.route('/api/profile/<int:user_id>', methods=['GET'])
@@ -143,24 +143,44 @@ def add_transaction():
     else:
         return error_response('Failed to add transaction', 500)
 
+# Account Transactions History
+@main.route('/api/transactions/history/<int:user_id>', methods=['GET'])
+def account_transactions_history(user_id):
+    return user_account_transactions_history(user_id)
+
+@main.route('/api/transactions/details/<int:transaction_id>', methods=['GET'])
+def transaction_details(transaction_id):
+    return user_transaction_details(transaction_id)
+
+# Filter Transactions
+@main.route('/api/transactions/filter/<int:user_id>', methods=['GET'])
+def filter_transactions(user_id):
+    filter_params = request.args.to_dict()  # Parse query parameters to dictionary
+    return user_filter_transactions(user_id, filter_params)
+
+# Delete Manual Transaction
+@main.route('/api/transactions/delete/<int:transaction_id>', methods=['DELETE'])
+def delete_manual_transaction(transaction_id):
+    return user_delete_manual_transaction(transaction_id)
+
 # Budgeting
 @main.route('/api/budgeting/custom_budget', methods=['PUT'])
 def custom_budget():
     return user_custom_budget()
 
-# Financial Plans
-@main.route('/api/budgeting/financial_plan/<int:plan_id>', methods=['GET'])
-def financial_plan(plan_id):
-    """Return a specific financial plan."""
-    plan_functions = {
-        1: user_plan_one,
-        2: user_plan_two,
-        3: user_plan_three
-    }
-    plan_function = plan_functions.get(plan_id)
-    if plan_function:
-        return plan_function()
-    return error_response('Plan not found', 404)
+# Budgeting Plans
+@main.route('/api/budgeting/plan/1', methods=['GET'])
+def budgeting_plan_one():
+    return user_plan_one()
+
+@main.route('/api/budgeting/plan/2', methods=['GET'])
+def budgeting_plan_two():
+    return user_plan_two()
+
+@main.route('/api/budgeting/plan/3', methods=['GET'])
+def budgeting_plan_three():
+    return user_plan_three()
+
 
 # Contact
 @main.route('/api/contact', methods=['GET'])

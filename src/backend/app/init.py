@@ -39,3 +39,5 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
+
+# $env:FLASK_APP="backend.app.run"; $env:PYTHONPATH="src"; flask run
