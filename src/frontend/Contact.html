@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Wallet Wizard</title>
+<meta charset="UTF-8">
+<meta name="description" content="Wallet Wizard">
+<meta name="keywords" content="money management">
+<meta name="author" content="">
+<meta name ="viewport" content = "width=device-width, initial-scale=1.0" />
+<style>
+	*{box-sizing: border box;}
+
+	body {font-family: times new roman;
+	background-color: #9bb421;}
+
+	main {background-color: #5d6916;}
+
+	header {background: #9bb421 url(assets/walletwizard.png) 15px center no-repeat;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-size: 200px;
+	font-weight: bold;
+	padding: 10px;
+	height: 10em;
+	margin-bottom: 1em;}
+
+	h1 {color:#340913;
+	text-align: center;}
+
+	h2 {color: #340913;
+	font-weight: bold;
+	font-style: italic;
+	text-align: center;}
+
+	.sep {width: 90%;
+	height: 5px;
+	background-color: #7B0F28;}
+	
+	.column {padding: 0.61em;
+	height: 31.2em;}
+
+	.nav{padding:10px;
+	display: inline;
+	   height:50px;
+	width:250px;
+	text-align:center;}
+
+	.navi {display: inline;
+	justify-content: center;
+	color: #ffffff;
+	background-color: #87991D;
+	text-decoration: none;
+	margin: 0.5em;
+	padding: 1.3em;
+	border: 0.15em solid #73623C;
+	border-radius: 1em;}
+
+	.nav a:hover {display: inline;
+	justify-content: center;
+	color: #000000;
+	background-color: #73623c;
+	text-decoration: none;
+	margin: 0.5em;
+	padding: 1.3em;
+	border: 0.15em solid #66b2ff;
+	border-radius: 1em;}
+
+	ul {list-style: none;
+		display: flex;
+	padding: 0;
+	margin: 0;}
+
+	li {display: inline;
+	margin: 0 20px;}
+
+	.contact {display: inline;
+	justify-content: center;
+	color: #000000;
+	background-color: #73623C;
+	text-decoration: none;
+	margin: 0.5em;
+	padding: 1.3em;
+	border: 0.15em solid #66B2FF;
+	border-radius: 1em;}
+
+	div {text-align:center;
+	padding:1em 0;}
+
+	p {text-align: justify;}
+
+	article {background-color:#5d6916;}
+	
+	.thanks {animation: moving 4s ease-in-out 2s infinite alternate;
+		box-shadow: 5px 5px 5px #340913;
+		padding:10px;
+		color: #FFFFFF;
+		background-color: #87991D;
+		border-radius:0.5em;
+		text-align:center;
+		width: 300px;
+		margin:auto;}
+
+		@keyframes moving{
+	from{ margin-left:30%;}
+	to {margin-left:60%;}
+	}	
+
+	footer {margin-top: 10px;
+	background-color: #5d6916;
+	padding: 2em;
+	text-align: right;
+	height: 3.1em;}
+
+	@media only screen and (max-width: 600px)
+
+	{.row {flex-direction: row;}}
+
+
+</style>
+		
+
+</head>
+<body>
+
+  
+
+<header>
+	<nav class="nav" >
+		<ul>
+			   <li><a class="navi" href="Dashboard.html"> Dashboard </a>  </li>
+			   <li><a class="navi" href="Transactions.html"> Transactions </a></li>
+			  <li><a class="navi" href="Budgeting.html"> Budgeting </a></li>
+			   <li><a class="contact"> Contact </a></li>
+		</ul>
+	  </nav>
+</header>
+
+<main class="row" >
+ <article class="column side1" >
+	<p><h1>Contact Us!</h1></p>
+	<p> We would love to hear from you to provide you with more information or to answer any questions you may have about Wallet Wizard! Please fill out the form below and dont forget to rate our website!</p>
+   <p><div> 
+		<form method="post" action="mailto:thomson.kelly@student.oaklandcc.edu">
+
+			<fieldset>
+				<legend> Your Personal Information </legend>
+				<label for ="fname"> First Name </label>
+				<input type ="text" id="fname" name="firstname" placeholder="Your Name"><br>
+
+				<label for="lname"> Last Name </label>
+				<input type ="text" id="lname" name="lastname" placeholder="Your Last Name"><br>
+
+				<label for="zip"> zip </label>
+				<input type="text" id="zip" name="zip" placeholder="zipcode" title="must be 5 digits (99999) or 5 digits -4 digits (99999-9999)" pattern = "\d{5}([-]\d{4})?"; ><br>
+
+				<label for="email">E-mail:</label>
+				<input type="email" name="email" id="email" autofocus required><br>
+
+					<label for="phone">Phone Number:</label>
+				<input type="tel" name="phone" id="phone" pattern="\d{3}[\-]\d{3}[\-]\d{4})" title="Must be 999-999-9999 format"><br>
+
+			</fieldset>
+			<fieldset>
+
+			<h3>Please rate our website!</h3>
+				<label for="range">Website Rating</label>
+				<input type="range" id="book" min="1" max="5" step="1"><br />
+
+
+			
+		</fieldset>
+
+		<fieldset>
+			<h3>Would you recommend this website to a friend?</h3><br />
+
+			<input name= "recommend" type = "radio" value= "yes"/> Yes
+<input name= "recommend" type= "radio" value= "no"/> No
+		</fieldset>
+
+			<input type="submit" value =Submit>
+			<input type="reset" value =Reset>
+
+		</form>
+	</div>
+
+</p>
+</article>
+
+</main>
+
+<footer>
+
+		<h3 class= "thanks"> Thank You!</h3>
+  
+</footer>
+
+</body>
+</html>
