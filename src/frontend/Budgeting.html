@@ -9,139 +9,173 @@
 <meta name="author" content="">
 <meta name ="viewport" content = "width=device-width, initial-scale=1.0" />
 <style>
+    * {box-sizing: border-box;}
 
-		*{box-sizing: border box;}
+    body {
+        font-family: 'Times New Roman', serif;
+        background-color: #d7e1ac;
+        margin: 0;
+    }
 
-		body {font-family: times new roman;
-		background-color: #9bb421;}
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #5D6916;
+        padding: 10px 20px;
+    }
 
-		header {background: #9bb421 url(assets/walletwizard.png) 15px center no-repeat;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		background-size: 200px;
-		font-weight: bold;
-		padding: 10px;
-		height: 10em;
-		margin-bottom: 1em;}
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-		h1 {color:#340913;
-		text-align: center;}
+    .logo img {
+        height: 100px;
+        width: auto;
+    }
 
-		h2 {color: #340913;
-		font-weight: bold;
-		font-style: italic;
-		text-align: center;}
+    .nav {
+        display: flex;
+        gap: 20px;
+    }
 
+    .nav ul {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+    }
 
-		.sep {width: 90%;
-		height: 5px;
-		background-color: #7B0F28;}
-		
-		.column {padding: 0.61em;
-		height: 31.2em;}
+    .nav li {
+		padding: 10px 20px;
+        margin: 30px;
+    }
 
-		.nav{padding:10px;
-		display: inline;
-   		height:50px;
-		width:250px;
-		text-align:center;}
+    .nav a {
+        color: #000;
+        text-decoration: none;
+        padding: 10px 30px;
+        border-radius: 5px;
+        font-weight: bold;
+        background-color: #87991D;
+        border: 2px solid #73623C;
+    }
 
-		.navi {display: inline;
-		justify-content: center;
-		color: #ffffff;
-		background-color: #87991D;
-		text-decoration: none;
-		margin: 0.5em;
-		padding: 1.3em;
-		border: 0.15em solid #73623C;
-		border-radius: 1em;}
+    .nav a:hover {
+        background-color: #745916;
+        color: black;
+		border: 2px solid #66B2FF;
+    }
 
-		.nav a:hover {display: inline;
-		justify-content: center;
-		color: #000000;
-		background-color: #73623c;
-		text-decoration: none;
-		margin: 0.5em;
-		padding: 1.3em;
-		border: 0.15em solid #66b2ff;
-		border-radius: 1em;}
+    .budgeting {
+        background-color: #73623C;
+        color: black;
+        border-color: #66B2FF;
+    }
 
-		ul {list-style: none;
-			display: flex;
-		padding: 0;
-		margin: 0;}
+    .profile-controls {
+        display: flex;
+        gap: 30px;
+    }
 
-		li {display: inline;
-		margin: 0 20px;}
+    .profile-controls a {
+        color: #000;
+        text-decoration: none;
+        background-color: #87991D;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        border: 2px solid #73623C;
+    }
 
-		.budgeting {display: inline;
-		justify-content: center;
-		color: #000000;
-		background-color: #73623C;
-		text-decoration: none;
-		margin: 0.5em;
-		padding: 1.3em;
-		border: 0.15em solid #66B2FF;
-		border-radius: 1em;}
+    .profile-controls a:hover {
+        background-color: #745916;
+        color: black;
+		border: 2px solid #66B2FF;
+    }
 
-		div {text-align:center;
-		padding:1em 0;}
+    main {
+        text-align: center;
+        padding: 20px;
+    }
 
-		p {text-align: justify;}
+    h1, h2 {
+        color: #340913;
+    }
 
-		article {background-color:#5d6916;}
-		
+    .sep {
+        width: 90%;
+        height: 5px;
+        background-color: #7B0F28;
+        margin: 20px auto;
+    }
 
-		footer {margin-top: 10px;
-		background-color: #5d6916;
-		padding: 2em;
-		text-align: right;
-		height: 3.1em;}
+    article {
+        background-color: #5D6916;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 800px;
+        margin: 20px auto;
+    }
 
-		@media only screen and (max-width: 600px)
+    @media only screen and (max-width: 600px) {
+        .nav ul {
+            flex-direction: column;
+            gap: 10px;
+        }
 
-		{.row {flex-direction: row;}}
+        .profile-controls {
+            flex-direction: column;
+        }
 
+        header {
+            flex-wrap: wrap;
+            text-align: center;
+        }
 
-
+        .nav {
+            justify-content: center;
+            margin: 10px 0;
+        }
+    }
 </style>
 </head>
-<body id ="up">
-
-  
 
 <header>
- <nav class="nav" >
-	<ul>
-   		<li><a class="navi" href="Dashboard.html"> Dashboard </a>  </li>
-   		<li><a class="navi" href="Transactions.html"> Transactions </a></li>
-  		<li><a class="budgeting"> Budgeting </a></li>
-   		<li><a class="navi" href="Contact.html"> Contact </a></li>
-	</ul>
-  </nav>
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="assets/walletwizard.png" alt="Wallet Wizard Logo">
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <ul>
+            <li><a class="navi" href="Dashboard.html">Dashboard</a></li>
+            <li><a class="navi" href="Transactions.html">Transactions</a></li>
+            <li><a class="budgeting" href="#">Budgeting</a></li>
+            <li><a class="navi" href="Contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile and Logout Controls -->
+    <div class="profile-controls">
+        <a href="profile.html">Profile</a>
+        <a href="#">Log Out</a>
+    </div>
 </header>
 
-<main class="row" >
- <article>
-	<h1>Welcome!</h1>
-<p>PLACEHOLDER FOR CONTENT<br> </p>
-<hr class="sep">
-<br>
-<br><h2>MORE CONTENT</h2>
-<p>PLACEHOLDER FOR CONTENT<br></p>
-   
-</article>
-  
+<main>
+    <article>
+        <h1>Welcome!</h1>
+        <p>PLACEHOLDER FOR CONTENT</p>
+        <hr class="sep">
+        <h2>MORE CONTENT</h2>
+        <p>PLACEHOLDER FOR CONTENT</p>
+    </article>
 </main>
-
-<footer>
-
-		<br><a class="navi" href ="#up">Top</a>
-  
-</footer>
- 
-
 
 </body>
 </html>
