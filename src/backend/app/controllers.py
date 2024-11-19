@@ -36,6 +36,8 @@ def user_register():
         username = data.get('username')
         email = data.get('email')
         password = data.get('password')
+        name = data.get("name")
+        phone = data.get('phone')
 
         if not username or not email or not password:
             return error_response('Missing required fields', 400)
@@ -49,6 +51,7 @@ def user_register():
         user.set_password(password)  # Assuming this hashes the password
         db.session.add(user)
         db.session.commit()
+
 
         return jsonify({'message': 'User registered successfully'}), 201
 

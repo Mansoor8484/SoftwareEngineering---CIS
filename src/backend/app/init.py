@@ -36,7 +36,10 @@ def create_app():
 
     # Import and register blueprints here
     from .routes import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    app.register_blueprint(main_blueprint, url_prefix='/api/auth')
+
+    if __name__ == '__main__':
+        app.run(debug=True)
 
     return app
 

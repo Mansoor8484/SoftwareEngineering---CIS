@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from .controllers import user_register
 from .chatbot import Chatbot
 from .controllers import (
     user_register, user_login, user_get_accounts, user_custom_budget,
