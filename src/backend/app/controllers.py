@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, current_app
 from .models import db, User, BankAccount, Transaction, Reminder, Budget, Message
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
@@ -29,35 +29,35 @@ def error_response(message, status_code=400):
 # User Authentication
 # ================================
 
-def user_register():
+def user_register(data):
     """Register a new user."""
     try:
-        data = request.get_json()
-        username = data.get('username')
-        email = data.get('email')
-        password = data.get('password')
-        name = data.get("name")
-        phone = data.get('phone')
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
 
         if not username or not email or not password:
-            return error_response('Missing required fields', 400)
+            return jsonify({"message": "All fields are required."}), 400
 
-        # Check if user already exists
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            return error_response('Username already exists', 400)
+        if User.query.filter_by(username=username).first():
+            return jsonify({"message": "Username already exists."}), 409
 
-        user = User(username=username, email=email)
-        user.set_password(password)  # Assuming this hashes the password
-        db.session.add(user)
+        # Create user
+        new_user = User(username=username, email=email)
+        new_user.set_password(password)
+        db.session.add(new_user)
         db.session.commit()
 
-
-        return jsonify({'message': 'User registered successfully'}), 201
+        # Return success response
+        return jsonify({
+            "message": "User registered successfully.",
+            "user_id": new_user.id,
+            "token": generate_token(new_user)  # Generate token
+        }), 201
 
     except Exception as e:
-        return error_response(f'Error during registration: {str(e)}', 500)
-
+        db.session.rollback()
+        return jsonify({"message": f"Registration failed: {str(e)}"}), 500
 
 def user_login():
     """Login user and generate JWT token."""
@@ -294,23 +294,6 @@ def user_filter_transactions(user_id, filter_params):
         return jsonify(transaction_data)
     except Exception as e:
         return error_response(f"Error filtering transactions: {str(e)}", 500)
-
-def user_account_transactions_history(user_id):
-    """Get transaction history for a user's account."""
-    try:
-        transactions = Transaction.query.filter_by(user_id=user_id).all()
-        transaction_data = [
-            {
-                'transaction_id': txn.id,
-                'amount': txn.amount,
-                'transaction_type': txn.transaction_type,
-                'transaction_date': txn.transaction_date,
-                'account_id': txn.account_id
-            } for txn in transactions
-        ]
-        return jsonify(transaction_data)
-    except Exception as e:
-        return error_response(f"Error fetching transaction history: {str(e)}", 500)
 
 
 def user_delete_manual_transaction(transaction_id):

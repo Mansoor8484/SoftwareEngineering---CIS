@@ -41,7 +41,7 @@
             margin-bottom: 10px;
         }
         .form-group label {
-            width: 100px;
+            width: 130px;
             font-size: 12px;
             margin-right: 10px;
             text-align: right;
@@ -53,7 +53,6 @@
             border-radius: 5px;
             border: 1px solid #000;
             background-color: #C4C4C4;
-            margin-right: 60px;
         }
         button {
             padding: 10px 20px;
@@ -90,75 +89,39 @@
     </style>
     <script>
         async function registerUser(event) {
-            event.preventDefault(); // Prevent the form from submitting traditionally
-            console.log("Function Called");
+            event.preventDefault();
 
             const username = document.getElementById('username').value.trim();
-            console.log("username:", username)
             const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const name = document.getElementById('name').value.trim();
             const password = document.getElementById('password').value.trim();
-            console.log("password:",password);
             const confirmPassword = document.getElementById('confirm-password').value.trim();
-            const agreement = document.getElementById('agreement').checked;
-            const submitButon = document.getElementById('submitButton');
 
-            // Validate inputs
-            if (!username) {
-                alert("Username is required.");
-                return;
-            }
-            if (!email) {
-                alert("Email is required.");
-                return;
-            }
-            if (!name) {
-                alert("Full Name is required.");
-                return;
-            }
-            if (!password) {
-                alert("Password is required.");
-                return;
-            }
             if (password !== confirmPassword) {
                 alert("Passwords do not match.");
                 return;
             }
-            if (!agreement) {
-                alert("You must agree to the User Agreement.");
-                return;
-            }
 
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    phone: phone,
-                    name: name,
-                    password: password,
-                }),
-            });
-            
-            if (response.ok) {
-                // Handle successful registration
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: "Unknown error occurred." }));
+                    alert(`Registration failed: ${errorData.message}`);
+                    return;
+                }
+
                 const data = await response.json();
-                alert('Registration successful: ' + data.message);
-
-                // Store user ID and token in local storage (or session storage)
+                alert(`Registration successful: ${data.message}`);
                 localStorage.setItem('user_id', data.user_id);
                 localStorage.setItem('token', data.token);
-
-                // Redirect to login page
                 window.location.href = 'login.html';
-            } else {
-                // Handle registration error
-                const errorData = await response.json();
-                alert('Registration failed: ' + errorData.message);
+
+            } catch (error) {
+                alert(`An error occurred: ${error.message}`);
             }
         }
     </script>
@@ -202,7 +165,7 @@
             <input type="checkbox" id="agreement" style="margin-right: 10px;" required>
             <label for="agreement">User Agreement - blah blah blah.</label>
         </div>
-        <button id="submitButton" type="submit">Sign Up</button>
+        <button type="submit">Sign Up</button>
     </form>
 </div>
 
