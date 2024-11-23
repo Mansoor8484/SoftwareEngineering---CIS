@@ -31,16 +31,13 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Initialize the database and migration engine
+    # Initialize database and migrations
     db.init_app(app)
-    migrate = Migrate(app, db)
+    Migrate(app, db)
 
-    # Import and register blueprints here
+    # Register blueprints
     from .routes import main as main_blueprint
-    app.register_blueprint(main_blueprint, url_prefix='/api/auth')
-
-    if __name__ == '__main__':
-        app.run(debug=True)
+    app.register_blueprint(main_blueprint)
 
     return app
 

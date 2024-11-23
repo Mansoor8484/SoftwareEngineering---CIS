@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Flask runs now">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SoftwareEngineering---CIS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SoftwareEngineering---CIS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Updated requirements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/chatbot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/app/init.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/app/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +120,8 @@
       <workItem from="1728912445785" duration="2963000" />
       <workItem from="1728933162268" duration="211000" />
       <workItem from="1731873431053" duration="15263000" />
-      <workItem from="1732326398295" duration="1416000" />
+      <workItem from="1732326398295" duration="2707000" />
+      <workItem from="1732397532064" duration="1719000" />
     </task>
     <task id="LOCAL-00001" summary="Structure">
       <option name="closed" value="true" />
@@ -160,7 +155,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732166555650</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Flask runs now">
+      <option name="closed" value="true" />
+      <created>1732327972371</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1732327972371</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Updated requirements">
+      <option name="closed" value="true" />
+      <created>1732398217166</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1732398217166</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -182,6 +193,7 @@
     <MESSAGE value="Nov 17" />
     <MESSAGE value="Tried figuring out the issue. Got it to throw an error when trying to register." />
     <MESSAGE value="Flask runs now" />
-    <option name="LAST_COMMIT_MESSAGE" value="Flask runs now" />
+    <MESSAGE value="Updated requirements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated requirements" />
   </component>
 </project>

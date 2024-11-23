@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request, jsonify, redirect, url_for
 from .controllers import user_register
 from .chatbot import Chatbot
 from .models import db
@@ -17,6 +17,11 @@ main = Blueprint('main', __name__)
 # Utility function for error handling
 def error_response(message, status_code=400):
     return jsonify({'error': message}), status_code
+
+@main.route('/')
+def home():
+    return redirect(url_for('main.login_route'))
+    #return "Welcome to the Software Engineering API! Use the /api/auth/login endpoint to log in."
 
 # Authentication Routes
 @main.route('/api/auth/register', methods=['POST'])
