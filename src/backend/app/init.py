@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from .config import Config
 from .models import db, User, BankAccount, Transaction, ChatbotInteraction
 from flask_migrate import Migrate

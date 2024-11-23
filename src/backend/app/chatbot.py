@@ -1,10 +1,11 @@
 import requests
+from .models import db
 from .config import Config
 
 class Chatbot:
     def __init__(self):
         self.api_key = Config.ASSISTANT_API_KEY
-        self.base_url = "https://api.ollama.com/chat"  # Adjust as needed
+        self.base_url = ""  # Adjust as needed
 
     def get_response(self, user_message):
         headers = {

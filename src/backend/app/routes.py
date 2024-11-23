@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify, request
 from .controllers import user_register
 from .chatbot import Chatbot
+from .models import db
 from .controllers import (
     user_register, user_login, user_get_accounts, user_custom_budget,
     user_plan_one, user_plan_two, user_plan_three, send_message,
-    user_profile, edit_user_profile, user_logout, user_account_transactions_history,
+    user_profile, edit_user_profile, user_logout,
     user_filter_transactions, user_add_transaction, user_get_all_transactions,
     user_transaction_details, user_delete_manual_transaction,
     create_reminder, get_reminders_for_month_and_year, transactions_graph,
@@ -143,11 +144,6 @@ def add_transaction():
         return jsonify({'message': 'Transaction added successfully'}), 201
     else:
         return error_response('Failed to add transaction', 500)
-
-# Account Transactions History
-@main.route('/api/transactions/history/<int:user_id>', methods=['GET'])
-def account_transactions_history(user_id):
-    return user_account_transactions_history(user_id)
 
 @main.route('/api/transactions/details/<int:transaction_id>', methods=['GET'])
 def transaction_details(transaction_id):

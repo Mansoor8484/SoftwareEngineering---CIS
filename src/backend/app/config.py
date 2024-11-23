@@ -1,5 +1,7 @@
 import os
 from datetime import timedelta
+from .models import db, User
+
 
 class Config:
     """Base configuration class for the Flask application."""
