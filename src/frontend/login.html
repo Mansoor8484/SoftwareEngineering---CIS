@@ -112,6 +112,26 @@
             text-decoration: underline;
         }
     </style>
+    <script>
+        const loginForm = document.getElementById('login-form');
+        loginForm.onsubmit = async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(loginForm);
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                window.location.href = 'dashboard.html'; // Redirect on success
+            } else {
+                const result = await response.json();
+                alert(result.error || 'Login failed. Please try again.');
+            }
+        };
+    </script>
+
 </head>
 <body>
 
@@ -126,22 +146,21 @@
         <div class="title">Account Login</div>
 
         <!-- Login Form -->
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" placeholder="Username / Email / Phone Number">
-        </div>
-        
-        <div class="form-group2">
-            <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="Password">
-            
-        </div>
+        <form id="login-form" action="/api/auth/login" method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Username / Email / Phone Number" required>
+            </div>
 
-        <a href="forgotpassword.html" class="forgot-password">Forgot Password?</a>
+            <div class="form-group2">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
 
-        <a href="dashboard.html">
-            <button>Sign In</button>
-        </a>
+            <a href="forgotpassword.html" class="forgot-password">Forgot Password?</a>
+
+            <button type="submit">Sign In</button>
+        </form>
 
         <p class="signup-link">Don't have an account? <a href="register.html">Sign up for one</a></p>
     </div>

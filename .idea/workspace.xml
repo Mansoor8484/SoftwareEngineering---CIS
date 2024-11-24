@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Updated requirements">
+    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/app/controllers.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/controllers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/app/init.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/app/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +123,7 @@
       <workItem from="1728933162268" duration="211000" />
       <workItem from="1731873431053" duration="15263000" />
       <workItem from="1732326398295" duration="2707000" />
-      <workItem from="1732397532064" duration="1719000" />
+      <workItem from="1732397532064" duration="8873000" />
     </task>
     <task id="LOCAL-00001" summary="Structure">
       <option name="closed" value="true" />
@@ -171,7 +173,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732398217166</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Updated">
+      <option name="closed" value="true" />
+      <created>1732399557603</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1732399557603</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,6 +204,7 @@
     <MESSAGE value="Tried figuring out the issue. Got it to throw an error when trying to register." />
     <MESSAGE value="Flask runs now" />
     <MESSAGE value="Updated requirements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated requirements" />
+    <MESSAGE value="Updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated" />
   </component>
 </project>

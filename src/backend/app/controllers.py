@@ -59,26 +59,16 @@ def user_register(data):
         db.session.rollback()
         return jsonify({"message": f"Registration failed: {str(e)}"}), 500
 
-def user_login():
-    """Login user and generate JWT token."""
+def user_login(username, password):
     try:
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-
-        if not username or not password:
-            return error_response('Username and password are required', 400)
-
         user = User.query.filter_by(username=username).first()
-
-        if not user or not user.check_password(password):  # Assuming check_password compares the password
-            return error_response('Invalid username or password', 401)
-
-        token = generate_token(user.id)
-        return jsonify({'message': 'Login successful', 'token': token}), 200
-
+        if user and user.check_password(password):  # Ensure hashed password validation
+            token = generate_token(user)  # Create a session token
+            return jsonify({'message': 'Login successful', 'token': token}), 200
+        else:
+            return jsonify({'error': 'Invalid username or password'}), 401
     except Exception as e:
-        return error_response(f'Error during login: {str(e)}', 500)
+        return jsonify({'error': f'Login error: {str(e)}'}), 500
 
 
 def user_logout(user_id):

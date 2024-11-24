@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify, redirect, url_for
+from flask import Blueprint, request, jsonify, redirect, url_for, render_template, send_from_directory
+import os
 from .controllers import user_register
 from .chatbot import Chatbot
 from .models import db
@@ -12,6 +13,7 @@ from .controllers import (
     link_account, send_password_reset_email, reset_password
 )
 
+# Blueprint setup
 main = Blueprint('main', __name__)
 
 # Utility function for error handling
@@ -28,9 +30,27 @@ def home():
 def register_route():
     return user_register()
 
-@main.route('/api/auth/login', methods=['POST'])
+@main.route('/api/auth/login', methods=['GET', 'POST'])
 def login_route():
-    return user_login()
+    """Handle login page display (GET) and authentication (POST)."""
+    if request.method == 'GET':
+        # Adjust path to locate the 'frontend' directory
+        frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
+        print(f"Frontend Path: {frontend_path}")
+        return send_from_directory(frontend_path, 'login.html')
+
+    # Handle POST requests for login
+    data = request.form
+    username = data.get('username')
+    password = data.get('password')
+
+    # Call the user_login function
+    response = user_login(username, password)
+
+    if response.status_code == 200:
+        return redirect(url_for('dashboard'))
+    else:
+        return jsonify({'error': 'Invalid login credentials'}), 401
 
 @main.route('/api/auth/logout', methods=['POST'])
 def logout():

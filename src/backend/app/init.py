@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
 from .models import db, User, BankAccount, Transaction, ChatbotInteraction
@@ -38,6 +38,11 @@ def create_app():
     # Register blueprints
     from .routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    # Serve the frontend folder
+    @app.route('/<path:filename>')
+    def serve_frontend(filename):
+        return send_from_directory('../frontend', filename)
 
     return app
 
