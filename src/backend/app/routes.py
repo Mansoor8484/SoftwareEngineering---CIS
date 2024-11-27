@@ -16,6 +16,13 @@ from .controllers import (
 # Blueprint setup
 main = Blueprint('main', __name__)
 
+FRONTEND_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
+
+@main.route('/static/<path:filename>')
+def serve_static(filename):
+    """Serve static files from the frontend folder."""
+    return send_from_directory(FRONTEND_PATH, filename)
+
 # Utility function for error handling
 def error_response(message, status_code=400):
     return jsonify({'error': message}), status_code
@@ -26,18 +33,36 @@ def home():
     #return "Welcome to the Software Engineering API! Use the /api/auth/login endpoint to log in."
 
 # Authentication Routes
-@main.route('/api/auth/register', methods=['POST'])
+@main.route('/api/auth/register', methods=['GET', 'POST'])
 def register_route():
-    return user_register()
+    """Serve the registration page on GET and process user registration on POST."""
+    if request.method == 'GET':
+        return send_from_directory(FRONTEND_PATH, 'register.html')
+
+    # POST request: Process user registration
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm-password')
+
+    if not username or not email or not password or not confirm_password:
+        return jsonify({'error': 'All fields are required'}), 400
+
+    if password != confirm_password:
+        return jsonify({'error': 'Passwords do not match'}), 400
+
+    # Call the user_register controller
+    return user_register({
+        'username': username,
+        'email': email,
+        'password': password
+    })
 
 @main.route('/api/auth/login', methods=['GET', 'POST'])
 def login_route():
     """Handle login page display (GET) and authentication (POST)."""
     if request.method == 'GET':
-        # Adjust path to locate the 'frontend' directory
-        frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
-        print(f"Frontend Path: {frontend_path}")
-        return send_from_directory(frontend_path, 'login.html')
+        return send_from_directory(FRONTEND_PATH, 'login.html')
 
     # Handle POST requests for login
     data = request.form
@@ -52,6 +77,11 @@ def login_route():
     else:
         return jsonify({'error': 'Invalid login credentials'}), 401
 
+@main.route('/static/walletwizard.png', methods=['GET'])
+def serve_walletwizard():
+    """Serve walletwizard.png."""
+    return send_from_directory(FRONTEND_PATH, 'walletwizard.png')
+
 @main.route('/api/auth/logout', methods=['POST'])
 def logout():
     """Log the user out."""
@@ -61,17 +91,22 @@ def logout():
     return user_logout(user_id)
 
 # Forgot Password
-@main.route('/api/auth/forgot-password', methods=['POST'])
+@main.route('/api/auth/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
-    """Request a password reset for the user."""
+    """Handle GET to serve the forgot password page and POST for password reset."""
+    if request.method == 'GET':
+        # Serve the forgotpassword.html file from the frontend folder
+        return send_from_directory(FRONTEND_PATH, 'forgotpassword.html')
+
+    # POST request logic: Handle password reset
     email = request.json.get('email')
     if not email:
-        return error_response('Email is required', 400)
+        return jsonify({'error': 'Email is required'}), 400
 
     if send_password_reset_email(email):
         return jsonify({'message': 'Password reset email sent successfully'}), 200
     else:
-        return error_response('Email address not found', 404)
+        return jsonify({'error': 'Email address not found'}), 404
 
 # Reset Password
 @main.route('/api/auth/reset-password', methods=['POST'])

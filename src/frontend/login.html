@@ -137,7 +137,7 @@
 
     <!-- Logo Section -->
     <div class="logo">
-        <img src="walletwizard.png" alt="Wallet Wizard Logo"> 
+        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
 
     <!-- Login Container -->
@@ -157,12 +157,12 @@
                 <input type="password" id="password" name="password" placeholder="Password" required>
             </div>
 
-            <a href="forgotpassword.html" class="forgot-password">Forgot Password?</a>
+            <a href="/api/auth/forgot-password" class="forgot-password">Forgot Password?</a>
 
             <button type="submit">Sign In</button>
         </form>
 
-        <p class="signup-link">Don't have an account? <a href="register.html">Sign up for one</a></p>
+        <p class="signup-link">Don't have an account? <a href="/api/auth/register" class = "register">Sign up for one</a></p>
     </div>
 
 </body>

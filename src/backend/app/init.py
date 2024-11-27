@@ -1,5 +1,6 @@
 from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+import os
 from .config import Config
 from .models import db, User, BankAccount, Transaction, ChatbotInteraction
 from flask_migrate import Migrate
@@ -42,7 +43,8 @@ def create_app():
     # Serve the frontend folder
     @app.route('/<path:filename>')
     def serve_frontend(filename):
-        return send_from_directory('../frontend', filename)
+        frontend_path = os.path.abspath('../frontend')  # Adjust if necessary
+        return send_from_directory(frontend_path, filename)
 
     return app
 
