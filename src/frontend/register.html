@@ -105,12 +105,17 @@
                 const response = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        'confirm-password': confirmPassword
+                    })
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ message: "Unknown error occurred." }));
-                    alert(`Registration failed: ${errorData.message}`);
+                    const errorData = await response.json();
+                    alert(`Registration failed: ${errorData.error || "Unknown error occurred."}`);
                     return;
                 }
 
@@ -118,8 +123,7 @@
                 alert(`Registration successful: ${data.message}`);
                 localStorage.setItem('user_id', data.user_id);
                 localStorage.setItem('token', data.token);
-                window.location.href = 'login.html';
-
+                window.location.href = '/api/auth/login';
             } catch (error) {
                 alert(`An error occurred: ${error.message}`);
             }
@@ -130,49 +134,66 @@
 
 <!-- Logo Section -->
 <div class="logo">
-    <img src="walletwizard.png" alt="Wallet Wizard Logo" />
+    <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
 </div>
 
 <!-- Form Container -->
 <div class="container">
     <h1 class="title">Register New Account</h1>
-    <form onsubmit="registerUser(event)">
+    <form id="register-form" action="/api/auth/register" method="POST" onsubmit="registerUser(event)">
+        <!-- Username -->
         <div class="form-group">
             <label for="username">Username:*</label>
-            <input type="text" id="username" placeholder="Username" required>
+            <input type="text" id="username" name="username" placeholder="Username" required>
         </div>
+
+        <!-- Email -->
         <div class="form-group">
             <label for="email">Email:*</label>
-            <input type="email" id="email" placeholder="Email" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
         </div>
+
+        <!-- Phone Number -->
         <div class="form-group">
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" placeholder="Phone Number">
+            <input type="tel" id="phone" name="phone" placeholder="Phone Number">
         </div>
+
+        <!-- Full Name -->
         <div class="form-group">
             <label for="name">Name:*</label>
-            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="name" name="name" placeholder="Full Name" required>
         </div>
+
+        <!-- Password -->
         <div class="form-group">
             <label for="password">Password:*</label>
-            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
         </div>
+
+        <!-- Confirm Password -->
         <div class="form-group">
             <label for="confirm-password">Confirm Password:*</label>
-            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
         </div>
+
+        <!-- Agreement -->
         <div class="agreement">
-            <input type="checkbox" id="agreement" style="margin-right: 10px;" required>
-            <label for="agreement">User Agreement - By using Wallet Wizard, you agree to track and manage your financial data responsibly 
-                and in compliance with all applicable laws. You are responsible for maintaining the accuracy of your account and safeguarding 
-                your login information. We prioritize your privacy and protect your data in accordance with our Privacy Policy. Wallet Wizard is not
-                 liable for any financial losses or damages resulting from your use of the service. We may modify these terms at any time, and your 
-                 continued use constitutes acceptance of any changes. For questions, contact support at [support@walletwizard.com].</label>
+            <input type="checkbox" id="agreement" name="agreement" style="margin-right: 10px;" required>
+            <label for="agreement">
+                User Agreement - By using Wallet Wizard, you agree to track and manage your financial data responsibly
+                and in compliance with all applicable laws. You are responsible for maintaining the accuracy of your account
+                and safeguarding your login information. We prioritize your privacy and protect your data in accordance with our
+                Privacy Policy. Wallet Wizard is not liable for any financial losses or damages resulting from your use of the service.
+                We may modify these terms at any time, and your continued use constitutes acceptance of any changes. For questions,
+                contact support at <a href="mailto:support@walletwizard.com">support@walletwizard.com</a>.
+            </label>
         </div>
+
+        <!-- Submit Button -->
         <button type="submit">Sign Up</button>
     </form>
 </div>
-
 
 </body>
 </html>
