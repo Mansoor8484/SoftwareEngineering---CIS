@@ -7,7 +7,7 @@
     <meta name="description" content="Wallet Wizard">
     <meta name="keywords" content="money management">
     <meta name="author" content="">
-    <meta name ="viewport" content = "width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         * { box-sizing: border-box; }
 
@@ -100,18 +100,6 @@
             color: #340913;
         }
 
-      /* Style for Profile Information Header */
-      #profile-header {
-            text-align: center;
-            color: #000;
-            margin-bottom: 20px;
-            border: 1px solid #fff; /* Adding border around the header */
-            padding: 10px;
-            border-radius: 10px;
-            text-emphasis: bold;
-            font-size: 36px;
-        }
-
         .profile-container {
             background-color: #9BB421;
             padding: 30px 20px;
@@ -120,6 +108,12 @@
             border-radius: 20px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
             border: 2px solid #745916;
+        }
+
+        .profile-container h2 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 20px;
         }
 
         .form-group {
@@ -148,25 +142,39 @@
             outline: none;
             border-color: #66B2FF;
         }
-
-        .edit-button {
-        margin: 60px auto; /* Adds top and bottom margin and centers horizontally */
-        display: block; /* Ensures the button respects the auto margin */
-        width: 50%; /* Adjust width if needed */
-        height: 20%; /* Adjust height if needed */
-        padding: 12px;
-        background-color: #fff;
-        border: 3px solid #73623C;
-        color: #000;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 7px;
-        cursor: pointer;
-        text-decoration: none;
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
         }
 
-        .edit-button:hover {
+        /* Style for Profile Information Header */
+        #profile-header {
+            text-align: center;
+            color: #000;
+            margin-bottom: 20px;
+            border: 1px solid #fff; /* Adding border around the header */
+            padding: 10px;
+            border-radius: 10px;
+            text-emphasis: bold;
+            font-size: 36px;
+        }
+
+        .action-buttons a {
+            padding: 12px 20px;
+            background-color: #fff;
+            border: 3px solid #73623C;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .action-buttons a:hover {
             background-color: #745916;
             color: white;
             border-color: #66B2FF;
@@ -208,18 +216,14 @@
             .form-group input {
                 width: 100%;
             }
-            
         }
     </style>
 </head>
 <body>
     <header>
-        <!-- Logo Section -->
         <div class="logo">
             <img src="walletwizard.png" alt="Wallet Wizard Logo" />
         </div>
-
-        <!-- Navigation Bar -->
         <nav class="nav">
             <ul>
                 <li><a class="navi" href="Dashboard.html">Dashboard</a></li>
@@ -228,44 +232,43 @@
                 <li><a class="navi" href="Contact.html">Contact</a></li>
             </ul>
         </nav>
-
-        <!-- Profile and Logout Controls -->
         <div class="profile-controls">
             <a href="profile.html">Profile</a>
             <a href="#">Log Out</a>
         </div>
     </header>
-
     <main>
         <div class="profile-container">
-            <h2 id="profile-header">Profile</h2>
+            <h2 id="profile-header">Edit Profile</h2>
             <form>
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Your First + Last Name" disabled>
+                    <input type="text" id="name" name="name" placeholder="Your First + Last Name" />
                 </div>
-
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="Username" disabled>
+                    <input type="text" id="username" name="username" placeholder="Username" />
                 </div>
-
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="fake@example.com" disabled>
+                    <input type="email" id="email" name="email" placeholder="fake@example.com" />
                 </div>
-
                 <div class="form-group">
                     <label for="phone">Phone Number:</label>
-                    <input type="tel" id="phone" name="phone" value="123-456-7890" disabled>
+                    <input type="tel" id="phone" name="phone" placeholder="123-456-7890" />
                 </div>
-
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" value="password123" disabled>
+                    <label for="password">New Password:</label>
+                    <input type="password" id="password" name="password" placeholder="password123" />
                 </div>
-
-                <a href="edit_profile.html" class="edit-button">Edit Profile Information</a>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="password123" />
+                </div>
+                <div class="action-buttons">
+                    <a href="profile.html">Confirm</a>
+                    <a href="edit_profile.html">Cancel</a>
+                </div>
             </form>
         </div>
     </main>
