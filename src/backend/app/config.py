@@ -7,7 +7,7 @@ class Config:
     """Base configuration class for the Flask application."""
 
     # Flask Security
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_default_secret_key_here'
+    SECRET_KEY = os.environ.get('SECRET_KEY','68d2374fc6aaaa84349a78ce5af4aaef50110b0b2df8592d2315f976944f9dc5')
     """Key used for cryptographic operations, such as signing cookies and tokens."""
 
     SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT') or 'your_password_salt_here'

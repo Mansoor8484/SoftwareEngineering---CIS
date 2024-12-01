@@ -112,32 +112,12 @@
             text-decoration: underline;
         }
     </style>
-    <script>
-        const loginForm = document.getElementById('login-form');
-        loginForm.onsubmit = async (event) => {
-            event.preventDefault(); // Prevent default form submission
-
-            const formData = new FormData(loginForm);
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                window.location.href = 'dashboard.html'; // Redirect on success
-            } else {
-                const result = await response.json();
-                alert(result.error || 'Login failed. Please try again.');
-            }
-        };
-    </script>
-
 </head>
 <body>
 
     <!-- Logo Section -->
     <div class="logo">
-        <img src="walletwizard.png" alt="Wallet Wizard Logo" />
+        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
 
     <!-- Login Container -->
@@ -146,21 +126,61 @@
         <div class="title">Account Login</div>
 
         <!-- Login Form -->
-        <form id="login-form" action="/api/auth/login" method="POST">
-            <div class="form-group">
+        <form id="login-form">
+            <div>
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Username / Email / Phone Number" required>
+                <input type="text" id="username" name="username" required>
             </div>
-
-            <div class="form-group2">
+            <div>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" required>
             </div>
-
-            <a href="/api/auth/forgot-password" class="forgot-password">Forgot Password?</a>
-
-            <button type="submit">Sign In</button>
+            <button type="submit">Login</button>
         </form>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const loginForm = document.getElementById('login-form');
+
+                if (!loginForm) {
+                    console.error('Login form not found in the DOM.');
+                    return;
+                }
+
+                loginForm.onsubmit = async (event) => {
+                    event.preventDefault(); // Prevent default form submission
+
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
+
+                    if (!username || !password) {
+                        alert('Please enter both username and password.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ username, password }),
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            alert('Login successful!');
+                            localStorage.setItem('token', result.token);
+                            window.location.href = '/api/dashboard';
+                        } else {
+                            const result = await response.json();
+                            alert(result.error || 'Login failed. Please try again.');
+                        }
+                    } catch (error) {
+                        alert(`An error occurred: ${error.message}`);
+                    }
+                };
+            });
+        </script>
 
         <p class="signup-link">Don't have an account? <a href="/api/auth/register" class = "register">Sign up for one</a></p>
     </div>

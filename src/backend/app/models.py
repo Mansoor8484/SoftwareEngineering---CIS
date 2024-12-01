@@ -11,25 +11,32 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
 
+    # Columns
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, nullable=False)
     password_hash = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
 
-    transactions = relationship("Transaction", back_populates="user")
-    interactions = relationship("ChatbotInteraction", back_populates="user")
-    bank_accounts = relationship("BankAccount", back_populates="user")
-    messages = relationship("Message", back_populates="user")
-    budgets = relationship("Budget", back_populates="user")  # Added this line to match the Budget model's back_populates
+    # Relationships
+    transactions = relationship("Transaction", back_populates="user", cascade="all, delete-orphan")
+    interactions = relationship("ChatbotInteraction", back_populates="user", cascade="all, delete-orphan")
+    bank_accounts = relationship("BankAccount", back_populates="user", cascade="all, delete-orphan")
+    reminders = relationship("Reminder", back_populates="user", cascade="all, delete-orphan")  # Corrected Reminder relationship
+    budgets = relationship("Budget", back_populates="user", cascade="all, delete-orphan")
+    messages = relationship("Message", back_populates="user", cascade="all, delete-orphan")
 
+    # Methods
     def set_password(self, password):
+        """Hashes and sets the user's password."""
         self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     def check_password(self, password):
+        """Validates the provided password against the stored hash."""
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
 
     def __repr__(self):
+        """String representation of the User object."""
         return f"<User(id={self.id}, username={self.username}, email={self.email})>"
 
 class BankAccount(db.Model):
@@ -79,17 +86,21 @@ class ChatbotInteraction(db.Model):
                 f"interaction_date={self.interaction_date})>")
 
 class Reminder(db.Model):
-    __tablename__ = 'reminders'  # Added this line to define a table name
+    __tablename__ = 'reminders'
 
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)  # Added ForeignKey reference to users table
+    # Columns
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)  # Reference to the User model
     date = Column(DateTime, nullable=False)  # Store the date and time of the reminder
-    text = Column(String(255), nullable=False)  # The text for the reminder
+    text = Column(String(255), nullable=False)  # The reminder text
 
-    user = relationship("User", back_populates="reminders")  # Added relationship with User
+    # Relationships
+    user = relationship("User", back_populates="reminders")  # Matches the User model relationship
 
+    # Methods
     def __repr__(self):
-        return f'<Reminder {self.id} - {self.date} - {self.text}>'
+        """String representation of the Reminder object."""
+        return f"<Reminder(id={self.id}, date={self.date}, text={self.text})>"
 
 class Budget(db.Model):
     __tablename__ = 'budgets'

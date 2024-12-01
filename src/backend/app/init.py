@@ -1,8 +1,9 @@
 from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 import os
 from .config import Config
-from .models import db, User, BankAccount, Transaction, ChatbotInteraction
+from .models import db, User, Reminder, BankAccount, Transaction, ChatbotInteraction, Budget, Message
 from flask_migrate import Migrate
 '''
 ______________________________________________________________________________________________________________________________________________________________________________
@@ -36,9 +37,17 @@ def create_app():
     db.init_app(app)
     Migrate(app, db)
 
+    # Enable CORS
+    CORS(app)
+
     # Register blueprints
     from .routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    # Configure ORM registry
+    from sqlalchemy.orm import registry
+    mapper_registry = registry()
+    mapper_registry.configure()
 
     # Serve the frontend folder
     @app.route('/<path:filename>')

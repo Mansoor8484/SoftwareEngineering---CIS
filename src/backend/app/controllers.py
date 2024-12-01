@@ -13,11 +13,20 @@ import base64
 # Utility Functions
 # ================================
 
-def generate_token(user_id):
-    """Utility function to generate JWT token."""
-    expiration = datetime.utcnow() + timedelta(hours=1)  # Token expires in 1 hour
-    token = jwt.encode({'user_id': user_id, 'exp': expiration}, 'your_secret_key', algorithm='HS256')
-    return token
+SECRET_KEY = "68d2374fc6aaaa84349a78ce5af4aaef50110b0b2df8592d2315f976944f9dc5"  # Replace with your secret key
+
+def generate_token(user):
+    """Generate a JSON Web Token for the user."""
+    try:
+        payload = {
+            "user_id": user.id,
+            "exp": datetime.utcnow() + timedelta(hours=1),
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return token
+    except Exception as e:
+        print(f"Error generating token: {e}")
+        return None
 
 
 def error_response(message, status_code=400):
@@ -36,15 +45,19 @@ def user_register(data):
         email = data.get("email")
         password = data.get("password")
 
+        # Validate input fields
         if not username or not email or not password:
-            return jsonify({"message": "All fields are required."}), 400
+            return jsonify({"error": "All fields are required."}), 400
 
+        # Check for existing user
         if User.query.filter_by(username=username).first():
-            return jsonify({"message": "Username already exists."}), 409
+            return jsonify({"error": "Username already exists."}), 409
+        if User.query.filter_by(email=email).first():
+            return jsonify({"error": "Email already exists."}), 409
 
-        # Create user
+        # Create and save user
         new_user = User(username=username, email=email)
-        new_user.set_password(password)
+        new_user.set_password(password)  # Hash the password
         db.session.add(new_user)
         db.session.commit()
 
@@ -52,24 +65,37 @@ def user_register(data):
         return jsonify({
             "message": "User registered successfully.",
             "user_id": new_user.id,
-            "token": generate_token(new_user)  # Generate token
+            "token": generate_token(new_user)
         }), 201
 
     except Exception as e:
+        # Log errors for debugging
+        print("Error in user_register:", str(e))
         db.session.rollback()
-        return jsonify({"message": f"Registration failed: {str(e)}"}), 500
+        return jsonify({"error": f"Registration failed: {str(e)}"}), 500
 
-def user_login(username, password):
+def user_login(data):
+    """Authenticate user and return token."""
     try:
-        user = User.query.filter_by(username=username).first()
-        if user and user.check_password(password):  # Ensure hashed password validation
-            token = generate_token(user)  # Create a session token
-            return jsonify({'message': 'Login successful', 'token': token}), 200
-        else:
-            return jsonify({'error': 'Invalid username or password'}), 401
-    except Exception as e:
-        return jsonify({'error': f'Login error: {str(e)}'}), 500
+        username = data.get('username')
+        password = data.get('password')
 
+        print("Authenticating user:", username)
+
+        # Query user from database
+        user = User.query.filter_by(username=username).first()
+        if not user or not user.check_password(password):
+            return jsonify({"error": "Invalid username or password"}), 401
+
+        # Generate token
+        token = generate_token(user)
+        if not token:
+            return jsonify({"error": "Failed to generate token"}), 500
+
+        return jsonify({"message": "Login successful", "token": token}), 200
+    except Exception as e:
+        print(f"Error in user_login: {e}")
+        return jsonify({"error": "An internal error occurred"}), 500
 
 def user_logout(user_id):
     """Logout user."""
