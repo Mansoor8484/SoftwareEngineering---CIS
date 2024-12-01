@@ -134,6 +134,59 @@
             width: 250px; /* Adjust individual cell width */
             height: 150px; /* Adjust individual cell height */
         }
+
+        /* Three Tables Layout */
+        .container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .table-box {
+            width: 30%;
+            border: 1px solid #ddd;
+            background-color: #5D6916;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .table-header {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            background-color: #87991D;
+        }
+
+        .table-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .middle-row {
+            font-size: 16px;
+        }
+
+        .select-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #66B2FF;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-top: 1px solid #ddd;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .select-button:hover {
+            background-color: #745916;
+            color: white;
+        }        
     </style>
 </head>
 
@@ -181,7 +234,38 @@
                 </td>
             </tr>
         </table>
-        
+        <!-- Three Tables Layout -->
+        <div class="container">
+            <div class="table-box">
+                <div class="table-header">Financial Plan A</div>
+                <div class="table-row middle-row">
+                    <p>High Savings = Low Spending Money</p>
+                </div>
+                <div class="table-row">
+                    <button class="select-button">Select</button>
+                </div>
+            </div>
+
+            <div class="table-box">
+                <div class="table-header">Financial Plan B</div>
+                <div class="table-row middle-row">
+                    <p>Low Savings = More Spending Money</p>
+                </div>
+                <div class="table-row">
+                    <button class="select-button">Select</button>
+                </div>
+            </div>
+
+            <div class="table-box">
+                <div class="table-header">Financial Plan C</div>
+                <div class="table-row middle-row">
+                    <p>Moderate Savings = Moderate Spending Money</p>
+                </div>
+                <div class="table-row">
+                    <button class="select-button">Select</button>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 
