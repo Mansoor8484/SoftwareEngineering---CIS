@@ -10,6 +10,8 @@
 - [License](#license)
 
 ## Installation
+- pip install -r requirements.txt
+- $env:FLASK_APP="backend.app.run"; $env:PYTHONPATH="src"; flask run
 
 ## Usage
 
