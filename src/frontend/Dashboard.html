@@ -7,7 +7,10 @@
 <meta name="description" content="Wallet Wizard">
 <meta name="keywords" content="money management">
 <meta name="author" content="">
-<meta name ="viewport" content = "width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 <style>
     * {box-sizing: border-box;}
 
@@ -36,11 +39,6 @@
         width: auto;
     }
 
-    .current {background-color: #745916;
-        color: black;
-		border: 2px solid #66B2FF;
-    }
-
     .nav {
         display: flex;
         gap: 20px;
@@ -54,7 +52,7 @@
     }
 
     .nav li {
-		padding: 10px 20px;
+        padding: 10px 20px;
         margin: 30px;
     }
 
@@ -68,16 +66,10 @@
         border: 2px solid #73623C;
     }
 
-    .nav a:hover {
+    .nav a:hover, .nav a.active {
         background-color: #745916;
         color: black;
-		border: 2px solid #66B2FF;
-    }
-
-    .budgeting {
-        background-color: #73623C;
-        color: black;
-        border-color: #66B2FF;
+        border: 2px solid #66B2FF;
     }
 
     .profile-buttons {
@@ -102,43 +94,14 @@
         border: 2px solid #66B2FF;
     }
 
-    
-
-
-    main {
-        text-align: center;
-        padding: 20px;
-    }
-
-    h1, h2 {
-        color: #340913;
-    }
-
-    .sep {
-        width: 90%;
-        height: 5px;
-        background-color: #7B0F28;
-        margin: 20px auto;
-    }
-
-    article {
-        background-color: #5D6916;
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 800px;
-        margin: 20px auto;
-    }
-
-    
-
-#logoutBtn {
+    button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-.popup {
+    .popup {
   display: none; /* Hidden by default */
   position: fixed;
   z-index: 1;
@@ -146,8 +109,10 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  background-color: rgba(0, 0, 0, 0.5); 
 }
+
+h1, h2 {text-align: center;}
 
 .popup-content {
   position: absolute;
@@ -169,87 +134,202 @@
   cursor: pointer;
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 10px;
-}
+    main {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        justify-content: space-between;
+    }
 
-#confirmLogout {
-  background-color: red;
-  color: white;
-}
+    .left-column, .right-column {
+        flex: 1 1 45%; 
+        background-color: #5D6916;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
 
-#cancelLogout {
-  background-color: gray;
-  color: white;
-}
+    .left-column {
+        background-color: #5D6916;
+    }
+    
+    .td1 {font-size: 25px;}
 
+    .calendar, .chart {
+        margin-top: 20px;
+    }
 
-@media only screen and (max-width: 600px) {
-        .nav ul {
-            flex-direction: column;
-            gap: 10px;
+    .calendar {
+            background-color: #87991D;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .profile-buttons {
-            flex-direction: column;
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        header {
-            flex-wrap: wrap;
+        .calendar-header button {
+            background-color: #5D6916;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .calendar-header button:hover {
+            background-color: #5D6916;
+        }
+
+        .month-year {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            width: 14%;
             text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
         }
 
-        .nav {
-            justify-content: center;
-            margin: 10px 0;
+        table th {
+            background-color: #5D6916;
+            color: white;
+        }
+
+        table td:hover {
+            background-color: #745916;
+            color: white;
+            cursor: pointer;
+        }
+
+    @media only screen and (max-width: 768px) {
+        main {
+            flex-direction: column;
+        }
+
+        .left-column, .right-column {
+            flex: 1 1 100%; 
         }
     }
 </style>
+
 </head>
 <body>
 <header>
     <!-- Logo Section -->
     <div class="logo">
-        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+        <img src="walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
 
     <!-- Navigation Bar -->
     <nav class="nav">
         <ul>
-            <li><a href="/api/dashboard">Dashboard</a></li>
-            <li><a class="navi" href="/api/transactions">Transactions</a></li>
-            <li><a class="budgeting" href="/api/budgeting">Budgeting</a></li>
-            <li><a class="navi" href="/api/contact">Contact</a></li>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a class="navi" href="Transactions.html">Transactions</a></li>
+            <li><a class="budgeting" href="Budgeting.html">Budgeting</a></li>
+            <li><a class="navi" href="Contact.html">Contact</a></li>
         </ul>
     </nav>
 
     <!-- Profile and Logout Controls -->
     <div class="profile-buttons">
-        <a href="/api/profile">Profile</a>
+        <a href="Profile.html">Profile</a>
         <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
     </div>
-
-    <div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-        <p>Would you like to log out?</p>
-        <button onclick="logout()">Yes, Log Out</button>
-        <button onclick="cancelLogout()">Cancel</button>
-      </div>
-
 </header>
 
 <main>
-    <article>
-        <h1>Welcome, <span id="username-display"></span></h1>
-        <p>PLACEHOLDER FOR CONTENT</p>
-        <hr class="sep">
-        <h2>MORE CONTENT</h2>
-        <p>PLACEHOLDER FOR CONTENT</p>
-    </article>
+
+    <div class="left-column">
+        <h1>Welcome to your Dashboard!</h1> <br><br>
+        <table>
+            
+            <tr>
+                <td class="td1">Account A: $5000</td>
+            </tr>
+            <tr>
+                <td class="td1">Account B: $1200</td>
+            </tr>
+            <tr>
+                <td class="td1">Account C: $3500</td>
+            </tr>
+            <tr>
+                <td class="td1">
+                    <label for="otherAccounts">Other Accounts:</label>
+                    <select id="otherAccounts">
+                        <option value="account1">Account 1</option>
+                        <option value="account2">Account 2</option>
+                        <option value="account3">Account 3</option>
+                        <option value="account4">Account 4</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+  
+    <div class="right-column">
+        <h2>Calendar</h2><br>
+        <div class="calendar">
+            <div class="calendar-header">
+                <button id="prevMonth">Prev</button>
+                <div class="month-year" id="monthYear"></div>
+                <button id="nextMonth">Next</button>
+            </div>
+            <table id="calendarTable">
+                <thead>
+                    <tr>
+                        <th>Sun</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <h2>Budget Overview</h2>
+        <div>
+            <label for="categoryFilter">Select Category:</label>
+            <select id="categoryFilter">
+                <option value="all">All</option>
+                <option value="groceries">Groceries</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="utilities">Utilities</option>
+                <option value="savings">Savings</option>
+            </select>
+        </div>
+        <canvas id="pieChart" class="chart"></canvas>
+    </div>
 </main>
 
+<div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+    <p>Would you like to log out?</p>
+    <button onclick="logout()">Yes, Log Out</button>
+    <button onclick="cancelLogout()">Cancel</button>
+  </div>
+
 <script src="frontendJS/logout.js"></script>
+<script src="frontendJS/piechart.js"></script>
+<script src="frontendJS/calendar.js"></script>
+
+
+
 </body>
 </html>

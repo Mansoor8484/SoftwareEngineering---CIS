@@ -64,10 +64,16 @@
         }
 
         .nav a:hover {
-            background-color: #745916;
-            color: black;
-            border: 2px solid #66B2FF;
-        }
+    background-color: #745916;
+    color: black;
+    border: 2px solid #66B2FF;
+}
+
+        .profile-buttons a.active {
+    background-color: #745916;
+    color: black;
+    border: 2px solid #66B2FF;
+}
 
         .budgeting {
             background-color: #73623C;
@@ -271,7 +277,7 @@ button {
     <header>
         <!-- Logo Section -->
         <div class="logo">
-            <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+            <img src="walletwizard.png" alt="Wallet Wizard Logo" />
         </div>
 
         <!-- Navigation Bar -->
@@ -286,7 +292,7 @@ button {
 
         <!-- Profile and Logout Controls -->
         <div class="profile-buttons">
-            <a href="/api/profile/<int:user_id>">Profile</a>
+            <a href="#" class="active">Profile</a>
             <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
         </div>
     
@@ -326,53 +332,29 @@ button {
                     <input type="password" id="password" name="password" value="password123" disabled>
                 </div>
 
-                <a href="/api/profile/edit" class="edit-button">Edit Profile Information</a>
+                <a href="edit_profile.html" class="edit-button">Edit Profile Information</a>
             </form>
         </div>
     </main>
+
+    <script src="frontendJS/logout.js"></script>
+
     <script>
-        async function fetchUserProfile() {
-            // Retrieve the token from localStorage
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert("Token is missing. Please log in again.");
-                window.location.href = '/api/auth/login'; // Redirect to login
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/profile', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // Include token in Authorization header
-                    },
-                });
-
-                const data = await response.json();
-                console.log("Profile Response:", data); // Debugging: Log the response
-
-                if (response.ok) {
-                    // Populate profile data
-                    document.getElementById('username-display').textContent = data.username;
-                    document.getElementById('email-display').textContent = data.email;
-                    document.getElementById('created-at-display').textContent = data.created_at;
-                } else {
-                    // Handle errors
-                    alert(data.error || "Failed to fetch profile.");
-                    if (response.status === 401) {
-                        // Token is invalid or expired, redirect to login
-                        window.location.href = '/api/auth/login';
-                    }
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the current page URL
+            const currentPage = window.location.pathname.split("/").pop();
+    
+            // Get all navigation links
+            const navLinks = document.querySelectorAll('.nav a');
+    
+            // Loop through each link and compare with the current page
+            navLinks.forEach(link => {
+                if (link.getAttribute('href').includes(currentPage)) {
+                    link.classList.add('active');  // Add 'active' class to the current page link
                 }
-            } catch (err) {
-                console.error("Error fetching profile:", err); // Log any errors
-                alert("An error occurred. Please try again.");
-            }
-        }
-
-        // Call fetchUserProfile when the profile page loads
-        document.addEventListener('DOMContentLoaded', fetchUserProfile);
+            });
+        });
     </script>
-    <script src="/static/frontendJS/logout.js"></script>
+
 </body>
 </html>

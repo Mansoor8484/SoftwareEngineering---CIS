@@ -63,17 +63,11 @@
         border: 2px solid #73623C;
     }
 
-    .nav a:hover {
-        background-color: #745916;
-        color: black;
-		border: 2px solid #66B2FF;
-    }
-
-    .budgeting {
-        background-color: #73623C;
-        color: black;
-        border-color: #66B2FF;
-    }
+    .nav a:hover, .nav a.active {
+    background-color: #745916;
+    color: black;
+    border: 2px solid #66B2FF;
+}
 
     .profile-buttons {
         display: flex;
@@ -204,14 +198,14 @@ button {
 <header>
     <!-- Logo Section -->
     <div class="logo">
-        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+        <img src="walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
 
     <!-- Navigation Bar -->
     <nav class="nav">
         <ul>
             <li><a class="navi" href="Dashboard.html">Dashboard</a></li>
-            <li><a class="navi" href="Transactions.html">Transactions</a></li>
+            <li><a href="#" class="active">Transactions</a></li>
             <li><a class="budgeting" href="Budgeting.html">Budgeting</a></li>
             <li><a class="navi" href="Contact.html">Contact</a></li>
         </ul>
@@ -242,6 +236,7 @@ button {
 </main>
 
 <script src="frontendJS/logout.js"></script>
+
 
 </body>
 </html>
