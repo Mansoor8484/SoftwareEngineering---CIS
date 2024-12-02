@@ -219,16 +219,16 @@ button {
     <!-- Navigation Bar -->
     <nav class="nav">
         <ul>
-            <li><a href="Dashboard.html">Dashboard</a></li>
-            <li><a class="navi" href="Transactions.html">Transactions</a></li>
-            <li><a class="budgeting" href="Budgeting.html">Budgeting</a></li>
-            <li><a class="navi" href="Contact.html">Contact</a></li>
+            <li><a href="/api/dashboard">Dashboard</a></li>
+            <li><a class="navi" href="/api/transactions">Transactions</a></li>
+            <li><a class="budgeting" href="/api/budgeting">Budgeting</a></li>
+            <li><a class="navi" href="/api/contact">Contact</a></li>
         </ul>
     </nav>
 
     <!-- Profile and Logout Controls -->
     <div class="profile-buttons">
-        <a href="Profile.html">Profile</a>
+        <a href="/api/profile">Profile</a>
         <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
     </div>
 
@@ -242,7 +242,7 @@ button {
 
 <main>
     <article>
-        <h1>Welcome!</h1>
+        <h1>Welcome, <span id="username-display"></span></h1>
         <p>PLACEHOLDER FOR CONTENT</p>
         <hr class="sep">
         <h2>MORE CONTENT</h2>

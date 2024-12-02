@@ -1,4 +1,7 @@
-from flask import Blueprint, request, jsonify, redirect, url_for, render_template, send_from_directory
+from datetime import timedelta, datetime
+import jwt
+from flask import Blueprint, request, jsonify, redirect, url_for, render_template, send_from_directory, session
+from functools import wraps
 import os
 from itsdangerous import URLSafeTimedSerializer
 from .chatbot import Chatbot
@@ -23,6 +26,25 @@ serializer = URLSafeTimedSerializer(Config.SECRET_KEY)
 FRONTEND_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
 
 # Utility function for error handling
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({"error": "Token is missing"}), 401
+
+        try:
+            token = token.split(" ")[1]  # Strip "Bearer" prefix
+            data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+            request.user_id = data['user_id']  # Attach user_id to the request
+        except Exception as e:
+            print(f"Token decoding error: {e}")
+            return jsonify({"error": "Invalid token"}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
+
 def error_response(message, status_code=400):
     return jsonify({'error': message}), status_code
 
@@ -35,6 +57,11 @@ def serve_static(filename):
 def serve_walletwizard():
     """Serve walletwizard.png."""
     return send_from_directory(FRONTEND_PATH, 'walletwizard.png')
+
+@main.route('/static/mail.png', methods=['GET'])
+def serve_mail():
+    """Serve mail.png."""
+    return send_from_directory(FRONTEND_PATH, 'mail.png')
 
 @main.route('/')
 def home():
@@ -106,10 +133,27 @@ def login_route():
         if not username or not password:
             return jsonify({'error': 'Both username and password are required.'}), 400
 
-        # Call the user_login function to authenticate the user
-        response, status_code = user_login({'username': username, 'password': password})
-        return response, status_code
+        # Authenticate the user
+        user = User.query.filter_by(username=username).first()
+        if not user or not user.check_password(password):
+            return jsonify({'error': 'Invalid username or password'}), 401
 
+        # Store user_id in session for session-based authentication
+        session['user_id'] = user.id
+
+        token = jwt.encode(
+            {'user_id': user.id, 'exp': datetime.utcnow() + timedelta(hours=1)},
+            Config.SECRET_KEY,
+            algorithm='HS256'
+        )
+
+        print(f"Generated Token: {token}")  # Debug log for token generation
+
+        return jsonify({
+            "message": "Login successful",
+            "token": token,
+            "user_id": user.id
+        }), 200
     except Exception as e:
         print(f"Unexpected error during login: {e}")
         return jsonify({'error': 'An internal server error occurred.'}), 500
@@ -253,18 +297,66 @@ def transaction_graph_route():
     return transactions_graph(transaction_type, graph_type)
 
 # Profile Management
-@main.route('/api/profile/<int:user_id>', methods=['GET'])
-def user_profile_route(user_id):
-    return user_profile(user_id)
+@main.route('/api/profile', methods=['GET'])
+def user_profile_route():
+    token = request.headers.get('Authorization')  # Extract token
+    if not token:
+        return jsonify({"error": "Token is missing"}), 401
 
-@main.route('/api/profile/<int:user_id>/edit', methods=['PUT'])
-def edit_profile(user_id):
-    return edit_user_profile(user_id)
+    # Remove 'Bearer' prefix if present
+    if token.startswith('Bearer '):
+        token = token.split(' ')[1]
+
+    try:
+        decoded_token = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
+        user_id = decoded_token.get('user_id')
+        if not user_id:
+            return jsonify({"error": "Invalid token"}), 401
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token has expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    return jsonify({
+        "username": user.username,
+        "email": user.email,
+        "created_at": user.created_at.isoformat()
+    }), 200
+
+
+@main.route('/api/profile/edit', methods=['GET', 'PUT'])
+def edit_profile_route(user_id):
+    """
+    Handle profile editing:
+    - GET: Serve the edit profile page.
+    - PUT: Update the user profile with new details.
+    """
+    if request.method == 'GET':
+        # Serve the edit profile HTML
+        try:
+            return send_from_directory(FRONTEND_PATH, 'edit_profile.html')
+        except FileNotFoundError:
+            return jsonify({"error": "Edit profile page not found"}), 404
+
+    # PUT: Update user profile
+    if request.method == 'PUT':
+        try:
+            data = request.json
+
+            # Call the controller function to handle the update
+            return edit_user_profile(user_id, data)
+        except Exception as e:
+            print(f"Error during profile update: {e}")
+            return jsonify({"error": "An internal error occurred"}), 500
 
 # Transactions
 @main.route('/api/transactions', methods=['GET'])
 def transactions():
-    return user_get_all_transactions()
+    return send_from_directory(FRONTEND_PATH, 'Transactions.html')
 
 @main.route('/api/transactions', methods=['POST'])
 def add_transaction():
@@ -301,6 +393,10 @@ def delete_manual_transaction(transaction_id):
     return user_delete_manual_transaction(transaction_id)
 
 # Budgeting
+@main.route('/api/budgeting', methods=['GET'])
+def budgeting():
+    return send_from_directory(FRONTEND_PATH, 'Budgeting.html')
+
 @main.route('/api/budgeting/custom_budget', methods=['PUT'])
 def custom_budget():
     return user_custom_budget()
@@ -322,7 +418,7 @@ def budgeting_plan_three():
 # Contact
 @main.route('/api/contact', methods=['GET'])
 def contact():
-    return jsonify({'message': 'Contact - Template Coming SOOOOOOON'})
+    return send_from_directory(FRONTEND_PATH, 'Contact.html')
 
 @main.route('/api/contact/message', methods=['POST'])
 def message_route():
