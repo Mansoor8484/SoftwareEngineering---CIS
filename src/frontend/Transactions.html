@@ -1,359 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Wallet Wizard</title>
-
-<meta charset="UTF-8">
-<meta name="description" content="Wallet Wizard">
-<meta name="keywords" content="money management">
-<meta name="author" content="">
-<meta name ="viewport" content = "width=device-width, initial-scale=1.0" />
-<style>
-    * {box-sizing: border-box;}
-
-    body {
-        font-family: 'Times New Roman', serif;
-        background-color: #d7e1ac;
-        margin: 0;
-    }
-
-    header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #5D6916;
-        padding: 10px 20px;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .logo img {
-        height: 100px;
-        width: auto;
-    }
-
-    .nav {
-        display: flex;
-        gap: 20px;
-    }
-
-    .nav ul {
-        list-style: none;
-        display: flex;
-        padding: 0;
-        margin: 0;
-    }
-
-    .nav li {
-        padding: 10px 20px;
-        margin: 30px;
-    }
-
-    .nav a {
-        color: #000;
-        text-decoration: none;
-        padding: 10px 30px;
-        border-radius: 5px;
-        font-weight: bold;
-        background-color: #87991D;
-        border: 2px solid #73623C;
-    }
-
-    .nav a:hover, .nav a.active {
-        background-color: #745916;
-        color: black;
-        border: 2px solid #66B2FF;
-    }
-
-    .profile-buttons {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-    }
-
-    .profile-buttons a {
-        background-color: #87991D;
-        color: #000;
-        padding: 10px 15px;
-        border-radius: 5px;
-        border: 2px solid #73623C;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .profile-buttons a:hover {
-        background-color: #745916;
-        color: black;
-        border: 2px solid #66B2FF;
-    }
-
-    main {
-        text-align: center;
-        padding: 20px;
-    }
-
-    h1 {
-        color: #fff; 
-        text-align: center;
-        background-color: #5D6916; 
-        padding: 25px 45px; 
-        border-radius: 10px; 
-        border: 3px solid #745916; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
-        margin: 20px auto; 
-        width: fit-content; 
-    }
-
-     h2 {
-        color: #ffffff;
-    }
-
-    .sep {
-        width: 90%;
-        height: 5px;
-        background-color: #7B0F28;
-        margin: 20px auto;
-    }
-
-    /* Flexbox container for the columns */
-    .content-wrapper {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-    }
-
-    .left-column, .right-column {
-        flex: 1 1 45%; /* Make each column take up 45% of the container width */
-        background-color: #5D6916;
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    table, th, td {
-        border: none;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #745916;
-    }
-
-    td {
-        background-color: #7B0F28;
-    }
-
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-
-    #logoutBtn {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .popup {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .popup-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .popup .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    #confirmLogout {
-        background-color: red;
-        color: white;
-    }
-
-    #cancelLogout {
-        background-color: gray;
-        color: white;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .nav ul {
-            flex-direction: column;
-            gap: 10px;
+    <title>Wallet Wizard</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Wallet Wizard">
+    <meta name="keywords" content="money management">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        * {
+            box-sizing: border-box;
         }
 
-        .profile-buttons {
-            flex-direction: column;
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #d7e1ac;
+            margin: 0;
+            padding: 0;
         }
 
         header {
-            flex-wrap: wrap;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #5D6916;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 100px;
+            width: auto;
         }
 
         .nav {
-            justify-content: center;
-            margin: 10px 0;
+            display: flex;
+            gap: 20px;
         }
 
-        .content-wrapper {
-            flex-direction: column; /* Stack the columns vertically on small screens */
+        .nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
         }
 
-        .left-column, .right-column {
-            flex: 1 1 100%; /* Make the columns take up 100% of the width on small screens */
+        .nav li {
+            padding: 10px 20px;
+            margin: 30px;
         }
-    }
-</style>
+
+        .nav a {
+            color: #000;
+            text-decoration: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            background-color: #87991D;
+            border: 2px solid #73623C;
+        }
+
+        .nav a:hover, .nav a.active {
+            background-color: #745916;
+            color: black;
+            border: 2px solid #66B2FF;
+        }
+
+        .profile-buttons {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-buttons a {
+            background-color: #87991D;
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 2px solid #73623C;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .profile-buttons a:hover {
+            background-color: #745916;
+            color: black;
+            border: 2px solid #66B2FF;
+        }
+
+        main {
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            background-color: #5D6916;
+            padding: 25px 45px;
+            border-radius: 10px;
+            border: 3px solid #745916;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            margin: 0;
+            width: fit-content;
+        }
+
+        h2 {
+            color: #ffffff;
+        }
+
+        .sep {
+            width: 90%;
+            height: 5px;
+            background-color: #7B0F28;
+            margin: 20px auto;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .right-column {
+            flex: 1 1 45%;
+            background-color: #5D6916;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #transactionFormElement, #accountSelect {
+            background-color: #87991D;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-column {
+            flex: 1 1 45%;
+            background-color: #5D6916;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .details {
+            background-color: #87991D;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .trDetails {
+            background-color: #5D6916;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #ffffff;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #745916;
+        }
+
+        td {
+            background-color: #5D6916;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: auto;
+            align-self: center;
+        }
+
+        #logoutBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #confirmLogout {
+            background-color: red;
+            color: white;
+        }
+
+        #cancelLogout {
+            background-color: gray;
+            color: white;
+        }
+
+        /* Initial green for the account select button */
+        #accountSelect {
+            background-color: #87991D; /* Green background for the dropdown itself */
+            color: white; /* White text for the selected option */
+            padding: 10px;
+            border: 2px solid #5D6916; /* Darker green border */
+            border-radius: 5px;
+        }
+
+        /* Brown color for the options when clicked/focused */
+        #accountSelect:focus {
+            background-color: #745916; /* Brown background for dropdown when focused */
+        }
+
+        #accountSelect option {
+            background-color: #745916; /* Brown color for options */
+            color: white; /* White text color for options */
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-    <!-- Logo Section -->
     <div class="logo">
         <img src="walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
-
-    <!-- Navigation Bar -->
     <nav class="nav">
         <ul>
             <li><a class="navi" href="Dashboard.html">Dashboard</a></li>
-            <li><a href="#" class="active">Transactions</a></li>
+            <li><a href="#" class="active" onclick="setBrownDropdown()">Transactions</a></li>
             <li><a class="budgeting" href="Budgeting.html">Budgeting</a></li>
             <li><a class="navi" href="Contact.html">Contact</a></li>
         </ul>
     </nav>
-
-    <!-- Profile and Logout Controls -->
     <div class="profile-buttons">
         <a href="Profile.html">Profile</a>
         <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
     </div>
-
-    <div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-        <p>Would you like to log out?</p>
-        <button onclick="logout()">Yes, Log Out</button>
-        <button onclick="cancelLogout()">Cancel</button>
-    </div>
-
 </header>
 
 <main>
     <h1>Transactions</h1>
 
-    <!-- Flex Container for Left and Right Columns -->
-    <div class="content-wrapper">
-        <!-- Left Column -->
+    <div class="content">
         <div class="left-column">
-            <p>PLACEHOLDER FOR CONTENT</p>
-            <hr class="sep">
-            <h2>MORE CONTENT</h2>
-            <p>PLACEHOLDER FOR CONTENT</p>
+            <h2>Select Account</h2><br>
+            <select id="accountSelect" onchange="changeDropdownColor()">
+                <option value="" disabled selected>Please choose your account</option>
+                <option value="accountA">Account A</option>
+                <option value="accountB">Account B</option>
+                <option value="accountC">Account C</option>
+                <option value="otherAccounts">Other Accounts</option>
+            </select>
+
+            <button id="addTransactionBtn" onclick="toggleTransactionForm()" style="display: none;">Add Transaction</button>
+
+
+            <div id="transactionForm" style="display: none;">
+                <h3>Add a New Transaction</h3>
+                <form id="transactionFormElement">
+                    <label for="transactionDate">Date:</label>
+                    <input type="date" id="transactionDate" required><br><br>
+                    <label for="transactionAmount">Amount:</label>
+                    <input type="number" id="transactionAmount" required><br><br>
+                    <label for="payTo">Pay To:</label>
+                    <input type="text" id="payTo" required><br><br>
+                    <label for="transactionStatus">Status:</label>
+                    <select id="transactionStatus" required>
+                        <option value="completed">Completed</option>
+                        <option value="pending">Pending</option>
+                    </select><br><br>
+                    <button type="button" onclick="submitTransaction()">Submit Transaction</button>
+                </form>
+            </div>
         </div>
 
-        <!-- Right Column -->
         <div class="right-column">
-            <h2>Transaction Details</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Transaction Amount</th>
-                        <th>Payment To</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>01/12/2024</td>
-                        <td>$100</td>
-                        <td>Amazon</td>
-                        <td>Completed</td>
-                    </tr>
-                    <tr>
-                        <td>02/12/2024</td>
-                        <td>$50</td>
-                        <td>Netflix</td>
-                        <td>Pending</td>
-                    </tr>
-                    <tr>
-                        <td>03/12/2024</td>
-                        <td>$75</td>
-                        <td>Spotify</td>
-                        <td>Completed</td>
-                    </tr>
-                    <tr>
-                        <td>04/12/2024</td>
-                        <td>$200</td>
-                        <td>Walmart</td>
-                        <td>Completed</td>
-                    </tr>
-                    <tr>
-                        <td>05/12/2024</td>
-                        <td>$300</td>
-                        <td>Target</td>
-                        <td>Pending</td>
-                    </tr>
-                    <tr>
-                        <td>06/12/2024</td>
-                        <td>$250</td>
-                        <td>Apple Store</td>
-                        <td>Completed</td>
-                    </tr>
-                    <tr>
-                        <td>07/12/2024</td>
-                        <td>$150</td>
-                        <td>Best Buy</td>
-                        <td>Completed</td>
-                    </tr>
-                    <tr>
-                        <td>08/12/2024</td>
-                        <td>$50</td>
-                        <td>Uber</td>
-                        <td>Pending</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h2>Transaction Details</h2><br>
+            <div class="details">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Transaction Amount</th>
+                            <th>Payment To</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionDetailsTable">
+                        <!-- Transactions will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </main>
 
-<script src="frontendJS/logout.js"></script>
+<script src="frontendJS/transactions.js"></script>
+
 
 </body>
 </html>
