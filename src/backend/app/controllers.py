@@ -1,5 +1,9 @@
-from flask import jsonify, request, current_app
+import smtplib
+from email.mime.text import MIMEText
+from flask import jsonify, request, current_app, url_for
+from itsdangerous import URLSafeTimedSerializer
 from .models import db, User, BankAccount, Transaction, Reminder, Budget, Message
+from .config import Config
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 import jwt
@@ -12,8 +16,45 @@ import base64
 # ================================
 # Utility Functions
 # ================================
+# Use the app's secret key for generating tokens
+SECRET_KEY = "68d2374fc6aaaa84349a78ce5af4aaef50110b0b2df8592d2315f976944f9dc5"
+serializer = URLSafeTimedSerializer(SECRET_KEY)
 
-SECRET_KEY = "68d2374fc6aaaa84349a78ce5af4aaef50110b0b2df8592d2315f976944f9dc5"  # Replace with your secret key
+def send_password_reset_email(email, reset_link):
+    """
+    Send a password reset email with the provided reset link.
+
+    Args:
+        email (str): The recipient's email address.
+        reset_link (str): The password reset link to be included in the email.
+
+    Returns:
+        bool: True if the email is sent successfully, False otherwise.
+    """
+    try:
+        # Create the email message
+        msg = MIMEText(f"Click the following link to reset your password: {reset_link}")
+        msg['Subject'] = 'Password Reset Request'
+        msg['From'] = Config.DEFAULT_MAIL_SENDER
+        msg['To'] = email
+
+        print(f"Preparing to send email to: {email}")
+        print(f"Reset link: {reset_link}")
+
+        # Connect to the SMTP server and send the email
+        with smtplib.SMTP(Config.MAIL_SERVER, Config.MAIL_PORT) as smtp:
+            smtp.sendmail(Config.DEFAULT_MAIL_SENDER, email, msg.as_string())
+            print("Email sent successfully!")
+
+        return True
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        return False
+
+def generate_password_reset_link(email):
+    token = serializer.dumps(email, salt=Config.SECURITY_PASSWORD_SALT)
+    reset_link = f"http://127.0.0.1:5000/api/auth/reset-password/{token}"
+    return reset_link
 
 def generate_token(user):
     """Generate a JSON Web Token for the user."""

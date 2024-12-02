@@ -1,4 +1,5 @@
-from src.backend.app.init import create_app
+from flask import Flask
+from .init import create_app
 from .models import db
 
 app = create_app()

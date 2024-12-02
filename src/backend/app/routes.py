@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify, redirect, url_for, render_template, send_from_directory
 import os
+from itsdangerous import URLSafeTimedSerializer
 from .chatbot import Chatbot
-from .models import db
+from .config import Config
+from .models import db, User
 from .controllers import (
     user_register, user_login, user_get_accounts, user_custom_budget,
     user_plan_one, user_plan_two, user_plan_three, send_message,
@@ -9,11 +11,14 @@ from .controllers import (
     user_filter_transactions, user_add_transaction, user_get_all_transactions,
     user_transaction_details, user_delete_manual_transaction,
     create_reminder, get_reminders_for_month_and_year, transactions_graph,
-    link_account, send_password_reset_email, reset_password
+    link_account, send_password_reset_email, reset_password, serializer
 )
 
 # Blueprint setup
 main = Blueprint('main', __name__)
+
+serializer = URLSafeTimedSerializer(Config.SECRET_KEY)
+
 
 FRONTEND_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../frontend'))
 
@@ -117,39 +122,83 @@ def logout():
         return error_response("User ID is required", 400)
     return user_logout(user_id)
 
+# Forgot Password
 @main.route('/api/auth/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
     """Handle GET to serve forgotpassword.html and POST for password reset."""
     if request.method == 'GET':
         # Serve forgotpassword.html from the frontend folder
-        return send_from_directory(FRONTEND_PATH, 'forgotpassword.html')
+        try:
+            return send_from_directory(FRONTEND_PATH, 'forgotpassword.html')
+        except FileNotFoundError:
+            return jsonify({'error': 'Forgot Password page not found'}), 404
 
     # POST request logic for password reset
-    email = request.json.get('email')
-    if not email:
-        return jsonify({'error': 'Email is required'}), 400
+    try:
+        data = request.json
+        email = data.get('email')
 
-    if send_password_reset_email(email):
-        return jsonify({'message': 'Password reset email sent successfully'}), 200
-    else:
-        return jsonify({'error': 'Email address not found'}), 404
+        if not email:
+            return jsonify({'error': 'Email is required'}), 400
+
+        # Logic to send a password reset email
+        if send_password_reset_email(email):
+            return jsonify({'message': 'Password reset email sent successfully'}), 200
+        else:
+            return jsonify({'error': 'Email address not found'}), 404
+
+    except Exception as e:
+        print(f"Error during password reset request: {e}")
+        return jsonify({'error': 'An internal server error occurred.'}), 500
+
 
 # Reset Password
-@main.route('/api/auth/reset-password', methods=['POST'])
-def reset_password_route():
-    """Reset the password using the reset token."""
-    data = request.json
-    token = data.get('token')
-    new_password = data.get('new_password')
+@main.route('/api/auth/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    """
+    Handle the reset password process. Display the password reset form (GET)
+    and process the new password submission (POST).
+    """
+    try:
+        # Verify the token and retrieve the email
+        email = serializer.loads(token, salt=Config.SECURITY_PASSWORD_SALT, max_age=1800)
+    except Exception:
+        return jsonify({"error": "Invalid or expired token"}), 400
 
-    if not token or not new_password:
-        return error_response('Token and new password are required', 400)
+    if request.method == 'GET':
+        # Serve the reset password page
+        try:
+            return send_from_directory(FRONTEND_PATH, 'createnewpassword.html')
+        except FileNotFoundError:
+            return jsonify({"error": "Reset password page not found"}), 404
 
-    if reset_password(token, new_password):
-        return jsonify({'message': 'Password reset successfully'}), 200
-    else:
-        return error_response('Invalid or expired token', 400)
+    # Handle POST request: Process new password
+    try:
+        data = request.json
 
+        new_password = data.get('password')
+        confirm_password = data.get('confirm_password')
+
+        # Validate password fields
+        if not new_password or not confirm_password:
+            return jsonify({"error": "Both password fields are required"}), 400
+
+        if new_password != confirm_password:
+            return jsonify({"error": "Passwords do not match"}), 400
+
+        # Update the user's password
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        user.set_password(new_password)
+        db.session.commit()
+
+        return jsonify({"message": "Password reset successfully!"}), 200
+
+    except Exception as e:
+        print(f"Error during password reset: {e}")
+        return jsonify({"error": "An internal error occurred"}), 500
 # Dashboard
 @main.route('/api/dashboard', methods=['GET'])
 def dashboard():

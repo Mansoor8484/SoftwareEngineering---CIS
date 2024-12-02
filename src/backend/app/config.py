@@ -45,26 +45,13 @@ class Config:
     """List of supported currencies for user budgets."""
 
     # Email Configuration
-    # MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'smtp.gmail.com'
-    # """SMTP server for sending emails."""
-
-    # MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)
-    # """Port for the email server; typically 587 for TLS, 465 for SSL, or 25 for non-secure."""
-
-    # MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
-    # """Whether to use TLS for secure email sending."""
-
-    # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    # """Username for SMTP authentication; usually an email address."""
-
-    # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    # """Password for the email account; ensure this is kept secret."""
-
-    # MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER') or 'noreply@yourapp.com'
-    # """Default sender address for outgoing emails."""
-
-    # MAIL_MAX_EMAILS = int(os.environ.get('MAIL_MAX_EMAILS', 5))
-    # """Limit the number of emails to be sent per hour to prevent abuse."""
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 1025  # Debugging SMTP port
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = None  # Debugging server does not require username
+    MAIL_PASSWORD = None  # Debugging server does not require password
+    DEFAULT_MAIL_SENDER = 'noreply@localhost'
 
     # Plaid API Configuration
     PLAID_CLIENT_ID = os.environ.get('PLAID_CLIENT_ID')

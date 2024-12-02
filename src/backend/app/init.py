@@ -57,4 +57,9 @@ def create_app():
 
     return app
 
-# $env:FLASK_APP="backend.app.run"; $env:PYTHONPATH="src"; flask run
+
+# cd src\backend\app
+# python start_smtp.py
+# $env:FLASK_APP="backend.app.run"
+# $env:PYTHONPATH="src"
+# flask run --debug
