@@ -23,6 +23,15 @@
             width: 250px;
             height: 200px;
         }
+        .signup-link {
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        .signup-link a {
+            color: #000;
+            text-decoration: underline;
+        }
         .container {
             width: 90%;
             max-width: 450px;
@@ -181,7 +190,7 @@
         <div class="agreement">
             <input type="checkbox" id="agreement" name="agreement" style="margin-right: 10px;" required>
             <label for="agreement">
-                User Agreement - By using Wallet Wizard, you agree to track and manage your financial data responsibly
+                <b>User Agreement</b> - By using Wallet Wizard, you agree to track and manage your financial data responsibly
                 and in compliance with all applicable laws. You are responsible for maintaining the accuracy of your account
                 and safeguarding your login information. We prioritize your privacy and protect your data in accordance with our
                 Privacy Policy. Wallet Wizard is not liable for any financial losses or damages resulting from your use of the service.
@@ -193,6 +202,8 @@
         <!-- Submit Button -->
         <button type="submit">Sign Up</button>
     </form>
+    <br>
+    <button type="submit"><a href="/api/auth/login" class = "register">Return</a></button>
 </div>
 
 </body>
