@@ -114,6 +114,16 @@
 
 h1, h2 {text-align: center;}
 
+.accounts{
+            background-color: #87991D;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+.tr1{background-color: #5D6916;}
+
 .popup-content {
   position: absolute;
   top: 50%;
@@ -155,11 +165,13 @@ h1, h2 {text-align: center;}
     
     .td1 {font-size: 25px;}
 
-    .calendar, .chart {
+    .chart {
         margin-top: 20px;
+        
     }
 
     .calendar {
+            margin-top: 20px;
             background-color: #87991D;
             padding: 20px;
             border-radius: 10px;
@@ -183,8 +195,18 @@ h1, h2 {text-align: center;}
         }
 
         .calendar-header button:hover {
-            background-color: #5D6916;
+            background-color: #745916;
+            border: 1px solid #66B2FF;
         }
+
+        .sep {
+        width: 100%;
+        height: 5px;
+        background-color: #66B2FF;
+        margin: 20px auto;
+    }
+
+        .pie {text-align: center;}
 
         .month-year {
             font-size: 24px;
@@ -254,19 +276,20 @@ h1, h2 {text-align: center;}
 
     <div class="left-column">
         <h1>Welcome to your Dashboard!</h1> <br><br>
+        <div class="accounts">
         <table>
-            
-            <tr>
-                <td class="td1">Account A: $5000</td>
+            <thead><h2>Accounts</h2></thead>
+            <tr class="tr1">
+                <td>Account A: $5000</td>
             </tr>
-            <tr>
-                <td class="td1">Account B: $1200</td>
+            <tr class="tr1">
+                <td>Account B: $1200</td>
             </tr>
-            <tr>
-                <td class="td1">Account C: $3500</td>
+            <tr class="tr1">
+                <td>Account C: $3500</td>
             </tr>
-            <tr>
-                <td class="td1">
+            <tr class="tr1">
+                <td>
                     <label for="otherAccounts">Other Accounts:</label>
                     <select id="otherAccounts">
                         <option value="account1">Account 1</option>
@@ -277,11 +300,12 @@ h1, h2 {text-align: center;}
                 </td>
             </tr>
         </table>
+        </div>
     </div>
 
   
     <div class="right-column">
-        <h2>Calendar</h2><br>
+        <h1>Calendar</h1><br>
         <div class="calendar">
             <div class="calendar-header">
                 <button id="prevMonth">Prev</button>
@@ -302,10 +326,12 @@ h1, h2 {text-align: center;}
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
+        </div><br><br>
 
-        <h2>Budget Overview</h2>
-        <div>
+        <hr class="sep"><br>
+
+        <h1>Budget Overview</h1>
+        <div class="pie">
             <label for="categoryFilter">Select Category:</label>
             <select id="categoryFilter">
                 <option value="all">All</option>
