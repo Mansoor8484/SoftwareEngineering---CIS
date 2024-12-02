@@ -1,27 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        editable: true,
-        selectable: true,
-        events: [
-            { title: 'Groceries', date: '2024-12-05' },
-            { title: 'Entertainment', date: '2024-12-10' }
-        ],
-        dateClick: function(info) {
-            var eventTitle = prompt("Enter event title:");
-            if (eventTitle) {
-                calendar.addEvent({
-                    title: eventTitle,
-                    start: info.dateStr
-                });
-            }
-        }
-    });
-    calendar.render();
-});
-
-
 var ctx = document.getElementById('pieChart').getContext('2d');
 var pieChart = new Chart(ctx, {
     type: 'pie',
@@ -34,6 +10,15 @@ var pieChart = new Chart(ctx, {
             borderColor: '#fff',
             borderWidth: 1
         }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                }
+            }
+        }
     }
 });
 
@@ -41,7 +26,6 @@ var pieChart = new Chart(ctx, {
 document.getElementById('categoryFilter').addEventListener('change', function(event) {
     var filterValue = event.target.value;
     var newData = [0, 0, 0, 0];
-    
 
     if (filterValue === 'groceries') {
         newData = [200, 0, 0, 0];
@@ -58,4 +42,3 @@ document.getElementById('categoryFilter').addEventListener('change', function(ev
     pieChart.data.datasets[0].data = newData;
     pieChart.update();
 });
-
