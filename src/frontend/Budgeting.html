@@ -74,37 +74,36 @@
             border-color: #66B2FF;
         }
 
-        .profile-buttons {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-    }
+        .profile-controls {
+            display: flex;
+            gap: 30px;
+        }
 
-    .profile-buttons a {
-        background-color: #87991D;
-        color: #000;
-        padding: 10px 15px;
-        border-radius: 5px;
-        border: 2px solid #73623C;
-        text-decoration: none;
-        font-weight: bold;
-    }
+        .profile-controls a {
+            color: #000;
+            text-decoration: none;
+            background-color: #87991D;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            border: 2px solid #73623C;
+        }
 
-    .profile-buttons a:hover {
-        background-color: #745916;
-        color: black;
-        border: 2px solid #66B2FF;
-    }
+        .profile-controls a:hover {
+            background-color: #745916;
+            color: black;
+            border: 2px solid #66B2FF;
+        }
 
         /* Table Styling */
-        .budget-table {
+        .budget-table2 {
             margin: 20px auto;
             border-collapse: collapse;
             width: 80%;
             padding-bottom: 30px;
         }
 
-        .budget-table td {
+        .budget-table2 td {
             border: 3px solid #745916;
             text-align: center;
             color: white;
@@ -191,62 +190,77 @@
         .select-button:hover {
             background-color: #745916;
             color: white;
-        }    
+        }   
         
-        #logoutBtn {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
+        .custom-plan {
+            margin-top: 30px;
+        }
 
-.popup {
-  display: none; /* Hidden by default */
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-}
+        .custom-plan h2 {
+            text-align: center;
+        }
 
-.popup-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-}
+        .budget-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
 
-.popup .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
+        .budget-table td {
+            background-color: #5D6916;
+            color: white;
+            padding: 15px;
+            border: 4px solid #745916;
+            text-align: center; /* Align text to the left, so the labels stay aligned */
+            font-size: 15px;
+        }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 10px;
-}
+        .budget-table input {
+            width: 90%;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 10px;
+            display: block; /* Make input block-level so it takes up the full width available */
+            margin-left: auto; /* Center the input horizontally */
+            margin-right: auto; /* Center the input horizontally */
+        }
 
-#confirmLogout {
-  background-color: red;
-  color: white;
-}
+        .multiple-inputs {
+            display: flex;
+            flex-direction: column;
+        }
 
-#cancelLogout {
-  background-color: gray;
-  color: white;
-}
+        .buttons {
+            margin: 20px 0;
+            text-align: center;
+        }
 
+        .buttons button {
+            background-color: #5D6916;
+            color: white;
+            border: 2px solid #745916;
+            padding: 10px 30px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+
+        .buttons button:hover {
+            background-color: #87991D;
+        }
+        .userfp {
+        color: #fff; /* White text */
+        text-align: center;
+        background-color: #5D6916; /* Dark green background */
+        padding: 25px 45px; /* Add padding for space inside */
+        border-radius: 10px; /* Light green radius */
+        border: 3px solid #745916; /* Light green border */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+        margin: 20px auto; /* Centers the element */
+        width: fit-content; /* Makes the width adjust to content */
+    }
     </style>
 </head>
 
@@ -255,7 +269,6 @@ button {
         <!-- Logo Section -->
         <div class="logo">
             <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
-
         </div>
 
         <!-- Navigation Bar -->
@@ -269,22 +282,16 @@ button {
         </nav>
 
         <!-- Profile and Logout Controls -->
-        <div class="profile-buttons">
-            <a href="Profile.html">Profile</a>
-            <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
+        <div class="profile-controls">
+            <a href="profile.html">Profile</a>
+            <a href="#">Log Out</a>
         </div>
-    
-        <div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p>Would you like to log out?</p>
-            <button onclick="logout()">Yes, Log Out</button>
-            <button onclick="cancelLogout()">Cancel</button>
-          </div>
-
     </header>
 
     <main>
+
         <!-- 2x2 Table -->
-        <table class="budget-table">
+        <table class="budget-table2">
             <tr>
                 <td id="current-budget-cell">
                     <p id="current-budget">Current Budget</p>
@@ -302,6 +309,8 @@ button {
                 </td>
             </tr>
         </table>
+
+
         <!-- Three Tables Layout -->
         <div class="container">
             <div class="table-box">
@@ -336,10 +345,70 @@ button {
         </div>
 
         <!-- User customized plan below -->
+        <div id="custom-plan" class="custom-plan">
+            <!-- Section Header -->
+            <h2 class="userfp">User Customized Financial Plan</h2>
 
+            <!-- Clear Form Button -->
+            <div style="text-align: right; margin-right: 10%; margin-bottom: 10px;">
+                <button style="background-color: #5D6916; color: white; border: 2px solid #745916; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 5px;">
+                    Clear Form
+                </button>
+            </div>
+
+            <!-- Financial Plan Table -->
+            <table class="budget-table">
+                <tr>
+                    <td>Monthly Income</td>
+                    <td>
+                        <input type="text" id="monthly-income" placeholder="Enter Monthly Income">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Planned Monthly Expenses</td>
+                    <td>
+                        <div class="multiple-inputs">
+                            <input type="text" id="expense-1" placeholder="Expense 1">
+                            <input type="text" id="expense-2" placeholder="Expense 2">
+                            <input type="text" id="expense-3" placeholder="Expense 3">
+                            <input type="text" id="expense-4" placeholder="Expense 4">
+                            <input type="text" id="expense-5" placeholder="Expense 5">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total Disposable Income</td>
+                    <td>
+                        <input type="text" id="total-disposable-income" placeholder="Calculated from user inputs" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Misc Desired Expenses</td>
+                    <td>
+                        <div class="multiple-inputs">
+                            <input type="text" id="misc-expense-1" placeholder="Misc Expense 1">
+                            <input type="text" id="misc-expense-2" placeholder="Misc Expense 2">
+                            <input type="text" id="misc-expense-3" placeholder="Misc Expense 3">
+                            <input type="text" id="misc-expense-4" placeholder="Misc Expense 4">
+                            <input type="text" id="misc-expense-5" placeholder="Misc Expense 5">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total Possible Savings</td>
+                    <td>
+                        <input type="text" id="total-possible-savings" placeholder="Calculated from user inputs" disabled>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Save and Select Plan Button -->
+            <div class="buttons">
+                <button id="save-plan">Save and Select Plan</button>
+            </div>
+        </div>
+    </div>
     </main>
-
-    <script src="frontendJS/logout.js"></script>
 </body>
 
 </html>
