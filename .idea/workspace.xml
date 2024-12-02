@@ -4,15 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Updated register and forgot password pages routes and included a return button for register page">
+    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Need to figure out why user token is not being fetched">
+      <change afterPath="$PROJECT_DIR$/src/frontend/static/logout.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/app/init.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/app/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/Budgeting.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Budgeting.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/Contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Contact.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/Dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/Transactions.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Transactions.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/edit_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/edit_profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/frontendJS/logout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/frontendJS/logout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/frontendJS/calendar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/static/calendar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/frontendJS/logout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/frontendJS/piechart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/static/piechart.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,10 +110,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Dan\IdeaProjects\SoftwareEngineering---CIS\src\frontend\static" />
+      <recent name="C:\Users\Dan\IdeaProjects\SoftwareEngineering---CIS\src\frontend" />
       <recent name="C:\Users\Dan\IdeaProjects\SoftwareEngineering---CIS\src\scripts" />
       <recent name="C:\Users\Dan\IdeaProjects\SoftwareEngineering---CIS" />
       <recent name="C:\Users\dhurwitz\IdeaProjects\SoftwareEngineering---CIS\src\backend" />
-      <recent name="C:\Users\dhurwitz\IdeaProjects\SoftwareEngineering---CIS" />
     </key>
   </component>
   <component name="RunManager" selected="Python.key">
@@ -186,7 +194,8 @@
       <workItem from="1731873431053" duration="15263000" />
       <workItem from="1732326398295" duration="2707000" />
       <workItem from="1732397532064" duration="8873000" />
-      <workItem from="1733084414255" duration="22425000" />
+      <workItem from="1733084414255" duration="23519000" />
+      <workItem from="1733156884225" duration="22093000" />
     </task>
     <task id="LOCAL-00001" summary="Structure">
       <option name="closed" value="true" />
@@ -260,7 +269,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733110659944</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Need to figure out why user token is not being fetched">
+      <option name="closed" value="true" />
+      <created>1733118414003</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733118414003</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -285,7 +302,8 @@
     <MESSAGE value="Updated requirements" />
     <MESSAGE value="Updated" />
     <MESSAGE value="Updated register and forgot password pages routes and included a return button for register page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated register and forgot password pages routes and included a return button for register page" />
+    <MESSAGE value="Need to figure out why user token is not being fetched" />
+    <option name="LAST_COMMIT_MESSAGE" value="Need to figure out why user token is not being fetched" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SoftwareEngineering___CIS$config.coverage" NAME="config Coverage Results" MODIFIED="1732947161428" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/backend/app" />

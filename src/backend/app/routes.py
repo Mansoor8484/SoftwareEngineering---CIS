@@ -6,7 +6,7 @@ import os
 from itsdangerous import URLSafeTimedSerializer
 from .chatbot import Chatbot
 from .config import Config
-from .models import db, User
+from .models import db, User, Reminder
 from .controllers import (
     user_register, user_login, user_get_accounts, user_custom_budget,
     user_plan_one, user_plan_two, user_plan_three, send_message,
@@ -48,10 +48,20 @@ def token_required(f):
 def error_response(message, status_code=400):
     return jsonify({'error': message}), status_code
 
+@main.route('/test-logout-js')
+def test_logout_js():
+    return '<script src="/static/logout.js"></script>'
+
+
 @main.route('/static/<path:filename>')
 def serve_static(filename):
-    """Serve static files from the frontend folder."""
-    return send_from_directory(FRONTEND_PATH, filename)
+    """
+    Serve static files (e.g., JavaScript, CSS).
+    """
+    try:
+        return send_from_directory(f'FRONTEND_PATH/static', filename)
+    except FileNotFoundError:
+        return jsonify({'error': f'Static file {filename} not found'}), 404
 
 @main.route('/static/walletwizard.png', methods=['GET'])
 def serve_walletwizard():
@@ -138,33 +148,37 @@ def login_route():
         if not user or not user.check_password(password):
             return jsonify({'error': 'Invalid username or password'}), 401
 
-        # Store user_id in session for session-based authentication
-        session['user_id'] = user.id
+        # Generate a JWT token for token-based authentication
+        try:
+            token = jwt.encode(
+                {'user_id': user.id, 'exp': datetime.utcnow() + timedelta(hours=1)},
+                Config.SECRET_KEY,
+                algorithm='HS256'
+            )
+            print(f"Generated Token: {token}")  # Debug log for token generation
+        except Exception as jwt_error:
+            print(f"Error generating JWT token: {jwt_error}")
+            return jsonify({'error': 'Failed to generate authentication token.'}), 500
 
-        token = jwt.encode(
-            {'user_id': user.id, 'exp': datetime.utcnow() + timedelta(hours=1)},
-            Config.SECRET_KEY,
-            algorithm='HS256'
-        )
-
-        print(f"Generated Token: {token}")  # Debug log for token generation
-
+        # Respond with the token and user ID
         return jsonify({
             "message": "Login successful",
             "token": token,
             "user_id": user.id
         }), 200
+
     except Exception as e:
         print(f"Unexpected error during login: {e}")
         return jsonify({'error': 'An internal server error occurred.'}), 500
 
-@main.route('/api/auth/logout', methods=['POST'])
-def logout():
-    """Log the user out."""
-    user_id = request.json.get('user_id')
-    if not user_id:
-        return error_response("User ID is required", 400)
-    return user_logout(user_id)
+@main.route('/api/logout', methods=['POST'])
+def logout_route():
+    """
+    Clears session or token and logs the user out.
+    """
+    session.clear()  # If using session-based authentication
+    return jsonify({"message": "Logged out successfully"}), 200
+
 
 # Forgot Password
 @main.route('/api/auth/forgot-password', methods=['GET', 'POST'])
@@ -278,119 +292,97 @@ def link_new_account():
 # Calendar Routes
 @main.route('/api/dashboard/calendar/reminder', methods=['POST'])
 def create_reminder_route():
-    data = request.json
-    return create_reminder(data)
+    """Endpoint to create a reminder."""
+    try:
+        data = request.json
+        reminder_date = data.get('reminder_date')
+        reminder_message = data.get('reminder_message')
+
+        if not reminder_date or not reminder_message:
+            return error_response('Both date and message are required', 400)
+
+        reminder = Reminder(
+            date=datetime.strptime(reminder_date, '%Y-%m-%d'),
+            text=reminder_message
+        )
+        db.session.add(reminder)
+        db.session.commit()
+
+        return jsonify({'message': 'Reminder created successfully!'}), 201
+
+    except Exception as e:
+        return error_response(f"Error creating reminder: {str(e)}", 500)
+
 
 @main.route('/api/dashboard/calendar/reminders', methods=['GET'])
 def get_reminders_by_date():
     """Fetch reminders for a specific month and year."""
-    year = request.args.get('year', type=int)
-    month = request.args.get('month', type=int)
-    return get_reminders_for_month_and_year(year, month)
-
-# Transactions Graph
-@main.route('/api/dashboard/transactions/graph', methods=['GET'])
-def transaction_graph_route():
-    """Get transaction graph by type."""
-    transaction_type = request.args.get('type', type=str)
-    graph_type = request.args.get('graph_type', type=str, default='bar')
-    return transactions_graph(transaction_type, graph_type)
-
-# Profile Management
-@main.route('/api/profile', methods=['GET'])
-def user_profile_route():
-    token = request.headers.get('Authorization')  # Extract token
-    if not token:
-        return jsonify({"error": "Token is missing"}), 401
-
-    # Remove 'Bearer' prefix if present
-    if token.startswith('Bearer '):
-        token = token.split(' ')[1]
-
     try:
-        decoded_token = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
-        user_id = decoded_token.get('user_id')
-        if not user_id:
-            return jsonify({"error": "Invalid token"}), 401
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token has expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
+        year = request.args.get('year', type=int)
+        month = request.args.get('month', type=int)
 
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"error": "User not found"}), 404
+        if not year or not month:
+            return error_response('Year and month are required', 400)
 
-    return jsonify({
-        "username": user.username,
-        "email": user.email,
-        "created_at": user.created_at.isoformat()
-    }), 200
+        reminders = Reminder.query.filter(
+            db.extract('year', Reminder.date) == year,
+            db.extract('month', Reminder.date) == month
+        ).all()
+
+        return jsonify([
+            {'id': r.id, 'text': r.text, 'date': r.date.strftime('%Y-%m-%d')}
+            for r in reminders
+        ]), 200
+
+    except Exception as e:
+        return error_response(f"Error fetching reminders: {str(e)}", 500)
 
 
-@main.route('/api/profile/edit', methods=['GET', 'PUT'])
-def edit_profile_route(user_id):
-    """
-    Handle profile editing:
-    - GET: Serve the edit profile page.
-    - PUT: Update the user profile with new details.
-    """
-    if request.method == 'GET':
-        # Serve the edit profile HTML
-        try:
-            return send_from_directory(FRONTEND_PATH, 'edit_profile.html')
-        except FileNotFoundError:
-            return jsonify({"error": "Edit profile page not found"}), 404
+@main.route('/api/savings-expenses', methods=['GET'])
+def savings_expenses():
+    data = {
+        "labels": ["January", "February", "March", "April", "May"],
+        "expenses": [500, 700, 300, 400, 600],
+        "savings": [1000, 800, 1200, 1000, 900]
+    }
+    return jsonify(data)
 
-    # PUT: Update user profile
-    if request.method == 'PUT':
-        try:
-            data = request.json
+# Profile Route
+@main.route('/api/profile', methods=['GET'])
+def serve_profile_page():
+    return send_from_directory(FRONTEND_PATH, 'profile.html')
 
-            # Call the controller function to handle the update
-            return edit_user_profile(user_id, data)
-        except Exception as e:
-            print(f"Error during profile update: {e}")
-            return jsonify({"error": "An internal error occurred"}), 500
+@main.route('/api/profile/edit', methods=['GET'])
+def serve_edit_profile_page():
+    return send_from_directory(FRONTEND_PATH, 'edit_profile.html')
+
 
 # Transactions
 @main.route('/api/transactions', methods=['GET'])
 def transactions():
     return send_from_directory(FRONTEND_PATH, 'Transactions.html')
 
-@main.route('/api/transactions', methods=['POST'])
+transactions = [
+    {"date": "2024-01-01", "amount": 500, "recipient": "Amazon", "status": "Completed"},
+    {"date": "2024-02-01", "amount": 700, "recipient": "Netflix", "status": "Pending"},
+    {"date": "2024-03-01", "amount": 300, "recipient": "Spotify", "status": "Completed"}
+]
+@main.route('/api/transaction', methods=['GET'])
+def get_transactions():
+    return jsonify(transactions)
+
+@main.route('/api/add-transaction', methods=['POST'])
 def add_transaction():
-    """Add a new transaction to the user's account."""
-    data = request.json
-    amount = data.get('amount')
-    transaction_type = data.get('transaction_type')
-    transaction_date = data.get('transaction_date')  # e.g. "2024-11-01T15:30:00"
-    account_id = data.get('account_id')
+    new_transaction = request.json
+    transactions.append(new_transaction)
+    return jsonify({"message": "Transaction added successfully"})
 
-    if not amount or not transaction_type or not transaction_date or not account_id:
-        return error_response('Missing required transaction data', 400)
-
-    success = user_add_transaction(account_id, amount, transaction_type, transaction_date)
-
-    if success:
-        return jsonify({'message': 'Transaction added successfully'}), 201
-    else:
-        return error_response('Failed to add transaction', 500)
-
-@main.route('/api/transactions/details/<int:transaction_id>', methods=['GET'])
-def transaction_details(transaction_id):
-    return user_transaction_details(transaction_id)
-
-# Filter Transactions
-@main.route('/api/transactions/filter/<int:user_id>', methods=['GET'])
-def filter_transactions(user_id):
-    filter_params = request.args.to_dict()  # Parse query parameters to dictionary
-    return user_filter_transactions(user_id, filter_params)
-
-# Delete Manual Transaction
-@main.route('/api/transactions/delete/<int:transaction_id>', methods=['DELETE'])
-def delete_manual_transaction(transaction_id):
-    return user_delete_manual_transaction(transaction_id)
+@main.route('/api/savings-expenses', methods=['GET'])
+def get_savings_expenses():
+    labels = [t["date"] for t in transactions]
+    expenses = [t["amount"] for t in transactions]
+    savings = [1000 - e for e in expenses]  # Example calculation
+    return jsonify({"labels": labels, "expenses": expenses, "savings": savings})
 
 # Budgeting
 @main.route('/api/budgeting', methods=['GET'])

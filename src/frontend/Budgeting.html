@@ -297,57 +297,56 @@
         width: fit-content; /* Makes the width adjust to content */
     }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
-    <header>
-        <!-- Logo Section -->
-        <div class="logo">
-            <img src="walletwizard.png" alt="Wallet Wizard Logo" />
+<header>
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <ul>
+            <li><a class="navi" href="/api/dashboard">Dashboard</a></li>
+            <li><a class="navi" href="/api/transactions">Transactions</a></li>
+            <li><a href="#" class="active" >Budgeting</a></li>
+            <li><a class="navi" href="/api/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile and Logout Controls -->
+    <div class="profile-buttons">
+        <a href="/api/profile">Profile</a>
+        <a href="#" class="profile-button" onclick="openPopup(event)">Log Out</a>
+    </div>
+
+    <div id="logoutModal" class="popup">
+        <div class="popup-content">
+            <p>Are you sure you want to log out?</p>
+            <button id="confirmLogout" onclick="logout()">Yes, Log Out</button>
+            <button id="cancelLogout" onclick="closePopup()">Cancel</button>
         </div>
-
-        <!-- Navigation Bar -->
-        <nav class="nav">
-            <ul>
-                <li><a href="Dashboard.html">Dashboard</a></li>
-                <li><a href="Transactions.html">Transactions</a></li>
-                <li><a href="#" class="active" >Budgeting</a></li>
-                <li><a href="Contact.html">Contact</a></li>
-            </ul>
-        </nav>
-
-        <!-- Profile and Logout Controls -->
-        <div class="profile-buttons">
-            <a href="Profile.html">Profile</a>
-            <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
-        </div>
-
-        <div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p>Would you like to log out?</p>
-            <button onclick="logout()">Yes, Log Out</button>
-            <button onclick="cancelLogout()">Cancel</button>
-          </div>
-
-    </header>
+    </div>
+</header>
 
     <main>
-
-        <!-- 2x2 Table -->
         <table class="budget-table2">
             <tr>
                 <td id="current-budget-cell">
-                    <p id="current-budget">Current Budget</p>
+                    <p id="current-budget"></p>
                 </td>
                 <td id="income-cell">
-                    <p id="income">Income</p>
+                    <p id="income"></p>
                 </td>
             </tr>
             <tr>
                 <td id="graph-cell">
-                    <p id="graph">Graph (Savings x Expenses)</p>
+                    <canvas id="savingsExpensesChart" width="200" height="300"></canvas>
                 </td>
                 <td id="planned-expenses-cell">
-                    <p id="planned-expenses">Planned Expenses</p>
+                    <p id="planned-expenses"></p>
                 </td>
             </tr>
         </table>
@@ -355,7 +354,7 @@
 
         <!-- Three Tables Layout -->
         <div class="container">
-            <div class="table-box">
+            <div class="table-box" data-plan='{"income": 8000, "expenses": [1000, 800, 700, 500, 400], "misc": [300, 200]}'>
                 <div class="table-header">Financial Plan A</div>
                 <div class="table-row middle-row">
                     <p>Financial Plan A Description (High Savings = Low Spending Money)</p>
@@ -365,7 +364,7 @@
                 </div>
             </div>
 
-            <div class="table-box">
+            <div class="table-box" data-plan='{"income": 7000, "expenses": [1500, 1200, 1000, 900, 800], "misc": [400, 300]}'>
                 <div class="table-header">Financial Plan B</div>
                 <div class="table-row middle-row">
                     <p>Financial Plan B Description (Low Savings = More Spending Money)</p>
@@ -375,7 +374,7 @@
                 </div>
             </div>
 
-            <div class="table-box">
+            <div class="table-box" data-plan='{"income": 7500, "expenses": [1200, 1000, 900, 800, 700], "misc": [350, 250]}'>
                 <div class="table-header">Financial Plan C</div>
                 <div class="table-row middle-row">
                     <p>Financial Plan C Description (Moderate Savings = Moderate Spending Money)</p>
@@ -388,33 +387,23 @@
 
         <!-- User customized plan below -->
         <div id="custom-plan" class="custom-plan">
-            <!-- Section Header -->
             <h2 class="userfp">User Customized Financial Plan</h2>
-
-            <!-- Clear Form Button -->
-            <div style="text-align: right; margin-right: 10%; margin-bottom: 10px;">
-                <button style="background-color: #5D6916; color: white; border: 2px solid #745916; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 5px;">
-                    Clear Form
-                </button>
-            </div>
-
-            <!-- Financial Plan Table -->
             <table class="budget-table">
                 <tr>
                     <td>Monthly Income</td>
                     <td>
-                        <input type="text" id="monthly-income" placeholder="Enter Monthly Income">
+                        <input type="number" id="monthly-income" placeholder="Enter Monthly Income">
                     </td>
                 </tr>
                 <tr>
                     <td>Planned Monthly Expenses</td>
                     <td>
                         <div class="multiple-inputs">
-                            <input type="text" id="expense-1" placeholder="Expense 1">
-                            <input type="text" id="expense-2" placeholder="Expense 2">
-                            <input type="text" id="expense-3" placeholder="Expense 3">
-                            <input type="text" id="expense-4" placeholder="Expense 4">
-                            <input type="text" id="expense-5" placeholder="Expense 5">
+                            <input type="number" id="expense-1" placeholder="Expense 1">
+                            <input type="number" id="expense-2" placeholder="Expense 2">
+                            <input type="number" id="expense-3" placeholder="Expense 3">
+                            <input type="number" id="expense-4" placeholder="Expense 4">
+                            <input type="number" id="expense-5" placeholder="Expense 5">
                         </div>
                     </td>
                 </tr>
@@ -428,11 +417,8 @@
                     <td>Misc Desired Expenses</td>
                     <td>
                         <div class="multiple-inputs">
-                            <input type="text" id="misc-expense-1" placeholder="Misc Expense 1">
-                            <input type="text" id="misc-expense-2" placeholder="Misc Expense 2">
-                            <input type="text" id="misc-expense-3" placeholder="Misc Expense 3">
-                            <input type="text" id="misc-expense-4" placeholder="Misc Expense 4">
-                            <input type="text" id="misc-expense-5" placeholder="Misc Expense 5">
+                            <input type="number" id="misc-expense-1" placeholder="Misc Expense 1">
+                            <input type="number" id="misc-expense-2" placeholder="Misc Expense 2">
                         </div>
                     </td>
                 </tr>
@@ -443,16 +429,155 @@
                     </td>
                 </tr>
             </table>
-
-            <!-- Save and Select Plan Button -->
             <div class="buttons">
                 <button id="save-plan">Save and Select Plan</button>
             </div>
         </div>
-    </div>
     </main>
 
-    <script src="frontendJS/logout.js"></script>
+    <script>
+        const selectButtons = document.querySelectorAll('.select-button');
+        selectButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const planData = JSON.parse(button.closest('.table-box').dataset.plan);
+                document.getElementById('monthly-income').value = planData.income;
+                planData.expenses.forEach((value, index) => {
+                    const expenseInput = document.getElementById(`expense-${index + 1}`);
+                    if (expenseInput) {
+                        expenseInput.value = value;
+                    }
+                });
+                planData.misc.forEach((value, index) => {
+                    const miscInput = document.getElementById(`misc-expense-${index + 1}`);
+                    if (miscInput) {
+                        miscInput.value = value;
+                    }
+                });
+                calculatePlan();
+            });
+        });
+
+        // Calculate Disposable Income and Savings
+        function calculatePlan() {
+            const income = parseFloat(document.getElementById('monthly-income').value) || 0;
+
+            const expenses = Array.from(document.querySelectorAll('[id^="expense-"]'))
+                .map(input => parseFloat(input.value) || 0)
+                .reduce((sum, value) => sum + value, 0);
+
+            const miscExpenses = Array.from(document.querySelectorAll('[id^="misc-expense-"]'))
+                .map(input => parseFloat(input.value) || 0)
+                .reduce((sum, value) => sum + value, 0);
+
+            let disposableIncome = income - expenses;
+            let possibleSavings = disposableIncome - miscExpenses;
+
+            disposableIncome = Math.max(disposableIncome, 0); // Prevent negative values
+            possibleSavings = Math.max(possibleSavings, 0);   // Prevent negative values
+
+            document.getElementById('total-disposable-income').value = disposableIncome.toFixed(2);
+            document.getElementById('total-possible-savings').value = possibleSavings.toFixed(2);
+        }
+
+
+        // Recalculate on input changes
+        document.getElementById('monthly-income').addEventListener('input', calculatePlan);
+        document.querySelectorAll('[id^="expense-"]').forEach(input => input.addEventListener('input', calculatePlan));
+        document.querySelectorAll('[id^="misc-expense-"]').forEach(input => input.addEventListener('input', calculatePlan));
+
+        async function loadSavingsExpensesChart() {
+            try {
+                const response = await fetch('http://localhost:5000/api/savings-expenses');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Calculate values for table
+                const totalExpenses = data.expenses.reduce((sum, expense) => sum + expense, 0);
+                const totalSavings = data.savings.reduce((sum, saving) => sum + saving, 0);
+                const totalIncome = totalExpenses + totalSavings;
+
+                // Update table cells with values
+                document.getElementById('current-budget').textContent = `Current Budget: $${totalSavings.toFixed(2)}`;
+                document.getElementById('income').textContent = `Total Income: $${totalIncome.toFixed(2)}`;
+                document.getElementById('planned-expenses').textContent = `Planned Expenses: $${totalExpenses.toFixed(2)}`;
+
+                // Render the chart
+                const ctx = document.getElementById('savingsExpensesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                label: 'Expenses',
+                                data: data.expenses,
+                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Savings',
+                                data: data.savings,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: { color: 'white' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            y: {
+                                ticks: { color: 'white' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            }
+                        },
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading or rendering chart:', error);
+            }
+        }
+
+        loadSavingsExpensesChart();
+
+        function openPopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "block";
+        }
+
+        function closePopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "none";
+        }
+
+        function logout() {
+            // Clear user session or token from localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_id");
+
+            // Redirect to the login page
+            window.location.href = "/api/auth/login";
+        }
+
+        // Close the modal if clicked outside the content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target === modal) {
+                closePopup();
+            }
+        };
+    </script>
 
 
 </body>

@@ -64,16 +64,10 @@
         }
 
         .nav a:hover {
-    background-color: #745916;
-    color: black;
-    border: 2px solid #66B2FF;
-}
-
-        .profile-buttons a.active {
-    background-color: #745916;
-    color: black;
-    border: 2px solid #66B2FF;
-}
+            background-color: #745916;
+            color: black;
+            border: 2px solid #66B2FF;
+        }
 
         .budgeting {
             background-color: #73623C;
@@ -180,58 +174,59 @@
         }
 
         #logoutBtn {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+        }
 
-.popup {
-  display: none; /* Hidden by default */
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-}
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000; /* Ensure it appears on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+        }
 
-.popup-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-}
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
 
-.popup .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 10px;
-}
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
-#confirmLogout {
-  background-color: red;
-  color: white;
-}
+        #confirmLogout {
+            background-color: red;
+            color: white;
+        }
 
-#cancelLogout {
-  background-color: gray;
-  color: white;
-}
+        #cancelLogout {
+            background-color: gray;
+            color: white;
+        }
+
 
         @media only screen and (max-width: 600px) {
             .nav ul {
@@ -277,84 +272,113 @@ button {
     <header>
         <!-- Logo Section -->
         <div class="logo">
-            <img src="walletwizard.png" alt="Wallet Wizard Logo" />
+            <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
         </div>
 
         <!-- Navigation Bar -->
         <nav class="nav">
             <ul>
-                <li><a class="navi" href="Dashboard.html">Dashboard</a></li>
-                <li><a class="navi" href="Transactions.html">Transactions</a></li>
-                <li><a class="budgeting" href="Budgeting.html">Budgeting</a></li>
-                <li><a class="navi" href="Contact.html">Contact</a></li>
+                <li><a class="navi" href="/api/dashboard">Dashboard</a></li>
+                <li><a class="navi" href="/api/transactions">Transactions</a></li>
+                <li><a class="budgeting" href="/api/budgeting">Budgeting</a></li>
+                <li><a class="navi" href="/api/contact">Contact</a></li>
             </ul>
         </nav>
 
         <!-- Profile and Logout Controls -->
         <div class="profile-buttons">
-            <a href="#" class="active">Profile</a>
-            <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
+            <a href="#">Profile</a>
+            <a href="#" class="profile-button" onclick="openPopup(event)">Log Out</a>
         </div>
-    
-        <div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p>Would you like to log out?</p>
-            <button onclick="logout()">Yes, Log Out</button>
-            <button onclick="cancelLogout()">Cancel</button>
-          </div>
-    </header>
 
+        <div id="logoutModal" class="popup">
+            <div class="popup-content">
+                <p>Are you sure you want to log out?</p>
+                <button id="confirmLogout" onclick="logout()">Yes, Log Out</button>
+                <button id="cancelLogout" onclick="closePopup()">Cancel</button>
+            </div>
+        </div>
+    </header>
     <main>
         <div class="profile-container">
             <h2 id="profile-header">Profile</h2>
             <form>
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Your First + Last Name" disabled>
+                    <input type="text" id="name" name="name" placeholder="Loading..." disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="Username" disabled>
+                    <input type="text" id="username" name="username" placeholder="Loading..." disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="fake@example.com" disabled>
+                    <input type="email" id="email" name="email" placeholder="Loading..." disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone Number:</label>
-                    <input type="tel" id="phone" name="phone" value="123-456-7890" disabled>
+                    <input type="tel" id="phone" name="phone" placeholder="Loading..." disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" value="password123" disabled>
+                    <input type="password" id="password" name="password" placeholder="********" disabled>
                 </div>
 
-                <a href="edit_profile.html" class="edit-button">Edit Profile Information</a>
+                <a href="/api/profile/edit" class="edit-button">Edit Profile Information</a>
             </form>
         </div>
     </main>
-
-    <script src="frontendJS/logout.js"></script>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get the current page URL
-            const currentPage = window.location.pathname.split("/").pop();
-    
-            // Get all navigation links
-            const navLinks = document.querySelectorAll('.nav a');
-    
-            // Loop through each link and compare with the current page
-            navLinks.forEach(link => {
-                if (link.getAttribute('href').includes(currentPage)) {
-                    link.classList.add('active');  // Add 'active' class to the current page link
-                }
-            });
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const profileData = {
+                    name: "John Doe",
+                    username: "test",
+                    email: "john.doe@example.com",
+                    phone: "123-456-7890",
+                    password: "****"
+                };
+
+                document.getElementById('name').value = profileData.name;
+                document.getElementById('username').value = profileData.username;
+                document.getElementById('email').value = profileData.email;
+                document.getElementById('phone').value = profileData.phone;
+                document.getElementById('password').value = profileData.password;
+            }, 1000);
         });
     </script>
+    <script>
+        // logout.js
+        function openPopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "block";
+        }
 
+        function closePopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "none";
+        }
+
+        function logout() {
+            // Clear user session or token from localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_id");
+
+            // Redirect to the login page
+            window.location.href = "/api/auth/login";
+        }
+
+        // Close the modal if clicked outside the content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target === modal) {
+                closePopup();
+            }
+        };
+    </script>
 </body>
 </html>

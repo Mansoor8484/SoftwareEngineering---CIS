@@ -139,40 +139,38 @@
             <button type="submit">Login</button>
         </form>
         <script>
-            document.getElementById('login-form').onsubmit = async (event) => {
-                event.preventDefault(); // Prevent default form submission
+            document.addEventListener('DOMContentLoaded', () => {
+                const loginForm = document.getElementById('login-form');
+                loginForm.onsubmit = async (event) => {
+                    event.preventDefault();
 
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
 
-                try {
-                    const response = await fetch('/api/auth/login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json', // Ensure request is JSON
-                        },
-                        body: JSON.stringify({ username, password }),
-                    });
+                    try {
+                        const response = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ username, password }),
+                        });
 
-                    const data = await response.json();
-                    console.log("Login Response:", data); // Debugging: Log the response
+                        const data = await response.json();
 
-                    if (response.ok) {
-                        // Store the token in localStorage
-                        localStorage.setItem('token', data.token);
-                        alert("Login successful!");
-
-                        // Redirect to the dashboard
-                        window.location.href = '/api/dashboard';
-                    } else {
-                        // Display error message
-                        alert(data.error || "Login failed. Please check your credentials.");
+                        if (response.ok) {
+                            console.log("Login successful, token received:", data.token);
+                            localStorage.setItem('token', data.token); // Store the token in localStorage
+                            window.location.href = '/api/dashboard'; // Redirect to dashboard
+                        } else {
+                            alert(data.error || "Login failed.");
+                        }
+                    } catch (error) {
+                        console.error("Error during login:", error);
                     }
-                } catch (err) {
-                    console.error("Error during login:", err); // Log any errors
-                    alert("An error occurred. Please try again.");
-                }
-            };
+                };
+            });
+
         </script>
 
         <p class="signup-link">Don't have an account? <a href="/api/auth/register" class = "register">Sign up for one</a></p>

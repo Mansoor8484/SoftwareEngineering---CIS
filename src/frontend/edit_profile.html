@@ -234,6 +234,28 @@ button {
             color: white;
             border-color: #66B2FF;
         }
+        .edit-button {
+            margin: 60px auto; /* Adds top and bottom margin and centers horizontally */
+            display: block; /* Ensures the button respects the auto margin */
+            width: 50%; /* Adjust width if needed */
+            height: 20%; /* Adjust height if needed */
+            padding: 12px;
+            background-color: #fff;
+            border: 3px solid #73623C;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .edit-button:hover {
+            background-color: #745916;
+            color: white;
+            border-color: #66B2FF;
+        }
 
         @media only screen and (max-width: 600px) {
             .nav ul {
@@ -275,65 +297,144 @@ button {
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+<header>
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <ul>
+            <li><a class="navi" href="/api/dashboard">Dashboard</a></li>
+            <li><a class="navi" href="/api/transactions">Transactions</a></li>
+            <li><a class="budgeting" href="/api/budgeting">Budgeting</a></li>
+            <li><a class="navi" href="/api/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile and Logout Controls -->
+    <div class="profile-buttons">
+        <a href="#">Profile</a>
+        <a href="#" class="profile-button" onclick="openPopup(event)">Log Out</a>
+    </div>
+
+    <div id="logoutModal" class="popup">
+        <div class="popup-content">
+            <p>Are you sure you want to log out?</p>
+            <button id="confirmLogout" onclick="logout()">Yes, Log Out</button>
+            <button id="cancelLogout" onclick="closePopup()">Cancel</button>
         </div>
-        <nav class="nav">
-            <ul>
-                <li><a class="navi" href="Dashboard.html">Dashboard</a></li>
-                <li><a class="navi" href="Transactions.html">Transactions</a></li>
-                <li><a class="budgeting" href="Budgeting.html">Budgeting</a></li>
-                <li><a class="navi" href="Contact.html">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="profile-buttons">
-            <a href="/api/profile/">Profile</a>
-            <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
-        </div>
-    
-        <div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p>Would you like to log out?</p>
-            <button onclick="logout()">Yes, Log Out</button>
-            <button onclick="cancelLogout()">Cancel</button>
-          </div>
-    </header>
+    </div>
+</header>
     <main>
         <div class="profile-container">
-            <h2 id="profile-header">Edit Profile</h2>
-            <form>
+            <h2>Edit Profile</h2>
+            <form id="edit-profile-form">
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Your First + Last Name" />
+                    <input type="text" id="name" name="name" placeholder="Loading...">
                 </div>
+
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" placeholder="Username" />
+                    <input type="text" id="username" name="username" placeholder="Loading...">
                 </div>
+
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="fake@example.com" />
+                    <input type="email" id="email" name="email" placeholder="Loading...">
                 </div>
+
                 <div class="form-group">
                     <label for="phone">Phone Number:</label>
-                    <input type="tel" id="phone" name="phone" placeholder="123-456-7890" />
+                    <input type="tel" id="phone" name="phone" placeholder="Loading...">
                 </div>
+
                 <div class="form-group">
-                    <label for="password">New Password:</label>
-                    <input type="password" id="password" name="password" placeholder="password123" />
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="********">
                 </div>
+
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password:</label>
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="password123" />
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="********">
                 </div>
-                <div class="action-buttons">
-                    <a href="profile.html">Confirm</a>
-                    <a href="edit_profile.html">Cancel</a>
-                </div>
+
+                <button type="submit" class="edit-button">Submit Changes</button>
             </form>
         </div>
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const profileData = {
+                name: "John Doe",
+                username: "test",
+                email: "john.doe@example.com",
+                phone: "123-456-7890",
+                password: "test",
+            };
 
-    <script src="frontendJS/logout.js"></script>
+            // Populate edit fields
+            document.getElementById('name').value = profileData.name;
+            document.getElementById('username').value = profileData.username;
+            document.getElementById('email').value = profileData.email;
+            document.getElementById('phone').value = profileData.phone;
+            document.getElementById('password').value = profileData.password;
+
+            document.getElementById('edit-profile-form').addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const updatedProfile = {
+                    name: document.getElementById('name').value,
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    password: document.getElementById('password').value,
+                    confirmPassword: document.getElementById('confirm-password').value,
+                };
+
+                if (updatedProfile.password !== updatedProfile.confirmPassword) {
+                    alert("Passwords do not match.");
+                    return;
+                }
+
+                setTimeout(() => {
+                    alert("Profile updated successfully!");
+                    window.location.href = "/api/profile";
+                }, 500);
+            });
+        });
+    </script>
+
+    <script>
+        // logout.js
+        function openPopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "block";
+        }
+
+        function closePopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "none";
+        }
+
+        function logout() {
+            // Clear user session or token from localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_id");
+
+            // Redirect to the login page
+            window.location.href = "/api/auth/login";
+        }
+
+        // Close the modal if clicked outside the content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target === modal) {
+                closePopup();
+            }
+        };
+    </script>
 </body>
 </html>
