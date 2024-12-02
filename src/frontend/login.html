@@ -45,27 +45,27 @@
             border: 2px solid #fff;
         }
 
-        .form-group {
+        .username {
             margin-top: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px; /* Controls how much the spacing is, the example is this big */
+            margin-bottom: 20px;
             
         }
-        .form-group2 {
+        .password {
             margin-top: 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .form-group2 label {
+        .password label {
             font-weight: bold;
             text-align: right;
             margin-right: 10px;
         }
         
-        .form-group label {
+        .username label {
             font-weight: bold;
             text-align: right;
             margin-right: 10px;
@@ -139,48 +139,40 @@
             <button type="submit">Login</button>
         </form>
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const loginForm = document.getElementById('login-form');
+            document.getElementById('login-form').onsubmit = async (event) => {
+                event.preventDefault(); // Prevent default form submission
 
-                if (!loginForm) {
-                    console.error('Login form not found in the DOM.');
-                    return;
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                try {
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json', // Ensure request is JSON
+                        },
+                        body: JSON.stringify({ username, password }),
+                    });
+
+                    const data = await response.json();
+                    console.log("Login Response:", data); // Debugging: Log the response
+
+                    if (response.ok) {
+                        // Store the token in localStorage
+                        localStorage.setItem('token', data.token);
+                        alert("Login successful!");
+
+                        // Redirect to the dashboard
+                        window.location.href = '/api/dashboard';
+                    } else {
+                        // Display error message
+                        alert(data.error || "Login failed. Please check your credentials.");
+                    }
+                } catch (err) {
+                    console.error("Error during login:", err); // Log any errors
+                    alert("An error occurred. Please try again.");
                 }
-
-                loginForm.onsubmit = async (event) => {
-                    event.preventDefault(); // Prevent default form submission
-
-                    const username = document.getElementById('username').value.trim();
-                    const password = document.getElementById('password').value.trim();
-
-                    if (!username || !password) {
-                        alert('Please enter both username and password.');
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch('/api/auth/login', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ username, password }),
-                        });
-
-                        if (response.ok) {
-                            const result = await response.json();
-                            alert('Login successful!');
-                            localStorage.setItem('token', result.token);
-                            window.location.href = '/api/dashboard';
-                        } else {
-                            const result = await response.json();
-                            alert(result.error || 'Login failed. Please try again.');
-                        }
-                    } catch (error) {
-                        alert(`An error occurred: ${error.message}`);
-                    }
-                };
-            });
+            };
         </script>
 
         <p class="signup-link">Don't have an account? <a href="/api/auth/register" class = "register">Sign up for one</a></p>

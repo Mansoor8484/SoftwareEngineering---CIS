@@ -4,19 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Updated">
+    <list default="true" id="e93e9e89-9e8e-4d64-9b9f-63a2c76f5fde" name="Changes" comment="Updated register and forgot password pages routes and included a return button for register page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/instance/site.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/controllers.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/controllers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/init.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/key.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/key.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/app/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/Contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Contact.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/Dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/Dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/forgotpassword.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/forgotpassword.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/edit_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/edit_profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/frontendJS/logout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/frontendJS/logout.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/instance/site.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/instance/site.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,7 +186,7 @@
       <workItem from="1731873431053" duration="15263000" />
       <workItem from="1732326398295" duration="2707000" />
       <workItem from="1732397532064" duration="8873000" />
-      <workItem from="1733084414255" duration="13597000" />
+      <workItem from="1733084414255" duration="22425000" />
     </task>
     <task id="LOCAL-00001" summary="Structure">
       <option name="closed" value="true" />
@@ -248,7 +244,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732399557603</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Updated">
+      <option name="closed" value="true" />
+      <created>1733109274589</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1733109274589</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Updated register and forgot password pages routes and included a return button for register page">
+      <option name="closed" value="true" />
+      <created>1733110659944</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733110659944</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,7 +284,8 @@
     <MESSAGE value="Flask runs now" />
     <MESSAGE value="Updated requirements" />
     <MESSAGE value="Updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated" />
+    <MESSAGE value="Updated register and forgot password pages routes and included a return button for register page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated register and forgot password pages routes and included a return button for register page" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SoftwareEngineering___CIS$config.coverage" NAME="config Coverage Results" MODIFIED="1732947161428" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/backend/app" />

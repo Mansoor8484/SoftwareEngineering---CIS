@@ -286,7 +286,7 @@ button {
 
         <!-- Profile and Logout Controls -->
         <div class="profile-buttons">
-            <a href="Profile.html">Profile</a>
+            <a href="/api/profile/<int:user_id>">Profile</a>
             <a href="#" class="profile-button" onclick="openPopup()">Log Out</a>
         </div>
     
@@ -326,11 +326,53 @@ button {
                     <input type="password" id="password" name="password" value="password123" disabled>
                 </div>
 
-                <a href="edit_profile.html" class="edit-button">Edit Profile Information</a>
+                <a href="/api/profile/edit" class="edit-button">Edit Profile Information</a>
             </form>
         </div>
     </main>
+    <script>
+        async function fetchUserProfile() {
+            // Retrieve the token from localStorage
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Token is missing. Please log in again.");
+                window.location.href = '/api/auth/login'; // Redirect to login
+                return;
+            }
 
-    <script src="frontendJS/logout.js"></script>
+            try {
+                const response = await fetch('/api/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // Include token in Authorization header
+                    },
+                });
+
+                const data = await response.json();
+                console.log("Profile Response:", data); // Debugging: Log the response
+
+                if (response.ok) {
+                    // Populate profile data
+                    document.getElementById('username-display').textContent = data.username;
+                    document.getElementById('email-display').textContent = data.email;
+                    document.getElementById('created-at-display').textContent = data.created_at;
+                } else {
+                    // Handle errors
+                    alert(data.error || "Failed to fetch profile.");
+                    if (response.status === 401) {
+                        // Token is invalid or expired, redirect to login
+                        window.location.href = '/api/auth/login';
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching profile:", err); // Log any errors
+                alert("An error occurred. Please try again.");
+            }
+        }
+
+        // Call fetchUserProfile when the profile page loads
+        document.addEventListener('DOMContentLoaded', fetchUserProfile);
+    </script>
+    <script src="/static/frontendJS/logout.js"></script>
 </body>
 </html>
