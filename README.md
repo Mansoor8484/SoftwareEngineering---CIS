@@ -1,6 +1,4 @@
 # Wallet Wizard - SoftwareEngineering---CIS
-## Overview
-
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
@@ -14,12 +12,9 @@
 - $env:FLASK_APP="backend.app.run"; $env:PYTHONPATH="src"; flask run
 
 ## Usage
-
-## Documentation
-- [usage.md](docs/usage.md): How to use the application.
-
-## Directory Structure
+ [usage.md](docs/usage.md): How to use the application.
 
 ## Contributing
-
+Daniel Hurwitz, Jake Moonsoor, Justin Dang, Kelly Landini & Brent Carlson
 ## License
+@Wallet Wizard Team
