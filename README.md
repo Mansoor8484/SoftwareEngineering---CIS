@@ -16,8 +16,6 @@
 ## Usage
 
 ## Documentation
-- [architecture.md](docs/architecture.md): Overview of the system architecture.
-- [installation.md](docs/installation.md): Setup instructions.
 - [usage.md](docs/usage.md): How to use the application.
 
 ## Directory Structure
