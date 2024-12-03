@@ -1,22 +1,22 @@
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const date = new Date();
-    let currentMonth = date.getMonth(); // Current month (0-11)
-    let currentYear = date.getFullYear(); // Current year (e.g. 2024)
+    let currentMonth = date.getMonth(); 
+    let currentYear = date.getFullYear(); 
 
-    // Update calendar display
+    // Update calendar
     function updateCalendar() {
         const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
         const lastDateOfMonth = new Date(currentYear, currentMonth + 1, 0);
-        const lastDayOfMonth = lastDateOfMonth.getDay(); // Get day of the week (0-Sunday, 6-Saturday)
-        const lastDate = lastDateOfMonth.getDate(); // Get last date of the month (e.g., 30 or 31)
+        const lastDayOfMonth = lastDateOfMonth.getDay(); 
+        const lastDate = lastDateOfMonth.getDate(); 
 
         // Update the month-year display
         document.getElementById("monthYear").innerText = `${monthNames[currentMonth]} ${currentYear}`;
 
-        // Create the calendar table body
+        // Create the calendar
         const tableBody = document.getElementById("calendarTable").getElementsByTagName('tbody')[0];
-        tableBody.innerHTML = ""; // Clear the previous month's days
+        tableBody.innerHTML = "";
 
         // Generate empty cells for the first week
         let row = document.createElement("tr");
@@ -32,7 +32,6 @@
             cell.addEventListener("click", () => alert(`Viewing ${monthNames[currentMonth]} ${day}, ${currentYear}`));
             row.appendChild(cell);
 
-            // If it's the end of the week, create a new row
             if (row.children.length === 7) {
                 tableBody.appendChild(row);
                 row = document.createElement("tr");
@@ -45,7 +44,7 @@
         }
     }
 
-    // Navigation to previous month
+    // Nav to previous month
     document.getElementById("prevMonth").addEventListener("click", () => {
         currentMonth--;
         if (currentMonth < 0) {
@@ -55,7 +54,7 @@
         updateCalendar();
     });
 
-    // Navigation to next month
+    // Nav to next month
     document.getElementById("nextMonth").addEventListener("click", () => {
         currentMonth++;
         if (currentMonth > 11) {
@@ -65,5 +64,5 @@
         updateCalendar();
     });
 
-    // Initialize the calendar
+    // Initialize
     updateCalendar();

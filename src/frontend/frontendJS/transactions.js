@@ -1,13 +1,13 @@
-// Handle account selection change
+// Account selection change
 document.getElementById('accountSelect').addEventListener('change', function() {
     const account = this.value;
     const addTransactionBtn = document.getElementById('addTransactionBtn');
 
-    // Show the "Add Transaction" button only when an account is selected
+    // Reveal "Add Transaction" button
     addTransactionBtn.style.display = account ? 'block' : 'none';
 });
 
-// Function to toggle the transaction form visibility
+// toggle the transaction form visibility
 function toggleTransactionForm() {
     const form = document.getElementById('transactionForm');
     form.style.display = form.style.display === 'block' ? 'none' : 'block';
@@ -26,12 +26,12 @@ function submitTransaction() {
         return;
     }
 
-    // Append the transaction to the table in the right column
+    // Send transaction to the table
     const table = document.getElementById('transactionDetailsTable');
     const newRow = table.insertRow();
     newRow.innerHTML = `<td>${date}</td><td>$${amount}</td><td>${payTo}</td><td>${status}</td>`; 
 
-    // Reset form and hide it after submission
+    // Reset form and hide form after submission
     document.getElementById('transactionFormElement').reset();
     toggleTransactionForm();
 }
@@ -41,23 +41,23 @@ function setDropdownClass(className) {
     document.getElementById('accountSelect').classList.add(className);
 }
 
-// Change dropdown background to brown when clicked, revert to green after a delay
+// Change dropdown background to brown when clicked
 function changeDropdownColor() {
     const accountSelect = document.getElementById('accountSelect');
-    accountSelect.style.backgroundColor = '#745916'; // Brown color after selection
+    accountSelect.style.backgroundColor = '#745916';
 
-    // Revert the background color to green after a short delay
+    // Revert the background color to green
     setTimeout(() => {
-        accountSelect.style.backgroundColor = '#87991D'; // Green background after selection
-    }); // Delay 500ms
+        accountSelect.style.backgroundColor = '#87991D';
+    });
 }
 
-// Event listener for opening the dropdown when clicked
+// Event listener for opening the dropdown
 document.getElementById('accountSelect').addEventListener('click', function() {
-    setDropdownClass('open'); // Apply the brown color when clicked
+    setDropdownClass('open');
 });
 
-// Open popup (Example placeholder function)
+// Open popup
 function openPopup() {
     alert("Popup logic here");
 }

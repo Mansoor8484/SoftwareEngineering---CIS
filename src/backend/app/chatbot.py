@@ -5,7 +5,7 @@ from .config import Config
 class Chatbot:
     def __init__(self):
         self.api_key = Config.ASSISTANT_API_KEY
-        self.base_url = ""  # Adjust as needed
+        self.base_url = ""  
 
     def get_response(self, user_message):
         headers = {
@@ -24,4 +24,4 @@ class Chatbot:
         except requests.exceptions.RequestException as e:
             return f"Error communicating with the chatbot service: {str(e)}"
 
-    # Set Environment Variables in Terminal: export ASSISTANT_API_KEY='your_actual_api_key'
+ 

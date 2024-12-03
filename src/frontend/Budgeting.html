@@ -120,7 +120,7 @@
 }
 
     .popup {
-  display: none; /* Hidden by default */
+  display: none; /* Hidden */
   position: fixed;
   z-index: 1;
   left: 0;
@@ -147,27 +147,27 @@
         /* Unique Cell Styles */
         #current-budget-cell {
             background-color: #5D6916;
-            width: 30px; /* Adjust individual cell width */
-            height: 10px; /* Adjust individual cell height */
+            width: 30px; 
+            height: 10px; 
         }
 
         #income-cell {
             background-color: #5D6916;
-            width: 200px; /* Adjust individual cell width */
-            height: 10px; /* Adjust individual cell height */
+            width: 200px; 
+            height: 10px; 
         }
 
         #graph-cell {
             background-color: #5D6916;
             color: #fff;
-            width: 60px; /* Adjust individual cell width */
-            height: 300px; /* Adjust individual cell height */
+            width: 60px; 
+            height: 300px; 
         }
 
         #planned-expenses-cell {
             background-color: #5D6916;
-            width: 250px; /* Adjust individual cell width */
-            height: 150px; /* Adjust individual cell height */
+            width: 250px; 
+            height: 150px; 
         }
 
         /* Three Tables Layout */
@@ -246,7 +246,7 @@
             color: white;
             padding: 15px;
             border: 4px solid #745916;
-            text-align: center; /* Align text to the left, so the labels stay aligned */
+            text-align: center; 
             font-size: 15px;
         }
 
@@ -256,9 +256,9 @@
             border-radius: 5px;
             border: none;
             margin-bottom: 10px;
-            display: block; /* Make input block-level so it takes up the full width available */
-            margin-left: auto; /* Center the input horizontally */
-            margin-right: auto; /* Center the input horizontally */
+            display: block; 
+            margin-left: auto; 
+            margin-right: auto; 
         }
 
         .multiple-inputs {
@@ -286,15 +286,15 @@
             background-color: #87991D;
         }
         .userfp {
-        color: #fff; /* White text */
+        color: #fff; 
         text-align: center;
-        background-color: #5D6916; /* Dark green background */
-        padding: 25px 45px; /* Add padding for space inside */
-        border-radius: 10px; /* Light green radius */
-        border: 3px solid #745916; /* Light green border */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
-        margin: 20px auto; /* Centers the element */
-        width: fit-content; /* Makes the width adjust to content */
+        background-color: #5D6916; 
+        padding: 25px 45px; 
+        border-radius: 10px; 
+        border: 3px solid #745916; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+        margin: 20px auto; 
+        width: fit-content; 
     }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -306,7 +306,7 @@
         <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
 
-    <!-- Navigation Bar -->
+    <!-- Nav Bar -->
     <nav class="nav">
         <ul>
             <li><a class="navi" href="/api/dashboard">Dashboard</a></li>
@@ -385,7 +385,7 @@
             </div>
         </div>
 
-        <!-- User customized plan below -->
+        <!-- User customized plan -->
         <div id="custom-plan" class="custom-plan">
             <h2 class="userfp">User Customized Financial Plan</h2>
             <table class="budget-table">
@@ -472,8 +472,8 @@
             let disposableIncome = income - expenses;
             let possibleSavings = disposableIncome - miscExpenses;
 
-            disposableIncome = Math.max(disposableIncome, 0); // Prevent negative values
-            possibleSavings = Math.max(possibleSavings, 0);   // Prevent negative values
+            disposableIncome = Math.max(disposableIncome, 0); // Prevent negatives
+            possibleSavings = Math.max(possibleSavings, 0);   // Prevent negatives
 
             document.getElementById('total-disposable-income').value = disposableIncome.toFixed(2);
             document.getElementById('total-possible-savings').value = possibleSavings.toFixed(2);
