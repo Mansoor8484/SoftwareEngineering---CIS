@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Wallet Wizard</title>
+
+<meta charset="UTF-8">
+<meta name="description" content="Wallet Wizard">
+<meta name="keywords" content="money management">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Times New Roman', serif;
+        background-color: #d7e1ac;
+        margin: 0;
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #5D6916;
+        padding: 10px 20px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo img {
+        height: 100px;
+        width: auto;
+    }
+
+    .nav {
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav ul {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav li {
+        padding: 10px 20px;
+        margin: 30px;
+    }
+
+    .nav a {
+        color: #000;
+        text-decoration: none;
+        padding: 10px 30px;
+        border-radius: 5px;
+        font-weight: bold;
+        background-color: #87991D;
+        border: 2px solid #73623C;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+        background-color: #745916;
+        color: black;
+        border: 2px solid #66B2FF;
+    }
+
+    .profile-buttons {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .profile-buttons a {
+        background-color: #87991D;
+        color: #000;
+        padding: 10px 15px;
+        border-radius: 5px;
+        border: 2px solid #73623C;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .profile-buttons a:hover {
+        background-color: #745916;
+        color: black;
+        border: 2px solid #66B2FF;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    h1,
+    h2 {
+        text-align: center;
+    }
+
+    .accounts {
+        background-color: #87991D;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .tr1 {
+        background-color: #5D6916;
+    }
+
+    .popup {
+        display: none; /* Hidden */
+        position: fixed; 
+        z-index: 1000; 
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); 
+        width: 100%;
+        max-width: 400px;
+        background-color: white;
+        border-radius: 8px;
+        padding: 15px; 
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        text-align: left; 
+    }
+
+    .popup-content {
+        position: relative;
+    }
+
+    .popup .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    #reminderList {
+        max-height: 200px; 
+        overflow-y: auto; 
+        margin-bottom: 15px; 
+        padding: 5px; 
+        border: 1px solid #ddd; 
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    #reminderList div {
+        margin-bottom: 10px;
+    }
+
+    #reminderList div:last-child {
+        margin-bottom: 0; 
+    }
+
+    #reminderList p {
+        margin: 0; 
+        color: #999; 
+        text-align: center;
+    }
+
+    form {
+        margin-top: 10px; 
+    }
+
+
+    main {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        justify-content: space-between;
+    }
+
+    .left-column,
+    .right-column {
+        flex: 1 1 45%;
+        background-color: #5D6916;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .td1 {
+        font-size: 25px;
+    }
+
+    .chart {
+        margin-top: 20px;
+    }
+
+    .calendar {
+        margin-top: 20px;
+        background-color: #87991D;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .calendar-header button {
+        background-color: #5D6916;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .calendar-header button:hover {
+        background-color: #745916;
+        border: 1px solid #66B2FF;
+    }
+
+    .sep {
+        width: 100%;
+        height: 5px;
+        background-color: #66B2FF;
+        margin: 20px auto;
+    }
+
+    .pie {
+        text-align: center;
+    }
+
+    .month-year {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table td,
+    table th {
+        width: 14%;
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #5D6916;
+        color: white;
+    }
+
+    table td:hover {
+        background-color: #745916;
+        color: white;
+        cursor: pointer;
+    }
+
+    .logoutBtn {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    @media only screen and (max-width: 768px) {
+        main {
+            flex-direction: column;
+        }
+
+        .left-column,
+        .right-column {
+            flex: 1 1 100%;
+        }
+    }
+
+
+</style>
+
+</head>
+<body>
+<header>
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+    </div>
+
+    <!-- Nav Bar -->
+    <nav class="nav">
+        <ul>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a class="navi" href="/api/transactions">Transactions</a></li>
+            <li><a class="budgeting" href="/api/budgeting">Budgeting</a></li>
+            <li><a class="navi" href="/api/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile and Logout Controls -->
+    <div class="profile-buttons">
+        <a href="/api/profile">Profile</a>
+        <a href="#" class="profile-button" onclick="openPopup(event)">Log Out</a>
+    </div>
+
+    <div id="logoutModal" class="popup">
+        <div class="popup-content">
+            <p>Are you sure you want to log out?</p>
+            <button id="confirmLogout" onclick="logout()">Yes, Log Out</button>
+            <button id="cancelLogout" onclick="closePopup()">Cancel</button>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <div class="left-column">
+        <h1>Welcome to your Dashboard!</h1> <br><br>
+        <div class="accounts">
+        <table>
+            <thead><h2>Accounts</h2></thead>
+            <tr class="tr1">
+                <td>Account A: $5000</td>
+            </tr>
+            <tr class="tr1">
+                <td>Account B: $1200</td>
+            </tr>
+            <tr class="tr1">
+                <td>Account C: $3500</td>
+            </tr>
+            <tr class="tr1">
+                <td>
+                    <label for="otherAccounts">Other Accounts:</label>
+                    <select id="otherAccounts">
+                    </select>
+                </td>
+            </tr>
+        </table>
+            <!-- Add Account Button -->
+            <tr class="tr1">
+                <td>
+                    <button id="addAccountBtn">Add Account</button>
+                </td>
+            </tr>
+
+            <!-- Add Account Modal -->
+            <div id="addAccountModal" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn" id="closeAddAccountModal">&times;</span>
+                    <h2>Add New Account</h2>
+                    <form id="addAccountForm">
+                        <label for="accountName">Account Name:</label><br>
+                        <input type="text" id="accountName" name="accountName" required><br><br>
+                        <label for="accountBalance">Initial Balance:</label><br>
+                        <input type="number" id="accountBalance" name="accountBalance" required><br><br>
+                        <button type="submit">Add Account</button>
+                        <button type="button" id="cancelAddAccount">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <h1>Calendar</h1>
+        <div class="calendar">
+            <div class="calendar-header">
+                <button id="prevMonth">Prev</button>
+                <div class="month-year" id="monthYear"></div>
+                <button id="nextMonth">Next</button>
+            </div>
+            <table id="calendarTable">
+                <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Reminder Modal -->
+        <div id="reminderModal" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" id="closeReminderModal">&times;</span>
+                <h2>Reminders for <span id="selectedDate"></span></h2>
+                <div id="reminderList">
+                    <p>No reminders for this day.</p> <!-- Default empty state -->
+                </div>
+                <h3>Add Reminder</h3>
+                <form id="reminderForm">
+                    <label for="reminderText">Reminder:</label><br>
+                    <input type="text" id="reminderText" name="reminderText" required><br><br>
+                    <label for="reminderTime">Time:</label><br>
+                    <input type="time" id="reminderTime" name="reminderTime" required><br><br>
+                    <button type="submit">Add Reminder</button>
+                    <button type="button" id="cancelReminder">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+
+        <br><br>
+        <hr class="sep"><br>
+
+        <h1>Budget Overview</h1>
+        <div class="pie">
+            <label for="categoryFilter">Select Category:</label>
+            <select id="categoryFilter">
+                <option value="all">All</option>
+                <option value="groceries">Groceries</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="utilities">Utilities</option>
+                <option value="savings">Savings</option>
+            </select>
+        </div>
+        <canvas id="pieChart" class="chart"></canvas>
+    </div>
+</main>
+<script>
+function updateCalendar() {
+const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+const lastDateOfMonth = new Date(currentYear, currentMonth + 1, 0);
+const lastDayOfMonth = lastDateOfMonth.getDay();
+const lastDate = lastDateOfMonth.getDate();
+
+document.getElementById("monthYear").innerText = `${monthNames[currentMonth]} ${currentYear}`;
+const tableBody = document.getElementById("calendarTable").getElementsByTagName('tbody')[0];
+tableBody.innerHTML = "";
+
+let row = document.createElement("tr");
+for (let i = 0; i < firstDayOfMonth.getDay(); i++) {
+const cell = document.createElement("td");
+row.appendChild(cell);
+}
+
+for (let day = 1; day <= lastDate; day++) {
+const cell = document.createElement("td");
+const cellDate = `${currentYear}-${currentMonth + 1}-${day}`;
+cell.innerText = day;
+cell.dataset.date = cellDate;
+
+// Add click listener to open reminder modal
+cell.addEventListener("click", () => openReminderModal(cellDate));
+
+// Add reminder indicator if there are reminders
+if (reminders[cellDate] && reminders[cellDate].length > 0) {
+const reminderIndicator = document.createElement("span");
+reminderIndicator.style.color = "red";
+reminderIndicator.innerText = " •";
+cell.appendChild(reminderIndicator);
+}
+
+row.appendChild(cell);
+
+if (row.children.length === 7) {
+tableBody.appendChild(row);
+row = document.createElement("tr");
+}
+}
+
+if (row.children.length > 0) {
+tableBody.appendChild(row);
+}
+}
+
+function openReminderModal(date) {
+    document.getElementById("selectedDate").innerText = date;
+    const reminderList = document.getElementById("reminderList");
+    const dateReminders = reminders[date] || [];
+
+    // Populate reminders or show empty state
+    if (dateReminders.length > 0) {
+        reminderList.innerHTML = dateReminders
+            .map(
+                (reminder, index) =>
+                    `<div>${reminder.time} - ${reminder.text}
+                    <button onclick="deleteReminder('${date}', ${index})">Delete</button></div>`
+            )
+            .join("");
+    } else {
+        reminderList.innerHTML = "<p>No reminders for this day.</p>";
+    }
+
+    document.getElementById("reminderModal").style.display = "block";
+}
+
+
+document.getElementById("closeReminderModal").addEventListener("click", () => {
+document.getElementById("reminderModal").style.display = "none";
+});
+document.getElementById("cancelReminder").addEventListener("click", () => {
+document.getElementById("reminderModal").style.display = "none";
+});
+
+    // Account Modal Logic
+    const addAccountBtn = document.getElementById("addAccountBtn");
+    const addAccountModal = document.getElementById("addAccountModal");
+    const closeAddAccountModal = document.getElementById("closeAddAccountModal");
+    const cancelAddAccount = document.getElementById("cancelAddAccount");
+    const addAccountForm = document.getElementById("addAccountForm");
+    const otherAccountsDropdown = document.getElementById("otherAccounts");
+
+    addAccountBtn.addEventListener("click", () => {
+        addAccountModal.style.display = "block";
+    });
+
+    closeAddAccountModal.addEventListener("click", () => {
+        addAccountModal.style.display = "none";
+    });
+
+    cancelAddAccount.addEventListener("click", () => {
+        addAccountModal.style.display = "none";
+    });
+
+    addAccountForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const accountName = document.getElementById("accountName").value;
+        const accountBalance = document.getElementById("accountBalance").value;
+        const newOption = document.createElement("option");
+        newOption.value = accountName;
+        newOption.textContent = `${accountName} - $${accountBalance}`;
+        otherAccountsDropdown.appendChild(newOption);
+        addAccountForm.reset();
+        addAccountModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === addAccountModal) {
+            addAccountModal.style.display = "none";
+        }
+    });
+
+    // Logout Modal Logic
+    function openPopup() {
+        const modal = document.getElementById("logoutModal");
+        modal.style.display = "block";
+    }
+
+    function closePopup() {
+        const modal = document.getElementById("logoutModal");
+        modal.style.display = "none";
+    }
+
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user_id");
+        window.location.href = "/api/auth/login";
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("logoutModal");
+        if (event.target === modal) {
+            closePopup();
+        }
+    };
+
+    // Budget Pie Chart Logic
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Groceries', 'Entertainment', 'Utilities', 'Savings'],
+            datasets: [{
+                label: 'Budget Categories',
+                data: [200, 150, 100, 50],
+                backgroundColor: ['#FF9999', '#66B3FF', '#99FF99', '#FFCC99'],
+                borderColor: '#fff',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'white'
+                    }
+                }
+            }
+        }
+    });
+
+    document.getElementById('categoryFilter').addEventListener('change', function(event) {
+        const filterValue = event.target.value;
+        let newData = [200, 150, 100, 50]; // Default to all
+
+        if (filterValue === 'groceries') newData = [200, 0, 0, 0];
+        else if (filterValue === 'entertainment') newData = [0, 150, 0, 0];
+        else if (filterValue === 'utilities') newData = [0, 0, 100, 0];
+        else if (filterValue === 'savings') newData = [0, 0, 0, 50];
+
+        pieChart.data.datasets[0].data = newData;
+        pieChart.update();
+    });
+
+    // Calendar and Reminder Modal Logic
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const date = new Date();
+    let currentMonth = date.getMonth();
+    let currentYear = date.getFullYear();
+    const reminders = {}; // To store reminders by date
+
+    function updateCalendar() {
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+        const lastDateOfMonth = new Date(currentYear, currentMonth + 1, 0);
+        const lastDate = lastDateOfMonth.getDate();
+        document.getElementById("monthYear").innerText = `${monthNames[currentMonth]} ${currentYear}`;
+        const tableBody = document.getElementById("calendarTable").getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = "";
+
+        let row = document.createElement("tr");
+        for (let i = 0; i < firstDayOfMonth.getDay(); i++) {
+            row.appendChild(document.createElement("td"));
+        }
+
+        for (let day = 1; day <= lastDate; day++) {
+            const cell = document.createElement("td");
+            const cellDate = `${currentYear}-${currentMonth + 1}-${day}`;
+            cell.innerText = day;
+            cell.dataset.date = cellDate;
+            cell.addEventListener("click", () => openReminderModal(cellDate));
+
+            if (reminders[cellDate]) {
+                const dot = document.createElement("span");
+                dot.style.color = "red";
+                dot.innerText = " •";
+                cell.appendChild(dot);
+            }
+
+            row.appendChild(cell);
+            if (row.children.length === 7) {
+                tableBody.appendChild(row);
+                row = document.createElement("tr");
+            }
+        }
+
+        if (row.children.length > 0) {
+            tableBody.appendChild(row);
+        }
+    }
+
+    function openReminderModal(date) {
+        document.getElementById("selectedDate").innerText = date;
+        const reminderList = document.getElementById("reminderList");
+        reminderList.innerHTML = reminders[date]
+            ? reminders[date].map((r, i) => `<div>${r.time} - ${r.text} <button onclick="deleteReminder('${date}', ${i})">Delete</button></div>`).join("")
+            : "<p>No reminders for this day.</p>";
+        document.getElementById("reminderModal").style.display = "block";
+    }
+
+    function deleteReminder(date, index) {
+        reminders[date].splice(index, 1);
+        if (!reminders[date].length) delete reminders[date];
+        openReminderModal(date);
+    }
+
+    document.getElementById("closeReminderModal").addEventListener("click", () => {
+        document.getElementById("reminderModal").style.display = "none";
+    });
+
+    document.getElementById("cancelReminder").addEventListener("click", () => {
+        document.getElementById("reminderModal").style.display = "none";
+    });
+
+    document.getElementById("reminderForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const date = document.getElementById("selectedDate").innerText;
+        const text = document.getElementById("reminderText").value;
+        const time = document.getElementById("reminderTime").value;
+
+        if (!reminders[date]) reminders[date] = [];
+        reminders[date].push({ text, time });
+        document.getElementById("reminderModal").style.display = "none";
+        updateCalendar();
+    });
+
+    document.getElementById("prevMonth").addEventListener("click", () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        updateCalendar();
+    });
+
+    document.getElementById("nextMonth").addEventListener("click", () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        updateCalendar();
+    });
+
+    updateCalendar();
+</script>
+
+
+
+
+</body>
+</html>

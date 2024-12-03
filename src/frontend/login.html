@@ -12,7 +12,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Align items at the top */
+            justify-content: flex-start; 
             height: 100vh;
             margin: 0;
         }
@@ -27,7 +27,7 @@
             width: 90%;
             max-width: 400px;
             background-color: #9BB421;
-            padding: 50px 60px; /*Controls how much the padding/spacing there is on the sides*/
+            padding: 50px 60px; 
             border-radius: 30px;
             text-align: center;
             position: relative;
@@ -38,34 +38,34 @@
             background-color: #9BB421;
             padding: 20px;
             border-radius: 10px;
-            font-size: 30px;
+            font-size: 35px;
             font-weight: bold;
             color: #000;
-            margin-bottom: 30px;
+            margin-bottom: 70px;
             border: 2px solid #fff;
         }
 
-        .form-group {
+        .username {
             margin-top: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 40px; /* Controls how much the spacing is, the example is this big */
+            margin-bottom: 20px;
             
         }
-        .form-group2 {
-            margin-top: 70px;
+        .password {
+            margin-top: 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .form-group2 label {
+        .password label {
             font-weight: bold;
             text-align: right;
             margin-right: 10px;
         }
         
-        .form-group label {
+        .username label {
             font-weight: bold;
             text-align: right;
             margin-right: 10px;
@@ -74,7 +74,7 @@
             width: 70%;
             padding: 8px;
             box-sizing: border-box;
-            border: 1px solid #000; /* Change to a black border */
+            border: 1px solid #000; 
             border-radius: 5px;
             color: #000;
             background-color: #C4C4C4;
@@ -117,7 +117,7 @@
 
     <!-- Logo Section -->
     <div class="logo">
-        <img src="walletwizard.png" alt="Wallet Wizard Logo"> 
+        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
 
     <!-- Login Container -->
@@ -126,24 +126,54 @@
         <div class="title">Account Login</div>
 
         <!-- Login Form -->
-        <div class="form-group">
-            <label for="username">User:</label>
-            <input type="text" id="username" placeholder="Username / Email / Phone Number">
-        </div>
-        
-        <div class="form-group2">
-            <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="Password">
-            
-        </div>
+        <form id="login-form">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <p class="forgot-password"><a href="/api/auth/forgot-password">Forgot your password?</a></p>
+            <button type="submit">Login</button>
+        </form>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const loginForm = document.getElementById('login-form');
+                loginForm.onsubmit = async (event) => {
+                    event.preventDefault();
 
-        <a href="forgot_password.html" class="forgot-password">Forgot Password?</a>
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
 
-        <a href="dashboard.html">
-            <button>Sign In</button>
-        </a>
+                    try {
+                        const response = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ username, password }),
+                        });
 
-        <p class="signup-link">Don't have an account? <a href="register.html">Sign up for one</a></p>
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            console.log("Login successful, token received:", data.token);
+                            localStorage.setItem('token', data.token); // Store the token in localStorage
+                            window.location.href = '/api/dashboard'; // Redirect to dashboard
+                        } else {
+                            alert(data.error || "Login failed.");
+                        }
+                    } catch (error) {
+                        console.error("Error during login:", error);
+                    }
+                };
+            });
+
+        </script>
+
+        <p class="signup-link">Don't have an account? <a href="/api/auth/register" class = "register">Sign up for one</a></p>
     </div>
 
 </body>

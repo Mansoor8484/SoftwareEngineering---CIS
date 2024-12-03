@@ -12,20 +12,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Center the container vertically */
+            justify-content: center;
             margin: 0;
-            padding-bottom: 20px; /* Add padding at the bottom */
+            padding-bottom: 20px;
         }
         .logo {
-            margin-bottom: 20px; /* Add spacing between logo and form */
+            margin-bottom: 20px;
         }
         .logo img {
             width: 250px;
             height: 200px;
         }
+        .signup-link {
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        .signup-link a {
+            color: #000;
+            text-decoration: underline;
+        }
         .container {
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             background-color: #9BB421;
             padding: 50px 60px;
             border-radius: 30px;
@@ -41,8 +50,8 @@
             margin-bottom: 10px;
         }
         .form-group label {
-            width: 140px;
-            font-size: 10px;
+            width: 130px;
+            font-size: 12px;
             margin-right: 10px;
             text-align: right;
         }
@@ -53,7 +62,6 @@
             border-radius: 5px;
             border: 1px solid #000;
             background-color: #C4C4C4;
-            margin-right: 60px;
         }
         button {
             padding: 10px 20px;
@@ -66,7 +74,7 @@
         }
         button a {
             text-decoration: none;
-            color: #000; /* Match link color with button text */
+            color: #000;
             display: block;
         }
         .agreement {
@@ -88,57 +96,115 @@
             border: 1px solid #fff;
         }
     </style>
+    <script>
+        async function registerUser(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        'confirm-password': confirmPassword
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(`Registration failed: ${errorData.error || "Unknown error occurred."}`);
+                    return;
+                }
+
+                const data = await response.json();
+                alert(`Registration successful: ${data.message}`);
+                localStorage.setItem('user_id', data.user_id);
+                localStorage.setItem('token', data.token);
+                window.location.href = '/api/auth/login';
+            } catch (error) {
+                alert(`An error occurred: ${error.message}`);
+            }
+        }
+    </script>
 </head>
 <body>
 
-    <!-- Logo Section -->
-    <div class="logo">
-        <img src="walletwizard.png" alt="Wallet Wizard Logo">
-    </div>
+<!-- Logo Section -->
+<div class="logo">
+    <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+</div>
 
-    <!-- Form Container -->
-    <div class="container">
-        <h1 class="title">Register New Account</h1>
+<!-- Form Container -->
+<div class="container">
+    <h1 class="title">Register New Account</h1>
+    <form id="register-form" action="/api/auth/register" method="POST" onsubmit="registerUser(event)">
+        <!-- Username -->
         <div class="form-group">
             <label for="username">Username:*</label>
-            <input type="text" id="username" placeholder="Username">
+            <input type="text" id="username" name="username" placeholder="Username" required>
         </div>
+
+        <!-- Email -->
         <div class="form-group">
             <label for="email">Email:*</label>
-            <input type="email" id="email" placeholder="Email">
+            <input type="email" id="email" name="email" placeholder="Email" required>
         </div>
+
+        <!-- Phone Number -->
         <div class="form-group">
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" placeholder="Phone Number">
+            <input type="tel" id="phone" name="phone" placeholder="Phone Number">
         </div>
+
+        <!-- Full Name -->
         <div class="form-group">
-            <label for="account-number">Account Number:*</label>
-            <input type="text" id="account-number" placeholder="Account Number">
+            <label for="name">Name:*</label>
+            <input type="text" id="name" name="name" placeholder="Full Name" required>
         </div>
-        <div class="form-group">
-            <label for="routing-number">Routing Number:*</label>
-            <input type="text" id="routing-number" placeholder="Routing Number">
-        </div>
-        <div class="form-group">
-            <label for="full-name">Name:*</label>
-            <input type="text" id="name" placeholder="Full Name">
-        </div>
+
+        <!-- Password -->
         <div class="form-group">
             <label for="password">Password:*</label>
-            <input type="password" id="password" placeholder="Password">
+            <input type="password" id="password" name="password" placeholder="Password" required>
         </div>
+
+        <!-- Confirm Password -->
         <div class="form-group">
             <label for="confirm-password">Confirm Password:*</label>
-            <input type="password" id="confirm-password" placeholder="Confirm Password">
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
         </div>
+
+        <!-- Agreement -->
         <div class="agreement">
-            <input type="checkbox" id="agreement" style="margin-right: 10px;">
-            <label for="agreement">User Agreement - Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit 
-                non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus
-                 ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</label>
+            <input type="checkbox" id="agreement" name="agreement" style="margin-right: 10px;" required>
+            <label for="agreement">
+                User Agreement - By using Wallet Wizard, you agree to track and manage your financial data responsibly
+                and in compliance with all applicable laws. You are responsible for maintaining the accuracy of your account
+                and safeguarding your login information. We prioritize your privacy and protect your data in accordance with our
+                Privacy Policy. Wallet Wizard is not liable for any financial losses or damages resulting from your use of the service.
+                We may modify these terms at any time, and your continued use constitutes acceptance of any changes. For questions,
+                contact support at <a href="mailto:support@walletwizard.com">support@walletwizard.com</a>.
+            </label>
         </div>
-        <button><a href="login.html">Sign Up</a></button>
-    </div>
+
+        <!-- Submit Button -->
+        <button type="submit">Sign Up</button>
+    </form>
+    <br>
+    <button type="submit"><a href="/api/auth/login" class = "register">Return</a></button>
+</div>
 
 </body>
 </html>

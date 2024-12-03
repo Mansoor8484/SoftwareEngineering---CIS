@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Wallet Wizard - Profile</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Wallet Wizard">
+    <meta name="keywords" content="money management">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #d7e1ac;
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #5D6916;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 100px;
+            width: auto;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav li {
+            padding: 10px 20px;
+            margin: 30px;
+        }
+
+        .nav a {
+            color: #000;
+            text-decoration: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            background-color: #87991D;
+            border: 2px solid #73623C;
+        }
+
+        .nav a:hover {
+            background-color: #745916;
+            color: black;
+            border: 2px solid #66B2FF;
+        }
+
+        .budgeting {
+            background-color: #73623C;
+            color: black;
+            border-color: #66B2FF;
+        }
+
+        .profile-buttons {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .profile-buttons a {
+        background-color: #87991D;
+        color: #000;
+        padding: 10px 15px;
+        border-radius: 5px;
+        border: 2px solid #73623C;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .profile-buttons a:hover {
+        background-color: #745916;
+        color: black;
+        border: 2px solid #66B2FF;
+    }
+
+        h1, h2 {
+            color: #340913;
+        }
+
+        #logoutBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.popup {
+  display: none; /* Hidden */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#confirmLogout {
+  background-color: red;
+  color: white;
+}
+
+#cancelLogout {
+  background-color: gray;
+  color: white;
+}
+
+        .profile-container {
+            background-color: #9BB421;
+            padding: 30px 20px;
+            width: 500px;
+            margin: 50px auto;
+            border-radius: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            border: 2px solid #745916;
+        }
+
+        .profile-container h2 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            flex: 1;
+            font-weight: bold;
+            color: #000;
+            margin-right: 10px;
+        }
+
+        .form-group input {
+            flex: 2;
+            padding: 10px;
+            border: 2px solid #73623C;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #66B2FF;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+        }
+
+        
+        #profile-header {
+            text-align: center;
+            color: #000;
+            margin-bottom: 20px;
+            border: 1px solid #fff; 
+            padding: 10px;
+            border-radius: 10px;
+            text-emphasis: bold;
+            font-size: 36px;
+        }
+
+        .action-buttons a {
+            padding: 12px 20px;
+            background-color: #fff;
+            border: 3px solid #73623C;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .action-buttons a:hover {
+            background-color: #745916;
+            color: white;
+            border-color: #66B2FF;
+        }
+        .edit-button {
+            margin: 60px auto; 
+            display: block; 
+            width: 50%; 
+            height: 20%; 
+            padding: 12px;
+            background-color: #fff;
+            border: 3px solid #73623C;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .edit-button:hover {
+            background-color: #745916;
+            color: white;
+            border-color: #66B2FF;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .profile-buttons {
+                flex-direction: column;
+            }
+
+            header {
+                flex-wrap: wrap;
+                text-align: center;
+            }
+
+            .nav {
+                justify-content: center;
+                margin: 10px 0;
+            }
+
+            .profile-container {
+                width: 90%;
+            }
+
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-group label {
+                margin-bottom: 5px;
+            }
+
+            .form-group input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
+    </div>
+
+    <!-- Nav Bar -->
+    <nav class="nav">
+        <ul>
+            <li><a class="navi" href="/api/dashboard">Dashboard</a></li>
+            <li><a class="navi" href="/api/transactions">Transactions</a></li>
+            <li><a class="budgeting" href="/api/budgeting">Budgeting</a></li>
+            <li><a class="navi" href="/api/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile and Logout Controls -->
+    <div class="profile-buttons">
+        <a href="#">Profile</a>
+        <a href="#" class="profile-button" onclick="openPopup(event)">Log Out</a>
+    </div>
+
+    <div id="logoutModal" class="popup">
+        <div class="popup-content">
+            <p>Are you sure you want to log out?</p>
+            <button id="confirmLogout" onclick="logout()">Yes, Log Out</button>
+            <button id="cancelLogout" onclick="closePopup()">Cancel</button>
+        </div>
+    </div>
+</header>
+    <main>
+        <div class="profile-container">
+            <h2>Edit Profile</h2>
+            <form id="edit-profile-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Loading...">
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Loading...">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Loading...">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Loading...">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="********">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="********">
+                </div>
+
+                <button type="submit" class="edit-button">Submit Changes</button>
+            </form>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const profileData = {
+                name: "John Doe",
+                username: "test",
+                email: "john.doe@example.com",
+                phone: "123-456-7890",
+                password: "test",
+            };
+
+            // Populate edit fields
+            document.getElementById('name').value = profileData.name;
+            document.getElementById('username').value = profileData.username;
+            document.getElementById('email').value = profileData.email;
+            document.getElementById('phone').value = profileData.phone;
+            document.getElementById('password').value = profileData.password;
+
+            document.getElementById('edit-profile-form').addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const updatedProfile = {
+                    name: document.getElementById('name').value,
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    password: document.getElementById('password').value,
+                    confirmPassword: document.getElementById('confirm-password').value,
+                };
+
+                if (updatedProfile.password !== updatedProfile.confirmPassword) {
+                    alert("Passwords do not match.");
+                    return;
+                }
+
+                setTimeout(() => {
+                    alert("Profile updated successfully!");
+                    window.location.href = "/api/profile";
+                }, 500);
+            });
+        });
+    </script>
+
+    <script>
+        // logout.js
+        function openPopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "block";
+        }
+
+        function closePopup() {
+            const modal = document.getElementById("logoutModal");
+            modal.style.display = "none";
+        }
+
+        function logout() {
+            // Clear user session or token from localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_id");
+
+            // Redirect to the login page
+            window.location.href = "/api/auth/login";
+        }
+
+        // Close the modal if clicked outside the content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target === modal) {
+                closePopup();
+            }
+        };
+    </script>
+</body>
+</html>
