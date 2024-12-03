@@ -119,7 +119,6 @@
         margin: 20px auto;
     }
 
-    /* Flexbox container for the columns */
     .content-wrapper {
         display: flex;
         justify-content: space-between;
@@ -127,7 +126,7 @@
     }
 
     .left-column, .right-column {
-        flex: 1 1 45%; /* Make each column take up 45% of the container width */
+        flex: 1 1 45%;
         background-color: #5D6916;
         color: white;
         padding: 20px;
@@ -231,11 +230,11 @@
         }
 
         .content-wrapper {
-            flex-direction: column; /* Stack the columns vertically on small screens */
+            flex-direction: column;
         }
 
         .left-column, .right-column {
-            flex: 1 1 100%; /* Make the columns take up 100% of the width on small screens */
+            flex: 1 1 100%;
         }
     }
 </style>
