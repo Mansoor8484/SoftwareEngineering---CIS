@@ -122,19 +122,19 @@
     }
 
     .popup {
-        display: none; /* Hidden by default */
-        position: fixed; /* Fixed positioning for full-page overlay */
-        z-index: 1000; /* Ensure it overlays other content */
+        display: none; /* Hidden */
+        position: fixed; 
+        z-index: 1000; 
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%); /* Center modal */
+        transform: translate(-50%, -50%); 
         width: 100%;
         max-width: 400px;
         background-color: white;
         border-radius: 8px;
-        padding: 15px; /* Reduce padding */
+        padding: 15px; 
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-        text-align: left; /* Align content to the left for better readability */
+        text-align: left; 
     }
 
     .popup-content {
@@ -150,11 +150,11 @@
     }
 
     #reminderList {
-        max-height: 200px; /* Prevent the modal from growing too large */
-        overflow-y: auto; /* Allow scrolling for long lists */
-        margin-bottom: 15px; /* Add spacing between the list and form */
-        padding: 5px; /* Add some spacing inside the list */
-        border: 1px solid #ddd; /* Optional: add a border to distinguish content */
+        max-height: 200px; 
+        overflow-y: auto; 
+        margin-bottom: 15px; 
+        padding: 5px; 
+        border: 1px solid #ddd; 
         border-radius: 5px;
         background-color: #f9f9f9;
     }
@@ -164,17 +164,17 @@
     }
 
     #reminderList div:last-child {
-        margin-bottom: 0; /* Remove margin from the last reminder */
+        margin-bottom: 0; 
     }
 
     #reminderList p {
-        margin: 0; /* Ensure no extra space in empty state */
-        color: #999; /* Grey color for "No reminders" text */
+        margin: 0; 
+        color: #999; 
         text-align: center;
     }
 
     form {
-        margin-top: 10px; /* Space above the form */
+        margin-top: 10px; 
     }
 
 
@@ -299,7 +299,7 @@
         <img src="/static/walletwizard.png" alt="Wallet Wizard Logo" />
     </div>
 
-    <!-- Navigation Bar -->
+    <!-- Nav Bar -->
     <nav class="nav">
         <ul>
             <li><a href="#" class="active">Dashboard</a></li>
